@@ -36,8 +36,6 @@
 
 
 
-![](../.gitbook/assets/image%20%282%29.png)
-
 ## 1.2 Users and Privileges
 
 ## 1.3 Common Network Commands
