@@ -1,7 +1,7 @@
 ---
 description: >-
   These are the notes in relation to the Cyber Mentor Windows Privilege
-  Escalation that I 'm currently undertaking.
+  Escalation that I'm currently undertaking.
 ---
 
 # Windows Privilege Escalation
