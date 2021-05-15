@@ -53,3 +53,49 @@ Ctrl + Shift + Z = Maximizes a current tabbed window to full screen and then res
 
 - highlighting the syntax is found below:
 https://github.com/zsh-users/zsh-syntax-highlighting
+
+
+## How to Create/Enable Shared Folders in Kali 2020.x
+
+- VMware Workstation Player (VMWP) with Windows 10 Professional or whatever works as host
+- Kali Linux 2020.x as guest OS
+-- Create the shared folder on the host, e.g.: E:\VM_SHARE
+-- Start the guest.
+-- From the VMWP :
+````
+Player
+Manage
+Virtual Machine Settings...
+Options tab
+Shared Folders
+Always enabled
+Add..., Next
+Browse...
+Host path : E:\VM_SHARE
+Name : VM_SHARE
+Next
+Enable this share
+Finish
+OK
+````
+4 - create the folder:
+````cd /mnt
+sudo mkdir hgfs
+````
+
+5 - From the terminal window create (or add to) the file ```
+/etc/rc.local
+````
+add the following line to it and save the file:
+````
+#!/bin/sh -e
+sudo mount -t fuse.vmhgfs-fuse .host:/ /mnt/hgfs -o allow_other
+````
+6 - Make the file executable:
+````
+sudo chown root /etc/rc.local
+sudo chmod 755 /etc/rc.local
+````
+Test `ls -l /etc/rc.local` to see if it is `-rwxr-xr-x` and it should be right.
+7 - Restart the VM, and check whether the test file also appears on the guest
+Credits of this goes to this dude (https://unix.stackexchange.com/questions/594080/where-to-find-the-shared-folder-in-kali-linux) here. 
