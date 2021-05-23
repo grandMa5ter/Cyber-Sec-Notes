@@ -98,7 +98,8 @@ Test `ls -l /etc/rc.local` to see if it is `-rwxr-xr-x` and it should be right.
 7 - Restart the VM, and check whether the test file also appears on the guest Credits of this goes to this dude (https://unix.stackexchange.com/questions/594080/where-to-find-the-shared-folder-in-kali-linux) here.
 
 # Change OllyDbg layout fonts to become readable:
-Add the following lines to the *.ini file of OllyDbg v2.x to make it more readable or suitable for working with it
+Add the following lines to the *.ini file of OllyDbg v2.x to make it more readable or suitable for working with it:
+
 `[Colour schemes]
 Scheme name[4]=KuNgBiM's Scheme
 Foreground_1[4]=*,*,808000,0,FFFF,80,*,FF00,*,FF0000,*,*,*,*,*,*
