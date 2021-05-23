@@ -79,31 +79,27 @@ Finish
 OK
 ````
 4 - create the folder:
-````cd /mnt
+`cd /mnt
 sudo mkdir hgfs
-````
+`
 
-5 - From the terminal window create (or add to) the file ```
-/etc/rc.local
-````
-add the following line to it and save the file:
-````
-#!/bin/sh -e
-sudo mount -t fuse.vmhgfs-fuse .host:/ /mnt/hgfs -o allow_other
-````
+5 - From the terminal window create (or add to) the file
+`/etc/rc.local`
+and then add the following line to it and save the file:
+`#!/bin/sh -e
+sudo mount -t fuse.vmhgfs-fuse .host:/ /mnt/hgfs -o allow_other`
+
 6 - Make the file executable:
-````
-sudo chown root /etc/rc.local
-sudo chmod 755 /etc/rc.local
-````
+`sudo chown root /etc/rc.local
+sudo chmod 755 /etc/rc.local`
+
 Test `ls -l /etc/rc.local` to see if it is `-rwxr-xr-x` and it should be right.
-7 - Restart the VM, and check whether the test file also appears on the guest
-Credits of this goes to this dude (https://unix.stackexchange.com/questions/594080/where-to-find-the-shared-folder-in-kali-linux) here.
+
+7 - Restart the VM, and check whether the test file also appears on the guest Credits of this goes to this dude (https://unix.stackexchange.com/questions/594080/where-to-find-the-shared-folder-in-kali-linux) here.
 
 # Change OllyDbg layout fonts to become readable:
 Add the following lines to the *.ini file of OllyDbg v2.x to make it more readable or suitable for working with it
-````
-[Colour schemes]
+`[Colour schemes]
 Scheme name[4]=KuNgBiM's Scheme
 Foreground_1[4]=*,*,808000,0,FFFF,80,*,FF00,*,FF0000,*,*,*,*,*,*
 Foreground_2[4]=*,*,*,*,*,*,*,*,*,*,*,*,*,*,*,*
@@ -124,8 +120,6 @@ Modified commands[4]=0
 [Fonts]
 Font name[5]=KuNgBiM's Fonts
 Font data[5]=-12,0,400,0,0,0,134,1,49,0,0,0
-Face name[5]=#65B0#5B8B#4F53
-````
-Alternately you can go to the git repo of () to find the some of the theme's for debuggers.
+Face name[5]=#65B0#5B8B#4F53`
 
- 
+Alternately you can go to the git repo of () to find the some of the theme's for debuggers.
