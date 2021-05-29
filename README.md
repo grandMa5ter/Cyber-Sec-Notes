@@ -100,30 +100,16 @@ Test `ls -l /etc/rc.local` to see if it is `-rwxr-xr-x` and it should be right.
 
 7 - Restart the VM, and check whether the test file also appears on the guest Credits of this goes to this dude (https://unix.stackexchange.com/questions/594080/where-to-find-the-shared-folder-in-kali-linux) here.
 
-# Change OllyDbg layout fonts to become readable:
-Add the following lines to the *.ini file of OllyDbg v2.x to make it more readable or suitable for working with it:
 
-`[Colour schemes]
-Scheme name[4]=KuNgBiM's Scheme
-Foreground_1[4]=*,*,808000,0,FFFF,80,*,FF00,*,FF0000,*,*,*,*,*,*
-Foreground_2[4]=*,*,*,*,*,*,*,*,*,*,*,*,*,*,*,*
-Background_1[4]=C0DCC0,C0DCC0,C0DCC0,FF00,*,FFFF00,*,*,C0DCC0,FFFF,*,*,*,*,*,*
-Background_2[4]=*,*,*,*,*,*,*,*,*,*,*,*,*,*,*,*
-Operands[4]=0
-Modified commands[4]=0
+# Curropt ZSH History files
+Sometimes the zsh gives an error of curropt file and it drives me nuts. Below is a way to fix it. Credit to George for this beautifull script to fx it.
+```
+#!/usr/bin/env zsh
+# George Ornbo (shapeshed) http://shapeshed.com
+# Fixes a corrupt .zsh_history file
 
-[Highlighting schemes]
-Scheme name[4]=KuNgBiM's Code
-Foreground_1[4]=*,*,*,*,*,*,*,*,*,*,*,*,FF0000,FF,FF,FF0000
-Foreground_2[4]=0,0,0,FF00,FF,FF,*,*,800000,0,0,800080,FF00FF,80,FF00FF,*
-Background_1[4]=*,*,*,*,*,*,*,*,*,*,*,*,*,FFFF,FFFF,*
-Background_2[4]=FFFF00,FF00,*,FF,*,*,*,*,*,*,*,*,*,*,*,*
-Operands[4]=1
-Modified commands[4]=0
-
-[Fonts]
-Font name[5]=KuNgBiM's Fonts
-Font data[5]=-12,0,400,0,0,0,134,1,49,0,0,0
-Face name[5]=#65B0#5B8B#4F53`
-
-Alternately you can go to the git repo of () to find the some of the theme's for debuggers.
+mv ~/.zsh_history ~/.zsh_history_bad
+strings -eS ~/.zsh_history_bad > ~/.zsh_history
+fc -R ~/.zsh_history
+rm ~/.zsh_history_bad
+````
