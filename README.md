@@ -101,7 +101,7 @@ Test `ls -l /etc/rc.local` to see if it is `-rwxr-xr-x` and it should be right.
 7 - Restart the VM, and check whether the test file also appears on the guest Credits of this goes to this dude (https://unix.stackexchange.com/questions/594080/where-to-find-the-shared-folder-in-kali-linux) here.
 
 
-# Curropt ZSH History files
+## Curropt ZSH History files
 Sometimes the zsh gives an error of curropt file and it drives me nuts. Below is a way to fix it. Credit to George for this beautifull script to fx it.
 ```
 #!/usr/bin/env zsh
@@ -113,3 +113,33 @@ strings -eS ~/.zsh_history_bad > ~/.zsh_history
 fc -R ~/.zsh_history
 rm ~/.zsh_history_bad
 ````
+## making sure that vulscan in script of NSE for nmap is up to date and also working, comes in handy for enumeration
+`cd /usr/share/nmap/scripts/`
+`sudo git clone https://github.com/vulnersCom/nmap-vulners.git`
+`sudo git clone https://github.com/scipag/vulscan.git`
+double check they are there: `ls vulscan/*.csv`
+To ensure that the databases are fully up to date, we can use the updateFiles.sh script found in the vulscan/utilities/updater/ directory.
+`cd vulscan/utilities/updater/`
+`sudo chmod +x updateFiles.sh`
+We can then execute and run the script by entering the below command into our terminal:`sudo ./updateFiles.sh`
+Above would not work if you don't do the following, somehow nmap cannot find its script. So:
+```
+cd /usr/share/nmap/scripts
+sudo git clone https://github.com/scipag/vulscan scipag_vulscan
+sudo ln -s pwd/scipag_vulscan /usr/share/nmap/scripts/vulscan
+cd scipag_vulscan
+sudo cp vulscan.nse /usr/share/nmap/scripts
+sudo nmap --script-updatedb
+```
+done, tadaaa!
+Below are the usefull command that you can run and nmap gives you lots of goodies:
+```
+nmap --script nmap-vulners -sV -p# ###.###.###.###
+nmap --script vulscan -sV -p# ###.###.###.###
+nmap --script vulscan --script-args vulscandb=database_name -sV -p# ###.###.###.###
+nmap --script vulscan --script-args vulscandb=scipvuldb.csv -sV -p# ###.###.###.###
+nmap --script vulscan --script-args vulscandb=exploitdb.csv -sV -p# ###.###.###.###
+nmap --script vulscan --script-args vulscandb=securitytracker.csv -sV -p# ###.###.###.###
+nmap --script vulscan --script-args vulscandb=exploitdb.csv -sV -p22 1##.##.###.#43
+nmap --script nmap-vulners,vulscan --script-args vulscandb=scipvuldb.csv -sV -p# ###.###.###.###
+```
