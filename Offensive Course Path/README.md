@@ -74,4 +74,25 @@ Full nmap report: `cat ~/results/192.168.126.132/scans/_full_tcp_nmap.txt`
 
 Below are the commands that are used rarely and there are lots of writeups but I usually forget. So I put them here for my reference and they come in handy:
 1. We broke out of Jail? But shit shell?
-gives you a nice like shell: `/usr/bin/script -qc /bin/bash /dev/null`
+With python: `python -c 'import pty; pty.spawn(\"/bin/bash\")'`
+Without python: `/usr/bin/script -qc /bin/bash /dev/null`
+Ctrl+z=`^z`
+you can examin current terminal with `echo $TERM` which should give you `xterm-256color` or something like that. Then `stty -a` should give you size of TTY="rows 38;column 116".
+**have that in mind the command looks strange and you can't see it**
+### Normal Terminal
+In Kali:
+`stty raw -echo`
+`fg`
+In reverse shell:
+`reset`
+`export SHELL=bash`
+`export TERM=xterm256-color`
+`stty rows 38 columns 116`
+
+### For ZSH shell
+In Kali:
+`stty raw -echo; fg`
+In reverse shell:
+`stty rows $ROWS cols $COLS`
+`export TERM=xterm-256color`
+`exec /bin/bash`
