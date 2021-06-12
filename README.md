@@ -10,10 +10,11 @@ If new to Kali Environment go to first step to setup the environment and move fr
 
 Second is to look at **My Linux Playground** and find out if you know all the good stuff about linux. I refer to it from time to time to refresh my mind on some commands I keep forgetting.
 
-- [Linux Playground](/Offensive%20Course%20Path/linux-playground.md) Then, if you are ready, you can go to the following locations to find what you are looking for:
+- [Linux Playground](/Offensive%20Course%20Path/linux-playground.md)
+
+Then, if you are ready, you can go to the following locations to find what you are looking for:
 
 - [Generic High level Enumeration](/Offensive%20Course%20Path/enumeration.md)
-
 - [Linux Enumeration](/Offensive%20Course%20Path/enumeration-linux.md)
 - [Windows Enumeration](/Offensive%20Course%20Path/enumeration-windows.md)
 - [Web Application Enumeration]
