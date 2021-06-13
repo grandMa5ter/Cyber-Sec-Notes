@@ -21,7 +21,6 @@ And, buy this guy a beer or a coffee: [Hacktricks](https://book.hacktricks.xyz/)
 - Using AutoRecon to run the scan(too much comprehensive):
 	`autorecon -cs 2 --single-target --heartbeat 120 -v 10.10.10.229`
 
-
 # Port 80/443/8000/8080 - HTTP
 
 ## For A Web page
