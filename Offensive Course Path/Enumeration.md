@@ -21,6 +21,10 @@ And, buy this guy a beer or a coffee: [Hacktricks](https://book.hacktricks.xyz/)
 - Using AutoRecon to run the scan(too much comprehensive):
 	`autorecon -cs 2 --single-target --heartbeat 120 -v 10.10.10.229`
 
+- Never forget to scan **Subdomains**:
+`wfuzz -c -f sub-domains.txt -w /usr/share/seclists/Discovery/DNS/subdomains-top1million-20000.txt -u "http://$IP/" -H "Host:FUZZ.<host>.htb/thm" --hl xxx`
+	- Don't forget to add the subdomain to **"/etc/hosts"** file to be able to navigate there.
+
 # Port 80/443/8000/8080 - HTTP
 
 ## For A Web page

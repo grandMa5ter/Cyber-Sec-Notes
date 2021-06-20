@@ -26,3 +26,11 @@ There are some [high level usual stuff](/Offensive%20Course%20Path/README.md) th
 For reverse engineering I haven't added a lot of stuff yet. I'm just going through couple of courses and learning here and there from whatever I can.
 
 - [Setting up the environment](/Reverse%20Engineering/README.md)
+
+
+# Random Notes
+
+## Deleting Image Files that are removed from Markdown (Windows)
+Sometimes, you copy paste stuff in your note taking app, but then delete images from it in Markdown. The image files don't usually get deleted because only reference to them is delete. Below is a walkthrough of how Powershell command is created to delete them:
+
+`Get-ChildItem .\_resources\ | Where { (Get-ChildItem -Path 'C:\Users\Kev\kevNotes\*.md' -Recurse | Select-String $_.Name).Count -eq 0 } | ForEach { $_.FullName } | Remove-Item`

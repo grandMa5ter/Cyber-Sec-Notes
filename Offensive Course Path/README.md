@@ -85,7 +85,7 @@ Simple example: `autorecon $IP`
 
 Below are the commands that are used rarely and there are lots of writeups but I usually forget. So I put them here for my reference and they come in handy:
 
-1. We broke out of Jail? But shit shell? With python: `python -c 'import pty; pty.spawn(\"/bin/bash\")'` Without python: `/usr/bin/script -qc /bin/bash /dev/null` Ctrl+z=`^z` you can examin current terminal with `echo $TERM` which should give you `xterm-256color` or something like that. Then `stty -a` should give you size of TTY="rows 38;column 116". **have that in mind the command looks strange and you can't see it**
+1. We broke out of Jail? But shit shell? With python: `python -c 'import pty; pty.spawn("/bin/bash")'` Without python: `/usr/bin/script -qc /bin/bash /dev/null` Ctrl+z=`^z` you can examin current terminal with `echo $TERM` which should give you `xterm-256color` or something like that. Then `stty -a` should give you size of TTY="rows 38;column 116". **have that in mind the command looks strange and you can't see it**
 
   ### Normal Terminal
 
