@@ -6,20 +6,24 @@ Just a small note takin page that keep adding to it. For shits and giggles later
 
 If new to Kali Environment go to first step to setup the environment and move from there.
 
-[Environment Setup] (/Environment Setup/README.md)
+- [Environment Setup](/setup/README.md)
 
 Second is to look at **My Linux Playground** and find out if you know all the good stuff about linux. I refer to it from time to time to refresh my mind on some commands I keep forgetting.
 
-- [Linux Playground](/Offensive%20Course%20Path/linux-playground.md)
+- [Linux Playground](/offensive/linux-playground.md)
 
 Then, if you are ready, you can go to the following locations to find what you are looking for:
 
-- [Generic High level Enumeration](/Offensive%20Course%20Path/enumeration.md)
-- [Linux Enumeration](/Offensive%20Course%20Path/enumeration-linux.md)
-- [Windows Enumeration](/Offensive%20Course%20Path/enumeration-windows.md)
+- [Generic High level Enumeration](/offensive/enumeration.md)
+- [Linux Enumeration](/offensive/enumeration-linux.md)
+- [Windows Enumeration](/offensive/enumeration-windows.md)
 - [Web Application Enumeration]
 
-There are some [high level usual stuff](/Offensive%20Course%20Path/README.md) that I use on the main page of Offensive path as well.
+There are some [high level usual stuff](/offensive/README.md) that I use on the main page of Offensive path as well.
+
+# Blue Teaming and Defensive Pathway
+
+Coming Soon....
 
 # Reverse Engineering:
 

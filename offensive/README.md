@@ -2,15 +2,15 @@
 
 Before I forget things and get amnesia, at least I have a copy here. And remember not all these notes are mine and I have gathered them here because I was wandering around and reading things. **Ofcourse I haven't done this. All credit would go @TjNull for his updated blog and thorough analysis.**
 
-OSCP Preparation Boxes is in the [excel files](/Offensive%20Course%20Path/NetSecFocus%20Trophy%20Room.xlsx)
+OSCP Preparation Boxes is in the [excel files](/offensive/NetSecFocus%20Trophy%20Room.xlsx)
 
 Also for enumeration of CTF boxes, you can refer to:
 
-- [Generic](/Offensive%20Course%20Path/enumeration.md)
-- [Linux](/Offensive%20Course%20Path/enumeration-linux.md)
-- [Windows](/Offensive%20Course%20Path/enumeration-windows.md)
+- [Generic](/offensive/enumeration.md)
+- [Linux](/offensive/enumeration-linux.md)
+- [Windows](/offensive/enumeration-windows.md)
 
-Also refer to [Linux Playground](/Offensive%20Course%20Path/linux-playground.md) for all linux interesting commands and operations.
+Also refer to [Linux Playground](/offensive/linux-playground.md) for all linux interesting commands and operations.
 
 ## Dorks that would aid enumeration and exploitation
 

@@ -1,5 +1,3 @@
-
-
 Mitre Shield Website: https://shield.mitre.org/matrix/
 
 # Encryption is the last stage of Ransomware
