@@ -13,13 +13,11 @@ https://github.com/carlospolop/privilege-escalation-awesome-scripts-suite/tree/m
 - Confidential Information and Users
 - What is going on with "File Systems"?
 
-
-
 ============================================================================
 ##Preparation and Finding Exploit Code
 
-- Development and languages available (perl*/python*/gcc*/cc*)?
-- Upload files wget/nc/netcat/tftp/ftp ?
+- Development and languages available (`perl*/python*/gcc*/cc*`)?
+- Upload files `wget/nc/netcat/tftp/ftp` ?
 
 Maybe give it a try to: https://github.com/liamg/traitor
 
