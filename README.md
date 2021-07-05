@@ -6,7 +6,7 @@ Just a small note takin page that keep adding to it. For shits and giggles later
 
 If new to Kali Environment go to first step to setup the environment and move from there.
 
-[Environment Setup] (/Environment Setup/README.md)
+[Environment Setup] (/Environment Setup/[[Offensive Course Path/README]].md)
 
 Second is to look at **My Linux Playground** and find out if you know all the good stuff about linux. I refer to it from time to time to refresh my mind on some commands I keep forgetting.
 
