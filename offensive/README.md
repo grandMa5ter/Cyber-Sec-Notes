@@ -94,3 +94,6 @@ Below are the commands that are used rarely and there are lots of writeups but I
 ### For ZSH shell
 
 In Kali: `stty raw -echo; fg` In reverse shell: `stty rows $ROWS cols $COLS` `export TERM=xterm-256color` `exec /bin/bash`
+
+## Exploit Dev Stuff
+Follow [this link](offensive/exploit_development.md) to get down doing some exploit development and fuzzing shit.
