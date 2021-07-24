@@ -14,16 +14,22 @@ Second is to look at **My Linux Playground** and find out if you know all the go
 
 Then, if you are ready, you can go to the following locations to find what you are looking for:
 
-- [Generic High level Enumeration](/offensive/enumeration.md)
+- [Initial Access or Foothold](/offensive/initial_access.md)
 - [Linux Enumeration](/offensive/enumeration-linux.md)
 - [Windows Enumeration](/offensive/enumeration-windows.md)
-- [Web Application Enumeration]
+- [Web Application Enumeration](/offensive/enumeration-webApp.md)
 
 There are some [high level usual stuff](/offensive/README.md) that I use on the main page of Offensive path as well.
 
 # Blue Teaming and Defensive Pathway
 
 Coming Soon....
+
+# Exploit Development:
+
+If you have come across something and you would like to develop an exploit for it, or fuzz it to see if something comes out of it maybe give this page a try. It might have some useful stuff in there.
+
+- [Generic Exploit Development](/offensive/exploit_development.md)
 
 # Reverse Engineering:
 

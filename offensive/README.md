@@ -12,6 +12,8 @@ Also for enumeration of CTF boxes, you can refer to:
 
 Also refer to [Linux Playground](/offensive/linux-playground.md) for all linux interesting commands and operations.
 
+If you get into exploit development during a CTF, maybe [Generic Exploit Development](/offensive/exploit_development.md) can be some help.
+
 ## Dorks that would aid enumeration and exploitation
 
 ### Google Dorks
