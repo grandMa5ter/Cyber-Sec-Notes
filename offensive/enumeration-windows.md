@@ -1,6 +1,57 @@
-# Windows-Privilege-Escalation
+# Windows-Privilege-Escalation 
 
-Here is my step-by-step windows privlege escalation methodology. This guide assumes you are starting with a very limited shell like a webshell, netcat reverse shell or a remote telnet connection.
+<!-- TOC -->
+
+ - [Windows-Privilege-Escalation](#windows-privilege-escalation)
+
+  - [First things first and quick wins](#first-things-first-and-quick-wins)
+  - [Uploading files to the Windows machine](#uploading-files-to-the-windows-machine)
+
+    - [Uploading Files with VBScript](#uploading-files-with-vbscript)
+    - [Uploading Files with CertUtil.exe](#uploading-files-with-certutilexe)
+    - [Transfering Files using MSHTA](#transfering-files-using-mshta)
+    - [Trasfering Files using Bitsadmin](#trasfering-files-using-bitsadmin)
+    - [Uploading Files with PowerShell](#uploading-files-with-powershell)
+    - [Uploading Files with Python](#uploading-files-with-python)
+    - [Uploading Files with Perl](#uploading-files-with-perl)
+    - [Uploading Files with FTP](#uploading-files-with-ftp)
+    - [Transfering Files via SMB using Impacket](#transfering-files-via-smb-using-impacket)
+
+  - [Execute a remote shell dropper](#execute-a-remote-shell-dropper)
+
+    - [Upgrading your Windows Shell](#upgrading-your-windows-shell)
+    - [Upgrade Shell with PowerShell Nishang](#upgrade-shell-with-powershell-nishang)
+    - [Upgrade Windows Command Line with a Powershell One-liner Reverse Shell:](#upgrade-windows-command-line-with-a-powershell-one-liner-reverse-shell)
+    - [Netcat Reverseshell Oneliners for Windows](#netcat-reverseshell-oneliners-for-windows)
+
+- [Windows Enumeration](#windows-enumeration)
+
+  - [Automated Windows Enumeration Scripts](#automated-windows-enumeration-scripts)
+
+    - [Running Windows Privesc Check (windows-privesc-check)](#running-windows-privesc-check-windows-privesc-check)
+    - [Running Sherlock](#running-sherlock)
+    - [Running Watson](#running-watson)
+    - [Running JAWS - Just Another Windows (Enum) Script](#running-jaws---just-another-windows-enum-script)
+    - [Fireeye Session Gopher](#fireeye-session-gopher)
+
+  - [Running Mimikatz](#running-mimikatz)
+
+    - [Running traditional (binary) Mimikatz](#running-traditional-binary-mimikatz)
+    - [Running Powershell Mimikatz](#running-powershell-mimikatz)
+
+  - [Windows Kernel Exploits](#windows-kernel-exploits)
+
+    - [MS16-032](#ms16-032)
+
+  - [Windows Run As](#windows-run-as)
+
+- [Other files](#other-files)
+
+  - [Capture a screen shot](#capture-a-screen-shot) 
+
+<!-- /TOC -->
+
+ Here is my step-by-step windows privlege escalation methodology. This guide assumes you are starting with a very limited shell like a webshell, netcat reverse shell or a remote telnet connection.
 
 ## First things first and quick wins
 
@@ -773,7 +824,7 @@ Basic notes on Windows Enumeration from the OSCP.
 An uploadable batch file for performing basic windows enumeration.
 
 **References**<br>
-<https://medium.com/@hakluke><br>
+[https://medium.com/@hakluke](mailto:https://medium.com/@hakluke)<br>
 <https://daya.blog/2018/01/06/windows-privilege-escalation/><br>
 <https://pentestlab.blog/2017/04/19/stored-credentials/><br>
 <https://www.sploitspren.com/2018-01-26-Windows-Privilege-Escalation-Guide/><br>

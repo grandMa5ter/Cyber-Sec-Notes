@@ -1,8 +1,23 @@
 # OSCP Notes
 
-Before I forget things and get amnesia, at least I have a copy here. And remember not all these notes are mine and I have gathered them here because I was wandering around and reading things. **Ofcourse I haven't done this. All credit would go @TjNull for his updated blog and thorough analysis.**
+Before I forget things and get amnesia, at least I have a copy here. And remember not all these notes are mine and I have gathered them here because I was wandering around and reading things. **Ofcourse I haven't done this. All credit would go @TjNull for his updated blog and thorough analysis.** 
 
-OSCP Preparation Boxes is in the [excel files](/offensive/NetSecFocus%20Trophy%20Room.xlsx)
+<!-- TOC -->
+
+ - [OSCP Notes](#oscp-notes)
+
+  - [Dorks that would aid enumeration and exploitation](#dorks-that-would-aid-enumeration-and-exploitation)
+
+    - [Google Dorks](#google-dorks)
+    - [Specific searches](#specific-searches)
+
+  - [Using AutoRecon](#using-autorecon)
+  - [Usefull Stuff during CTFs:](#usefull-stuff-during-ctfs)
+  - [Exploit Dev Stuff](#exploit-dev-stuff) 
+
+<!-- /TOC -->
+
+ OSCP Preparation Boxes is in the [excel files](/offensive/NetSecFocus%20Trophy%20Room.xlsx)
 
 Also for enumeration of CTF boxes, you can refer to:
 

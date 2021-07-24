@@ -91,9 +91,32 @@
 
   - [ ] Checks to determine if we're in a Docker container
   - [ ] Checks to see if the host has Docker installed
-  - [ ] Checks to determine if we're in an LXC container
+  - [ ] Checks to determine if we're in an LXC container 
 
-# Linux-Privilege-Escalation
+<!-- TOC -->
+
+ - [Methodology - Linux Checklist](#methodology---linux-checklist)
+- [Linux-Privilege-Escalation](#linux-privilege-escalation)
+
+  - [Start with the basics](#start-with-the-basics)
+  - [What can we EXECUTE?](#what-can-we-execute)
+  - [What can we READ?](#what-can-we-read)
+  - [Where can we WRITE?](#where-can-we-write)
+  - [Kernel Exploits](#kernel-exploits)
+  - [Automated Linux Enumeration Scripts](#automated-linux-enumeration-scripts)
+
+    - [LinEmum.sh](#linemumsh)
+
+  - [CTF Machine Tactics](#ctf-machine-tactics)
+  - [Using SSH Keys](#using-ssh-keys)
+
+- [Following the path to Enumerating Linux](#following-the-path-to-enumerating-linux)
+
+  - [References](#references) 
+
+<!-- /TOC -->
+
+ # Linux-Privilege-Escalation
 
 Tips and Tricks for Linux Priv Escalation
 

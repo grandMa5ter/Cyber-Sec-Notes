@@ -1,4 +1,118 @@
-# Linux Playground
+# Linux Playground 
+
+<!-- TOC -->
+
+ - [Linux Playground](#linux-playground)
+
+  - [Basics](#basics)
+
+    - [Linux Root Directory Structure](#linux-root-directory-structure)
+    - [Linux list command](#linux-list-command)
+    - [Linux ownership breakdown of files](#linux-ownership-breakdown-of-files)
+    - [The system](#the-system)
+    - [The Processes](#the-processes)
+    - [Work with files](#work-with-files)
+    - [Using Internet (CMD)](#using-internet-cmd)
+    - [Comand Line Ninja: Navigation](#comand-line-ninja-navigation)
+    - [Command Line Ninja: Deletion](#command-line-ninja-deletion)
+    - [Wild Cards](#wild-cards)
+    - [Trick and Treats - Useful](#trick-and-treats---useful)
+
+  - [Streams, Pips and Redirections](#streams-pips-and-redirections)
+
+    - [Anatomy of a redirection using streams](#anatomy-of-a-redirection-using-streams)
+    - [Terminal I/O Streams and Redirections](#terminal-io-streams-and-redirections)
+    - [The pipe](#the-pipe)
+
+      - [Demystifying and debugging piped commands](#demystifying-and-debugging-piped-commands)
+      - [More Examples](#more-examples)
+
+    - [Commands that only accept literal args](#commands-that-only-accept-literal-args)
+    - [xargs: When pipe is not enough!](#xargs-when-pipe-is-not-enough)
+    - [GNU Parallel](#gnu-parallel)
+
+  - [Classic tools: find, grep, awk, sed](#classic-tools-find-grep-awk-sed)
+
+    - [find](#find)
+
+      - [Features of find](#features-of-find)
+      - [Examples of find](#examples-of-find)
+
+    - [grep](#grep)
+    - [cut](#cut)
+
+      - [Anatomy of grep](#anatomy-of-grep)
+      - [Useful grep options](#useful-grep-options)
+      - [Regular expressions](#regular-expressions)
+      - [Extended regular expressions](#extended-regular-expressions)
+      - [grep examples](#grep-examples)
+      - [awk: Extract and manipulate Data](#awk-extract-and-manipulate-data)
+      - [Anatomy of awk program](#anatomy-of-awk-program)
+      - [/patterns/, conditions and actions](#patterns-conditions-and-actions)
+      - [Useful awk one-liners](#useful-awk-one-liners)
+
+    - [sed](#sed)
+
+      - [Anatomy of awk program](#anatomy-of-awk-program-1)
+      - [sed Options](#sed-options)
+      - [Usefull examples of sed](#usefull-examples-of-sed)
+
+  - [SSH Config and Tunneling](#ssh-config-and-tunneling)
+
+    - [ssh config (~/.ssh/config)](#ssh-config-sshconfig)
+    - [Benefits of ssh config](#benefits-of-ssh-config)
+    - [Port forward over SSH Tunnel](#port-forward-over-ssh-tunnel)
+
+      - [SSH Tunneling Example](#ssh-tunneling-example)
+      - [Incremental Remote Copy with rsync](#incremental-remote-copy-with-rsync)
+
+  - [Secure Communication with GnuPG](#secure-communication-with-gnupg)
+
+    - [GNU Privacy Guard Basics](#gnu-privacy-guard-basics)
+    - [Create a new keypair](#create-a-new-keypair)
+    - [Key Exchange and Verification](#key-exchange-and-verification)
+    - [Encrypting and Decrypting Documents](#encrypting-and-decrypting-documents)
+    - [Authenticate Docs with Digital Signatures](#authenticate-docs-with-digital-signatures)
+
+  - [Managing Services](#managing-services)
+
+    - [Generic Services](#generic-services)
+
+      - [SSH Service](#ssh-service)
+
+  - [Bash tools](#bash-tools)
+
+    - [Bash Shell Basics](#bash-shell-basics)
+    - [Aliases and Functions](#aliases-and-functions)
+
+      - [Examples of useful aliases](#examples-of-useful-aliases)
+      - [Examples of useful Functions](#examples-of-useful-functions)
+
+    - [Variables and Command Substitution](#variables-and-command-substitution)
+    - [Conditionals](#conditionals)
+
+      - [Conditionals summary](#conditionals-summary)
+      - [loops](#loops)
+
+  - [Program Development Tools](#program-development-tools)
+
+    - [Programming Language Platforms](#programming-language-platforms)
+    - [Elements of C Program Development](#elements-of-c-program-development)
+    - [The "make" build system](#the-make-build-system)
+    - [Anatomy of Make files](#anatomy-of-make-files)
+    - [How the make command works](#how-the-make-command-works)
+
+  - [Miscellaneous Utilities](#miscellaneous-utilities)
+
+    - [Get things done at specific times with "at"](#get-things-done-at-specific-times-with-at)
+    - [Get things done periodically with cron](#get-things-done-periodically-with-cron)
+    - [Anatomy of Cron](#anatomy-of-cron)
+    - [math](#math)
+    - [Python utilities](#python-utilities)
+
+  - [Random Stuff](#random-stuff)
+
+<!-- /TOC -->
 
 ## Basics
 
