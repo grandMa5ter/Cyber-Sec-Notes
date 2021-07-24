@@ -6,7 +6,7 @@ OSCP Preparation Boxes is in the [excel files](/offensive/NetSecFocus%20Trophy%2
 
 Also for enumeration of CTF boxes, you can refer to:
 
-- [Generic](/offensive/enumeration.md)
+- [Initial Access or Foothold](/offensive/initial_access.md)
 - [Linux](/offensive/enumeration-linux.md)
 - [Windows](/offensive/enumeration-windows.md)
 
@@ -77,23 +77,29 @@ Simple example: `autorecon $IP`
   tree
   ```
 
-  Then you can the notes inside the folders: `cat ~/results/$IP/report/notes.txt` Full nmap report: `cat ~/results/192.168.126.132/scans/_full_tcp_nmap.txt`
+  Then you can the notes inside the folders: `cat ~/results/$IP/report/notes.txt` Full **nmap** report: `cat ~/results/192.168.126.132/scans/_full_tcp_nmap.txt`
 
 10. It also runs the Enum4Linux scan upon detecting the operating system like Linux. The result for this scan is located at the following location: `results/<targetname>/scans/enum4linux.txt`
 
 ## Usefull Stuff during CTFs:
 
-Below are the commands that are used rarely and there are lots of writeups but I usually forget. So I put them here for my reference and they come in handy:
+Below are the commands that are used rarely and there are lots of write-ups but I usually forget. So I put them here for my reference and they come in handy:
 
-1. We broke out of Jail? But shit shell? With python: `python -c 'import pty; pty.spawn("/bin/bash")'` Without python: `/usr/bin/script -qc /bin/bash /dev/null` Ctrl+z=`^z` you can examin current terminal with `echo $TERM` which should give you `xterm-256color` or something like that. Then `stty -a` should give you size of TTY="rows 38;column 116". **have that in mind the command looks strange and you can't see it**
+1. We broke out of Jail? But shit shell?
 
-  ### Normal Terminal
+  - You need to do the command if python is available on the target system: `python -c 'import pty; pty.spawn("/bin/bash")'`
+  - If python is not available run the command: `/usr/bin/script -qc /bin/bash /dev/null`
+  - Then you can examine current terminal with `echo $TERM` which should give you `xterm-256color` or something like that.
+  - Then `stty -a` should give you size of TTY="rows 38;column 116". **have that in mind the command looks strange and you can't see it sometimes**
+  - Then you need to press **Ctrl+z=`^z`**
+  - If you are jail breaking from Normal Terminal In Kali, run the command:<br>
+    `stty raw -echo; fg`<br>
+    In reverse shell: `reset` & `export SHELL=bash` & `export TERM=<xterm256-color>` `stty rows $ROWS cols $COLS`
+  - If you are jail breaking from ZSH shell In Kali, run the command:<br>
+    `stty raw -echo; fg` In reverse shell: `stty rows $ROWS cols $COLS` & `export TERM=xterm-256color` & `exec /bin/bash`
 
-  In Kali: `stty raw -echo` `fg` In reverse shell: `reset` `export SHELL=bash` `export TERM=xterm256-color` `stty rows 38 columns 116`
-
-### For ZSH shell
-
-In Kali: `stty raw -echo; fg` In reverse shell: `stty rows $ROWS cols $COLS` `export TERM=xterm-256color` `exec /bin/bash`
+2. Using **remote desktop** from Kali `rdesktop $IP -g 95%`
 
 ## Exploit Dev Stuff
+
 Follow [this link](offensive/exploit_development.md) to get down doing some exploit development and fuzzing shit.
