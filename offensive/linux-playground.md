@@ -65,6 +65,18 @@ Typical Command line anatomy: ![Alt text](/Offensive%20Course%20Path/pics/comman
   - `comm` _sorted_ files line by line
   - `diff` differences line by line -- used most frequently, rich options set, see man
 
+- `which` command
+
+  - It searches through the directories defined in the `$PATH`
+  - If a match is found, `which` returns its full paths `which sbd`
+
+- `locate` command
+
+  - quickest way to find location of directories or files
+  - it searches a built-in database called `locate.db`
+  - This databse is automatically updated by cron scheduler
+  - Manual update of this db: `sudo updatedb`
+
 ### Using Internet (CMD)
 
 - curl is commonly used to download from the web:<br>
@@ -107,6 +119,7 @@ Wild cards are characters that expand at runtime:
 
 ### Trick and Treats - Useful
 
+- `!<num>` executes the line number from history (i.e. `!2` executes second line in history)
 - `!!` repeats the last command
 - `!$` change command, keep last argument:<br>
   `cat states.txt #file too long to fit screen` `less !$ #reopen it with less`
@@ -126,7 +139,7 @@ Wild cards are characters that expand at runtime:
 
 - `cd #change to homedir`
 
-- `ctrl-r #recall from history`
+- `ctrl-r #recall from history` type a letter while holding the ctl+r and it searches history for that command.
 
 - `ctrl-d #logout from terminal`
 
@@ -315,6 +328,16 @@ It searches for patterns in text. Extremely powerful and useful. **grep** origin
   - look for a process in a list of processes
   - spot check a large number of files for occurrence of a pattern
   - exclude some text from a large body of text
+
+### cut
+
+The **cut** command is simple, but quite handy. It is used to extract a section of text from a line and output it to the standard output.
+
+- Common switches:
+
+  - `-f` for the field number we are cutting
+  - `-d` for the field delimiter<br>
+    `cut -d ":" -f 1 /etc/passwd`
 
 #### Anatomy of grep
 
@@ -595,6 +618,40 @@ A tool for secure communication. We cover:
 
 - A signed document can be verified and decrypted like so:<br>
   `gpg --ouput doc.pdf --decrypt doc.signed` Must have owner's public key
+
+## Managing Services
+
+### Generic Services
+
+To see a table of all available services within linux enviornment, run **systemctl** with the **list-unitfiles** option:<br>
+`systemctl list-unit-files`
+
+#### SSH Service
+
+The Secure SHell service is most commonly used to remotely access a computer, using a secure, encrypted protocol.
+
+- It is a TCP-based and listens by default on port 22.
+- To start the SSH service, we run **systemctl** with the **start** option followed by the service name<br>
+  `sudo systemctl start ssh`<br>
+
+- Verify via: `sudo ss -antlp | grep sshd`
+
+- Enabling the service by default: `sudo systemctl enable ssh`<br>
+  **Services can be enabled or disabled by default via `systemctl`**<br>
+
+  #### HTTP Service
+
+  The Apache HTTP service is often used for hosting a site, or providing a platform for downloading files to a machine.
+
+- The HTTP service is TCP-based
+
+- listens by default on port 80
+
+- To start the service we run **systemctl** with the **apache2** option: `sudo systemctl start apache2`<br>
+
+- Verify via: `sudo ss -antlp | grep apache`
+
+- Enabling the service by default: `sudo systemctl enable apache2`<br>
 
 ## Bash tools
 
