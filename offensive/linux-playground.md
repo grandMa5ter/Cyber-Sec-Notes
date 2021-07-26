@@ -1,4 +1,118 @@
-# Linux Playground
+# Linux Playground 
+
+<!-- TOC -->
+
+ - [Linux Playground](#linux-playground)
+
+  - [Basics](#basics)
+
+    - [Linux Root Directory Structure](#linux-root-directory-structure)
+    - [Linux list command](#linux-list-command)
+    - [Linux ownership breakdown of files](#linux-ownership-breakdown-of-files)
+    - [The system](#the-system)
+    - [The Processes](#the-processes)
+    - [Work with files](#work-with-files)
+    - [Using Internet (CMD)](#using-internet-cmd)
+    - [Comand Line Ninja: Navigation](#comand-line-ninja-navigation)
+    - [Command Line Ninja: Deletion](#command-line-ninja-deletion)
+    - [Wild Cards](#wild-cards)
+    - [Trick and Treats - Useful](#trick-and-treats---useful)
+
+  - [Streams, Pips and Redirections](#streams-pips-and-redirections)
+
+    - [Anatomy of a redirection using streams](#anatomy-of-a-redirection-using-streams)
+    - [Terminal I/O Streams and Redirections](#terminal-io-streams-and-redirections)
+    - [The pipe](#the-pipe)
+
+      - [Demystifying and debugging piped commands](#demystifying-and-debugging-piped-commands)
+      - [More Examples](#more-examples)
+
+    - [Commands that only accept literal args](#commands-that-only-accept-literal-args)
+    - [xargs: When pipe is not enough!](#xargs-when-pipe-is-not-enough)
+    - [GNU Parallel](#gnu-parallel)
+
+  - [Classic tools: find, grep, awk, sed](#classic-tools-find-grep-awk-sed)
+
+    - [find](#find)
+
+      - [Features of find](#features-of-find)
+      - [Examples of find](#examples-of-find)
+
+    - [grep](#grep)
+    - [cut](#cut)
+
+      - [Anatomy of grep](#anatomy-of-grep)
+      - [Useful grep options](#useful-grep-options)
+      - [Regular expressions](#regular-expressions)
+      - [Extended regular expressions](#extended-regular-expressions)
+      - [grep examples](#grep-examples)
+      - [awk: Extract and manipulate Data](#awk-extract-and-manipulate-data)
+      - [Anatomy of awk program](#anatomy-of-awk-program)
+      - [/patterns/, conditions and actions](#patterns-conditions-and-actions)
+      - [Useful awk one-liners](#useful-awk-one-liners)
+
+    - [sed](#sed)
+
+      - [Anatomy of awk program](#anatomy-of-awk-program-1)
+      - [sed Options](#sed-options)
+      - [Usefull examples of sed](#usefull-examples-of-sed)
+
+  - [SSH Config and Tunneling](#ssh-config-and-tunneling)
+
+    - [ssh config (~/.ssh/config)](#ssh-config-sshconfig)
+    - [Benefits of ssh config](#benefits-of-ssh-config)
+    - [Port forward over SSH Tunnel](#port-forward-over-ssh-tunnel)
+
+      - [SSH Tunneling Example](#ssh-tunneling-example)
+      - [Incremental Remote Copy with rsync](#incremental-remote-copy-with-rsync)
+
+  - [Secure Communication with GnuPG](#secure-communication-with-gnupg)
+
+    - [GNU Privacy Guard Basics](#gnu-privacy-guard-basics)
+    - [Create a new keypair](#create-a-new-keypair)
+    - [Key Exchange and Verification](#key-exchange-and-verification)
+    - [Encrypting and Decrypting Documents](#encrypting-and-decrypting-documents)
+    - [Authenticate Docs with Digital Signatures](#authenticate-docs-with-digital-signatures)
+
+  - [Managing Services](#managing-services)
+
+    - [Generic Services](#generic-services)
+
+      - [SSH Service](#ssh-service)
+
+  - [Bash tools](#bash-tools)
+
+    - [Bash Shell Basics](#bash-shell-basics)
+    - [Aliases and Functions](#aliases-and-functions)
+
+      - [Examples of useful aliases](#examples-of-useful-aliases)
+      - [Examples of useful Functions](#examples-of-useful-functions)
+
+    - [Variables and Command Substitution](#variables-and-command-substitution)
+    - [Conditionals](#conditionals)
+
+      - [Conditionals summary](#conditionals-summary)
+      - [loops](#loops)
+
+  - [Program Development Tools](#program-development-tools)
+
+    - [Programming Language Platforms](#programming-language-platforms)
+    - [Elements of C Program Development](#elements-of-c-program-development)
+    - [The "make" build system](#the-make-build-system)
+    - [Anatomy of Make files](#anatomy-of-make-files)
+    - [How the make command works](#how-the-make-command-works)
+
+  - [Miscellaneous Utilities](#miscellaneous-utilities)
+
+    - [Get things done at specific times with "at"](#get-things-done-at-specific-times-with-at)
+    - [Get things done periodically with cron](#get-things-done-periodically-with-cron)
+    - [Anatomy of Cron](#anatomy-of-cron)
+    - [math](#math)
+    - [Python utilities](#python-utilities)
+
+  - [Random Stuff](#random-stuff)
+
+<!-- /TOC -->
 
 ## Basics
 
@@ -65,6 +179,18 @@ Typical Command line anatomy: ![Alt text](/Offensive%20Course%20Path/pics/comman
   - `comm` _sorted_ files line by line
   - `diff` differences line by line -- used most frequently, rich options set, see man
 
+- `which` command
+
+  - It searches through the directories defined in the `$PATH`
+  - If a match is found, `which` returns its full paths `which sbd`
+
+- `locate` command
+
+  - quickest way to find location of directories or files
+  - it searches a built-in database called `locate.db`
+  - This databse is automatically updated by cron scheduler
+  - Manual update of this db: `sudo updatedb`
+
 ### Using Internet (CMD)
 
 - curl is commonly used to download from the web:<br>
@@ -107,6 +233,7 @@ Wild cards are characters that expand at runtime:
 
 ### Trick and Treats - Useful
 
+- `!<num>` executes the line number from history (i.e. `!2` executes second line in history)
 - `!!` repeats the last command
 - `!$` change command, keep last argument:<br>
   `cat states.txt #file too long to fit screen` `less !$ #reopen it with less`
@@ -126,7 +253,7 @@ Wild cards are characters that expand at runtime:
 
 - `cd #change to homedir`
 
-- `ctrl-r #recall from history`
+- `ctrl-r #recall from history` type a letter while holding the ctl+r and it searches history for that command.
 
 - `ctrl-d #logout from terminal`
 
@@ -315,6 +442,16 @@ It searches for patterns in text. Extremely powerful and useful. **grep** origin
   - look for a process in a list of processes
   - spot check a large number of files for occurrence of a pattern
   - exclude some text from a large body of text
+
+### cut
+
+The **cut** command is simple, but quite handy. It is used to extract a section of text from a line and output it to the standard output.
+
+- Common switches:
+
+  - `-f` for the field number we are cutting
+  - `-d` for the field delimiter<br>
+    `cut -d ":" -f 1 /etc/passwd`
 
 #### Anatomy of grep
 
@@ -595,6 +732,40 @@ A tool for secure communication. We cover:
 
 - A signed document can be verified and decrypted like so:<br>
   `gpg --ouput doc.pdf --decrypt doc.signed` Must have owner's public key
+
+## Managing Services
+
+### Generic Services
+
+To see a table of all available services within linux enviornment, run **systemctl** with the **list-unitfiles** option:<br>
+`systemctl list-unit-files`
+
+#### SSH Service
+
+The Secure SHell service is most commonly used to remotely access a computer, using a secure, encrypted protocol.
+
+- It is a TCP-based and listens by default on port 22.
+- To start the SSH service, we run **systemctl** with the **start** option followed by the service name<br>
+  `sudo systemctl start ssh`<br>
+
+- Verify via: `sudo ss -antlp | grep sshd`
+
+- Enabling the service by default: `sudo systemctl enable ssh`<br>
+  **Services can be enabled or disabled by default via `systemctl`**<br>
+
+  #### HTTP Service
+
+  The Apache HTTP service is often used for hosting a site, or providing a platform for downloading files to a machine.
+
+- The HTTP service is TCP-based
+
+- listens by default on port 80
+
+- To start the service we run **systemctl** with the **apache2** option: `sudo systemctl start apache2`<br>
+
+- Verify via: `sudo ss -antlp | grep apache`
+
+- Enabling the service by default: `sudo systemctl enable apache2`<br>
 
 ## Bash tools
 
