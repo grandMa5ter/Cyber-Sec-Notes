@@ -1,4 +1,4 @@
-Notice, a lot of the text below and lots of other stuff is not the work of myself. It is a mixture of a lot of resources that I have gathered from lots of places. Too many to @ or mentioned. But if I see you, prod me and I buy you a beer. :) 
+Notice, a lot of the text below and lots of other stuff is not the work of myself. It is a mixture of a lot of resources that I have gathered from lots of places. Too many to @ or mentioned. But if I see you, prod me and I buy you a beer. :)
 
 <!-- TOC -->
 
@@ -32,7 +32,7 @@ Notice, a lot of the text below and lots of other stuff is not the work of mysel
 
   - [WebDAV](#webdav)
 
-- [Port 21 - FTP](#port-21---ftp) 
+- [Port 21 - FTP](#port-21---ftp)
 
 <!-- /TOC -->
 
@@ -55,7 +55,7 @@ Notice, a lot of the text below and lots of other stuff is not the work of mysel
     whatweb $URL
   ```
 
-- Using AutoRecon to run the scan(too much comprehensive): `autorecon -cs 2 --single-target --heartbeat 120 -v 10.10.10.229`
+- Using AutoRecon to run the scan(too much comprehensive): `autorecon -cs 2 --single-target --heartbeat 120 -v $IP`
 
 - Never forget to scan **Subdomains**: `wfuzz -c -f sub-domains.txt -w /usr/share/seclists/Discovery/DNS/subdomains-top1million-20000.txt -u "http://$IP/" -H "Host:FUZZ.<host>.htb/thm" --hl xxx`
 

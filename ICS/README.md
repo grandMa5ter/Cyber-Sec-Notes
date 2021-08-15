@@ -6,8 +6,9 @@ This are and folder is all about ICS stuff and things that I gather along the wa
 
 ## Reconnescenace
 Looking for carrying out recon on the machines and find stuff that might be useful.
-- [Recon](/offensive/README.md)
-
+- [Recon and Scan the target](/offensive/initial_access.md)
+- [Dealing with ICS Ports](#network-discovery)
+- [Captured Some Wireshar, Now what?](#wireshark-searches-for-ics)
 
 ## Living of the Land
 Sometimes you are doing an engagement and going into workstation or server and you have no tools or codes to actually give you access. [Living of the land](/ICS/lol.md) will give you some ideas where to start and binaries to use.
@@ -21,7 +22,7 @@ If we know that our bridge ethernet `eth0` is connected to internet, we don't wa
 - or when we want to remove that Ip address
   `sudo ip addr del 192.168.0.2/24 dev eth1`
 
-### Network Discovery:
+## Network Discovery:
 1 - Start the wireshark and let it run in the background
 2 - To understand the network and devices connected to it, we can run the command: `sudo arp-scan -I eth1 192.168.0.0/24`
   - Let's clean the output: `sudo arp-scan -I eth1 192.168.0.0/24 2>/dev/null | grep 192\\.168`
