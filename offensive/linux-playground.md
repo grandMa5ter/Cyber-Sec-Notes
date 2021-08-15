@@ -1,4 +1,4 @@
-# Linux Playground 
+# Linux Playground
 
 <!-- TOC -->
 
@@ -119,19 +119,19 @@
 ### Linux Root Directory Structure
 
 Below is a snapshot of linux directory structure which I found really useful at times.<br>
-![Alt text](/Offensive%20Course%20Path/pics/linux.png?raw=true "LinuxTree")
+![Alt text](/offensive/pics/linux.png?raw=true "LinuxTree")
 
 ### Linux list command
 
 Below is a description of fields when we run the command `ls -l` or `ls -la`<br>
-![Alt text](/Offensive%20Course%20Path/pics/linux%202.png?raw=true "Linuxlsfields")
+![Alt text](/offensive/pics/linux%202.png?raw=true "Linuxlsfields")
 
 ### Linux ownership breakdown of files
 
 Below is a high level overview of file ownership and translation of them.<br>
-![Alt text](/Offensive%20Course%20Path/pics/linux%203.png?raw=true "Linuxdirectoryfields")
+![Alt text](/offensive/pics/linux%203.png?raw=true "Linuxdirectoryfields")
 
-Typical Command line anatomy: ![Alt text](/Offensive%20Course%20Path/pics/command_anatomy.png?raw=true "Linuxanatomy")
+Typical Command line anatomy: ![Alt text](/offensive/pics/command_anatomy.png?raw=true "Linuxanatomy")
 
 ### The system
 
@@ -151,6 +151,7 @@ Typical Command line anatomy: ![Alt text](/Offensive%20Course%20Path/pics/comman
 
   - Process differs in implementation (POSIX, GNU and BSD)
   - Determined by style of options: POSIX (-), GNU (--), BSD (no dash) before options
+  - `ps -ef` switch `-ef` where **e** select all processes and **f** display full format listing (UID, PID, PPID,etc)
 
 - `top`, `htop`, `atom` will Display processes
 
@@ -191,6 +192,12 @@ Typical Command line anatomy: ![Alt text](/Offensive%20Course%20Path/pics/comman
   - This databse is automatically updated by cron scheduler
   - Manual update of this db: `sudo updatedb`
 
+- `watch` command
+
+  - Run a designated command at regular intervals.
+  - By default, it runs every 2 seconds.
+  - `-n X` option runs every **X** number of seconds
+
 ### Using Internet (CMD)
 
 - curl is commonly used to download from the web:<br>
@@ -209,13 +216,13 @@ Typical Command line anatomy: ![Alt text](/Offensive%20Course%20Path/pics/comman
 
 MAC users: terminal pref > profile > keyboard settings > Use option as meta key
 
-![Alt text](/Offensive%20Course%20Path/pics/cmd_ninja_nav.png?raw=true "LinuxCmdNavigation")<br>
+![Alt text](/offensive/pics/cmd_ninja_nav.png?raw=true "LinuxCmdNavigation")<br>
 `**ctrl-]<char> moves cursor to 1st occurrence of <char> to right</char></char>**`<br>
 `**ctrl-alt-]<char> moves cursor to 1st occurrence of <char> to left</char></char>**`
 
 ### Command Line Ninja: Deletion
 
-![Alt text](/Offensive%20Course%20Path/pics/cmd_ninja_del.png?raw=true "LinuxCmdDeletion")<br>
+![Alt text](/offensive/pics/cmd_ninja_del.png?raw=true "LinuxCmdDeletion")<br>
 **use ctrl-y to paste back the deleted**
 
 ### Wild Cards
@@ -261,7 +268,7 @@ Wild cards are characters that expand at runtime:
 
 ### Anatomy of a redirection using streams
 
-![Alt text](/Offensive%20Course%20Path/pics/anatom_redirect.png?raw=true "AnatomyOfRedirection")<br>
+![Alt text](/offensive/pics/anatom_redirect.png?raw=true "AnatomyOfRedirection")<br>
 
 ### Terminal I/O Streams and Redirections
 
@@ -401,7 +408,7 @@ Most commands receive input from stdin (so, pipe) and file, eg.
 
 search files based on a certain criteria
 
-![Alt text](/Offensive%20Course%20Path/pics/find_criteria.png?raw=true "searchForAFile")<br>
+![Alt text](/offensive/pics/find_criteria.png?raw=true "searchForAFile")<br>
 
 #### Features of find
 
@@ -455,7 +462,7 @@ The **cut** command is simple, but quite handy. It is used to extract a section 
 
 #### Anatomy of grep
 
-![Alt text](/Offensive%20Course%20Path/pics/grep_anatomy.png?raw=true "grepAnatomy")<br>
+![Alt text](/offensive/pics/grep_anatomy.png?raw=true "grepAnatomy")<br>
 
 #### Useful grep options
 
@@ -523,7 +530,7 @@ A programmable filter that reads and processes input line by line. It has rich b
 
 #### Anatomy of awk program
 
-![Alt text](/Offensive%20Course%20Path/pics/awk_anatomy.png?raw=true "awkAnatomy")<br>
+![Alt text](/offensive/pics/awk_anatomy.png?raw=true "awkAnatomy")<br>
 where **awk program** is:
 
 ```
@@ -582,7 +589,7 @@ At least one of the **BEGIN, /pattern/ or condition, {}, END** section needed
 
 #### Anatomy of awk program
 
-![Alt text](/Offensive%20Course%20Path/pics/sed_anatomy.png?raw=true "sedAnatomy")<br>
+![Alt text](/offensive/pics/sed_anatomy.png?raw=true "sedAnatomy")<br>
 
 #### sed Options
 
@@ -659,7 +666,7 @@ Makes ssh commands easier to remember in case of multiple hosts
 
 ### Port forward over SSH Tunnel
 
-![Alt text](/Offensive%20Course%20Path/pics/ssh_portForward.png?raw=true "sshPortForward")<br>
+![Alt text](/offensive/pics/ssh_portForward.png?raw=true "sshPortForward")<br>
 
 #### SSH Tunneling Example
 
@@ -932,7 +939,7 @@ if-then-else construct to branch similar to programming languages
 
 ### Anatomy of Make files
 
-![Alt text](/Offensive%20Course%20Path/pics/makeFile_anatomy.png?raw=true "makeFileAnatomy")<br>
+![Alt text](/offensive/pics/makeFile_anatomy.png?raw=true "makeFileAnatomy")<br>
 
 ### How the make command works
 
@@ -982,7 +989,7 @@ For instance, in the Makefile shown in above section, `make` will run commands f
 
 ### Anatomy of Cron
 
-![Alt text](/Offensive%20Course%20Path/pics/cron_anatomy.png?raw=true "cronAnatomy")<br>
+![Alt text](/offensive/pics/cron_anatomy.png?raw=true "cronAnatomy")<br>
 **Run the find command on June 30 of every year at 6:15 PM no matter what day of week it is.**
 
 ### math

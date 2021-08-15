@@ -2,7 +2,7 @@
 
 Just a small note takin page that keep adding to it. For shits and giggles later:
 
-# OSCP and Offensive Pathway
+# The Begining Pathway
 
 If new to Kali Environment go to first step to setup the environment and move from there.
 
@@ -12,30 +12,41 @@ Second is to look at **My Linux Playground** and find out if you know all the go
 
 - [Linux Playground](/offensive/linux-playground.md)
 
-Then, if you are ready, you can go to the following locations to find what you are looking for:
+# Offensive
+There are some [high level usual stuff](/offensive/README.md) that I use on the main page of Offensive. Then, if you are ready for offense, you can go to the following locations to find what you are looking for:
 
 - [Initial Access or Foothold](/offensive/initial_access.md)
 - [Linux Enumeration](/offensive/enumeration-linux.md)
 - [Windows Enumeration](/offensive/enumeration-windows.md)
 - [Web Application Enumeration](/offensive/enumeration-webApp.md)
+- [SQLMAP](/offensive/SQLMap.md)
 
-There are some [high level usual stuff](/offensive/README.md) that I use on the main page of Offensive path as well.
-
-# Blue Teaming and Defensive Pathway
-
+# Defensive
 Coming Soon....
 
-# Exploit Development:
+# Industrial Control Material
+This folder is dedicated to the tools and codes and methods I usually use for ICS and things that are solely related to ICS stuff. Have a that in mind sometimes it leverages off the back of existing Offensive TTPs that mentioned within **Offensive** folder.
+- [Industrial Controls System](/ICS/README.md)
 
+## Topics of Interest:
+
+### Exploit Development
 If you have come across something and you would like to develop an exploit for it, or fuzz it to see if something comes out of it maybe give this page a try. It might have some useful stuff in there.
-
 - [Generic Exploit Development](/offensive/exploit_development.md)
 
-# Reverse Engineering:
-
+### Reverse Engineering:
 For reverse engineering I haven't added a lot of stuff yet. I'm just going through couple of courses and learning here and there from whatever I can.
-
 - [Setting up the environment](/Reverse%20Engineering/README.md)
+
+## Tools and Cheat Sheets Use Often
+- [Python Code Blocks Used for Quick Commands](/random_tools/python_codeblocks.md)
+- [Hashcat Cheat Sheet](/random_tools/hashcat_cheatsheet.md)
+- [Tshark cheat Sheet commands](/random_tools/tshark.md)
+- [Meterpreter Interaction Help and Usefull Explaination](/random_tools/Meterpreter.md)
+- [Working with Regular Expression](/random_tools/Regular%20Expression.md)
+- [Spawn a Shell](/random_tools/Spawn_a_shell.md)
+- [MSFvenom One liners any one?](/random_tools/MSFvenom%20Oneliners.md)
+- [Some generic Methology of pen testing with links](/random_tools/Methodology-Generic.md)
 
 # Random Notes
 

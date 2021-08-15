@@ -1,7 +1,5 @@
 # OSCP Notes
 
-Before I forget things and get amnesia, at least I have a copy here. And remember not all these notes are mine and I have gathered them here because I was wandering around and reading things. **Ofcourse I haven't done this. All credit would go @TjNull for his updated blog and thorough analysis.** 
-
 <!-- TOC -->
 
  - [OSCP Notes](#oscp-notes)
@@ -13,21 +11,15 @@ Before I forget things and get amnesia, at least I have a copy here. And remembe
 
   - [Using AutoRecon](#using-autorecon)
   - [Usefull Stuff during CTFs:](#usefull-stuff-during-ctfs)
-  - [Exploit Dev Stuff](#exploit-dev-stuff) 
+  - [Exploit Dev Stuff](#exploit-dev-stuff)
 
 <!-- /TOC -->
 
- OSCP Preparation Boxes is in the [excel files](/offensive/NetSecFocus%20Trophy%20Room.xlsx)
-
-Also for enumeration of CTF boxes, you can refer to:
-
-- [Initial Access or Foothold](/offensive/initial_access.md)
-- [Linux](/offensive/enumeration-linux.md)
-- [Windows](/offensive/enumeration-windows.md)
-
-Also refer to [Linux Playground](/offensive/linux-playground.md) for all linux interesting commands and operations.
-
-If you get into exploit development during a CTF, maybe [Generic Exploit Development](/offensive/exploit_development.md) can be some help.
+# Training path to jedi nighthood
+Before I forget things and get amnesia, at least I have a copy here. And remember not all these notes are mine and I have gathered them here because I was wandering around and reading things.
+**Ofcourse I haven't done this. All credit would go @TjNull for his updated blog and thorough analysis.**
+  -OSCP Preparation Boxes is in the [excel files](/offensive/files/NetSecFocus%20Trophy%20Room.xlsx)
+If you need to play around with linux, [Linux Playground](/offensive/linux-playground.md) for all linux interesting commands and operations.
 
 ## Dorks that would aid enumeration and exploitation
 
@@ -97,6 +89,11 @@ Simple example: `autorecon $IP`
   Then you can the notes inside the folders: `cat ~/results/$IP/report/notes.txt` Full **nmap** report: `cat ~/results/192.168.126.132/scans/_full_tcp_nmap.txt`
 
 10. It also runs the Enum4Linux scan upon detecting the operating system like Linux. The result for this scan is located at the following location: `results/<targetname>/scans/enum4linux.txt`
+
+### Autorecon Version 2
+
+Autorecon v2 allows you to develop plugins for scanning. [There is a python file](/offensive/files/port_scan.py) which is a sample code block for autoreconn scan plugins. Or if you fancy to go deeper and add your own services scan, then [this python file](/offensive/files/service_scan.py) gives you a bare metal code to create your own service scan module.
+Then afterwards we should be able to run that with `python3 autorecon.py --plugins-dir $plugindirectory`
 
 ## Usefull Stuff during CTFs:
 

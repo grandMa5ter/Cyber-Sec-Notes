@@ -5,8 +5,8 @@ This are and folder is all about ICS stuff and things that I gather along the wa
 
 
 ## Reconnescenace
-Looking for carrying out recon on the machines and fine stuff that might be useful.
-- [Recon](/ICS/reconn.md)
+Looking for carrying out recon on the machines and find stuff that might be useful.
+- [Recon](/offensive/README.md)
 
 
 ## Living of the Land
@@ -39,5 +39,5 @@ There are some samples [here in the link](https://github.com/ControlThings-io/ct
 - Tshark modbus: `tchark -Y 'modbus' -r plant1.pcap`
 - Grab queires to understand server (dst) and clients (src) and sort them uniquly:
   `tshark -Y 'modbus && tcp.dstport == 502' -Tfields -e ip.src -e ip.dst -r plant1.pcap | sort -u`
-- Or if you want to include vendor information  
+- Or if you want to include vendor information
   `tshark -Y 'modbus && tcp.dstport == 502' -Tfields -e ip.src -e eth.src_resolved -e ip.dst -e eth.dst_resolved -r plant1.pcap`

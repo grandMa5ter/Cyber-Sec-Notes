@@ -1,4 +1,5 @@
 # Web App-Directory Busting
+**This is thanks to @S1REN generic guidance and also notes. So, not mine and I copied it.**
 
 **[Nikto]**<br>
 `nikto --host $URL -C all`
