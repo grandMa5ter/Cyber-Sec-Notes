@@ -110,12 +110,8 @@ sqlmap -u "http://10.10.10.10/profile.php" --data="name=1234567890*" --method="P
 ## Create a custom SQLMap tamper file
 I ran into a scenario today where I wanted to test a SQL create new user page for a SQL injection.
 Tampers can be easily edited and replaced here:
-```
-cd/usr/share/sqlmap/tamper
-```
-```
-sudo cp lowercase.py increment.py
-```
+`cd /usr/share/sqlmap/tamper`
+`sudo cp lowercase.py increment.py`
 
 
 ```
