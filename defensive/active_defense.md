@@ -1,8 +1,9 @@
-Mitre Shield Website: https://shield.mitre.org/matrix/
+Mitre Shield Website: <https://shield.mitre.org/matrix/>
 
 # Encryption is the last stage of Ransomware
 
 Before that:
+
 - Establish a C2 Channel for remote control
 - Attempt to persist incase access is lost
 - Scan the environment to understand and find targets
