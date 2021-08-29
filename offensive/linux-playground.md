@@ -1,11 +1,32 @@
 # Linux Playground
 
 <!-- TOC -->
+- [Linux Playground](#linux-playground)
+- [Basics](#basics)
+  - [Linux Root Directory Structure](#linux-root-directory-structure)
+  - [Linux list command](#linux-list-command)
+  - [Linux ownership breakdown of files](#linux-ownership-breakdown-of-files)
+  - [The system](#the-system)
+  - [The Processes](#the-processes)
+  - [Work with files](#work-with-files)
+  - [Using Internet (CMD)](#using-internet-cmd)
+  - [Comand Line Ninja: Navigation](#comand-line-ninja-navigation)
+  - [Command Line Ninja: Deletion](#command-line-ninja-deletion)
+  - [Wild Cards](#wild-cards)
+  - [Trick and Treats - Useful](#trick-and-treats---useful)
 
- - [Linux Playground](#linux-playground)
+- [Streams, Pips and Redirections](#streams-pips-and-redirections)
 
+  - [Anatomy of a redirection using streams](#anatomy-of-a-redirection-using-streams)
+  - [Terminal I/O Streams and Redirections](#terminal-io-streams-and-redirections)
+  - [The pipe](#the-pipe)
+    - [Demystifying and debugging piped commands](#demystifying-and-debugging-piped-commands)
+    - [More Examples](#more-examples)
+  - [Commands that only accept literal args](#commands-that-only-accept-literal-args)
+  - [xargs: When pipe is not enough!](#xargs-when-pipe-is-not-enough)
+  - [GNU Parallel](#gnu-parallel)
+- [Linux Playground](#linux-playground)
   - [Basics](#basics)
-
     - [Linux Root Directory Structure](#linux-root-directory-structure)
     - [Linux list command](#linux-list-command)
     - [Linux ownership breakdown of files](#linux-ownership-breakdown-of-files)
@@ -17,30 +38,21 @@
     - [Command Line Ninja: Deletion](#command-line-ninja-deletion)
     - [Wild Cards](#wild-cards)
     - [Trick and Treats - Useful](#trick-and-treats---useful)
-
   - [Streams, Pips and Redirections](#streams-pips-and-redirections)
-
     - [Anatomy of a redirection using streams](#anatomy-of-a-redirection-using-streams)
     - [Terminal I/O Streams and Redirections](#terminal-io-streams-and-redirections)
     - [The pipe](#the-pipe)
-
       - [Demystifying and debugging piped commands](#demystifying-and-debugging-piped-commands)
       - [More Examples](#more-examples)
-
     - [Commands that only accept literal args](#commands-that-only-accept-literal-args)
-    - [xargs: When pipe is not enough!](#xargs-when-pipe-is-not-enough)
+    - [xargs: When pipe is not enough](#xargs-when-pipe-is-not-enough)
     - [GNU Parallel](#gnu-parallel)
-
   - [Classic tools: find, grep, awk, sed](#classic-tools-find-grep-awk-sed)
-
     - [find](#find)
-
       - [Features of find](#features-of-find)
       - [Examples of find](#examples-of-find)
-
     - [grep](#grep)
     - [cut](#cut)
-
       - [Anatomy of grep](#anatomy-of-grep)
       - [Useful grep options](#useful-grep-options)
       - [Regular expressions](#regular-expressions)
@@ -50,85 +62,65 @@
       - [Anatomy of awk program](#anatomy-of-awk-program)
       - [/patterns/, conditions and actions](#patterns-conditions-and-actions)
       - [Useful awk one-liners](#useful-awk-one-liners)
-
     - [sed](#sed)
-
-      - [Anatomy of awk program](#anatomy-of-awk-program-1)
+      - [Anatomy of sed program](#anatomy-of-sed-program)
       - [sed Options](#sed-options)
       - [Usefull examples of sed](#usefull-examples-of-sed)
-
   - [SSH Config and Tunneling](#ssh-config-and-tunneling)
-
     - [ssh config (~/.ssh/config)](#ssh-config-sshconfig)
     - [Benefits of ssh config](#benefits-of-ssh-config)
     - [Port forward over SSH Tunnel](#port-forward-over-ssh-tunnel)
-
       - [SSH Tunneling Example](#ssh-tunneling-example)
       - [Incremental Remote Copy with rsync](#incremental-remote-copy-with-rsync)
-
   - [Secure Communication with GnuPG](#secure-communication-with-gnupg)
-
     - [GNU Privacy Guard Basics](#gnu-privacy-guard-basics)
     - [Create a new keypair](#create-a-new-keypair)
     - [Key Exchange and Verification](#key-exchange-and-verification)
     - [Encrypting and Decrypting Documents](#encrypting-and-decrypting-documents)
     - [Authenticate Docs with Digital Signatures](#authenticate-docs-with-digital-signatures)
-
   - [Managing Services](#managing-services)
-
     - [Generic Services](#generic-services)
-
       - [SSH Service](#ssh-service)
-
+      - [HTTP Service](#http-service)
   - [Bash tools](#bash-tools)
-
     - [Bash Shell Basics](#bash-shell-basics)
     - [Aliases and Functions](#aliases-and-functions)
-
       - [Examples of useful aliases](#examples-of-useful-aliases)
       - [Examples of useful Functions](#examples-of-useful-functions)
-
     - [Variables and Command Substitution](#variables-and-command-substitution)
     - [Conditionals](#conditionals)
-
       - [Conditionals summary](#conditionals-summary)
       - [loops](#loops)
-
   - [Program Development Tools](#program-development-tools)
-
     - [Programming Language Platforms](#programming-language-platforms)
     - [Elements of C Program Development](#elements-of-c-program-development)
     - [The "make" build system](#the-make-build-system)
     - [Anatomy of Make files](#anatomy-of-make-files)
     - [How the make command works](#how-the-make-command-works)
-
   - [Miscellaneous Utilities](#miscellaneous-utilities)
-
     - [Get things done at specific times with "at"](#get-things-done-at-specific-times-with-at)
     - [Get things done periodically with cron](#get-things-done-periodically-with-cron)
     - [Anatomy of Cron](#anatomy-of-cron)
     - [math](#math)
     - [Python utilities](#python-utilities)
-
   - [Random Stuff](#random-stuff)
-
 <!-- /TOC -->
 
 ## Basics
 
 ### Linux Root Directory Structure
 
-Below is a snapshot of linux directory structure which I found really useful at times.<br>
+Below is a snapshot of linux directory structure which I found really useful at times.
 ![Alt text](/offensive/pics/linux.png?raw=true "LinuxTree")
 
 ### Linux list command
 
-Below is a description of fields when we run the command `ls -l` or `ls -la`<br>
+Below is a description of fields when we run the command `ls -l` or `ls -la`
 ![Alt text](/offensive/pics/linux%202.png?raw=true "Linuxlsfields")
 
 ### Linux ownership breakdown of files
 
-Below is a high level overview of file ownership and translation of them.<br>
+Below is a high level overview of file ownership and translation of them.
 ![Alt text](/offensive/pics/linux%203.png?raw=true "Linuxdirectoryfields")
 
 Typical Command line anatomy: ![Alt text](/offensive/pics/command_anatomy.png?raw=true "Linuxanatomy")
@@ -200,10 +192,10 @@ Typical Command line anatomy: ![Alt text](/offensive/pics/command_anatomy.png?ra
 
 ### Using Internet (CMD)
 
-- curl is commonly used to download from the web:<br>
+- curl is commonly used to download from the web:
   `curl -O http://www.gutenberg.org/files/4300/4300-0.txt curl ifconfig.me #quickly find my IP`
-- wget is similar:<br>
-  `wget http://www.gutenberg.org/files/4300/4300-0.txt`<br>
+- wget is similar:
+  `wget http://www.gutenberg.org/files/4300/4300-0.txt`
   `wget https://kubernetespodcast.com/episodes/KPfGep{001..062}.mp3`
 - lynx can be a useful text-based browser:
 
@@ -216,42 +208,42 @@ Typical Command line anatomy: ![Alt text](/offensive/pics/command_anatomy.png?ra
 
 MAC users: terminal pref > profile > keyboard settings > Use option as meta key
 
-![Alt text](/offensive/pics/cmd_ninja_nav.png?raw=true "LinuxCmdNavigation")<br>
-`**ctrl-]<char> moves cursor to 1st occurrence of <char> to right</char></char>**`<br>
+![Alt text](/offensive/pics/cmd_ninja_nav.png?raw=true "LinuxCmdNavigation")
+`**ctrl-]<char> moves cursor to 1st occurrence of <char> to right</char></char>**`
 `**ctrl-alt-]<char> moves cursor to 1st occurrence of <char> to left</char></char>**`
 
 ### Command Line Ninja: Deletion
 
-![Alt text](/offensive/pics/cmd_ninja_del.png?raw=true "LinuxCmdDeletion")<br>
+![Alt text](/offensive/pics/cmd_ninja_del.png?raw=true "LinuxCmdDeletion")
 **use ctrl-y to paste back the deleted**
 
 ### Wild Cards
 
 Wild cards are characters that expand at runtime:
 
-- `*` expands to any number of characters:<br>
+- `*` expands to any number of characters:
   `ls -lh /etc/*.conf #all items with .conf extension`
-- `?` expands to one character:<br>
+- `?` expands to one character:
   `ls -ld ? ?? ??? #list items 1,2 or 3 chars long`
-- Negation (!)<br>
+- Negation (!)
   `ls -ld [!0-9]* #items that don't start with a number`
-- Escaping and quoting<br>
+- Escaping and quoting
   `\` for escaping a wildcard - - > prevent expansion `'` for quoting a wildcard - - > prevent expansion
 
 ### Trick and Treats - Useful
 
 - `!<num>` executes the line number from history (i.e. `!2` executes second line in history)
 - `!!` repeats the last command
-- `!$` change command, keep last argument:<br>
+- `!$` change command, keep last argument:
   `cat states.txt #file too long to fit screen` `less !$ #reopen it with less`
-- `!*` change command, keep all arguments:<br>
+- `!*` change command, keep all arguments:
   `head states.txt | grep '^Al' #should be tail` `tail !* #no need to type the rest of the command`
 - `alt-. #paste last argument of previous command`
 - `alt-<n>-alt-. #paste nth argument of previous command`
 
 - `>x.txt #create an empty file / "zero" a large file`
 
-- `lsof -P -i -n #apps using internet`<br>
+- `lsof -P -i -n #apps using internet`
   tag & later search hard-to-remember command from history
 
 - `ctrl-l #clear terminal`
@@ -268,7 +260,7 @@ Wild cards are characters that expand at runtime:
 
 ### Anatomy of a redirection using streams
 
-![Alt text](/offensive/pics/anatom_redirect.png?raw=true "AnatomyOfRedirection")<br>
+![Alt text](/offensive/pics/anatom_redirect.png?raw=true "AnatomyOfRedirection")
 
 ### Terminal I/O Streams and Redirections
 
@@ -294,24 +286,24 @@ Wild cards are characters that expand at runtime:
 
 - `&` is used to **"write into"** a stream, eg. `&1` to write into stdout
 
-- Send stdout and stderr to same file:<br>
-  `pip install rtv > stdouterr.txt 2>&1`<br>
+- Send stdout and stderr to same file:
+  `pip install rtv > stdouterr.txt 2>&1`
   `ac -pd &> stdouterr.txt #short form (bash v4+)`
 
-- Disregard both stdout and stderr:<br>
+- Disregard both stdout and stderr:
   `wget imgs.xkcd.com/comics/command_line_fu.png &> /dev/null #/dev/null is a "null" file to discard streams`
 
-- Read from stdin as output of a command diff<br>
+- Read from stdin as output of a command diff
   `<(ls dirA) <(ls dirB)`
 
-- Append stdout to a log file:<br>
+- Append stdout to a log file:
   `sudo yum -y update >> yum_update.log`
 
 ### The pipe
 
 A pipe is a Linux concept that automates redirecting the output of one command as input to a next command. Use of pipe leads to powerful combinations of independent commands. eg.:
 
-```
+```shell
   find .| less #read long list of files page wise
   head prose.txt | grep -i 'little'
   echo $PATH | tr ':' '\n' #translate : to newline
@@ -324,7 +316,7 @@ A pipe is a Linux concept that automates redirecting the output of one command a
 
 `free -m|grep Mem:|awk '{print $4}'` is equivalent to running the following 4 commands:
 
-```
+```shell
 free -m > tmp1.txt`
 grep Mem: tmp1.txt > tmp2.txt
 awk '{print $4}' tmp2.txt
@@ -335,7 +327,7 @@ Reducing the piped stages is often efficient and easier to debug. For instance, 
 
 #### More Examples
 
-```
+```shell
 #get pdf of a man page
 man -t diff | ps2pdf - diffhelp.pdf
 
@@ -368,7 +360,7 @@ Most commands receive input from stdin (so, pipe) and file, eg.
 
 - `cp`, `touch`, `rm`, `chmod` are other examples
 
-### xargs: When pipe is not enough!
+### xargs: When pipe is not enough
 
 - Some commands do not read from standard input, pipe or file; they need arguments
 - Additionally, some systems limit on number of arguments on command line
@@ -393,13 +385,13 @@ Most commands receive input from stdin (so, pipe) and file, eg.
 - Configurable number of parallel jobs
 - Well suited to run simple commands or scripts on compute nodes to leverage multicore architectures
 - May need to install as not available by default: (<http://www.gnu.org/software/parallel>)
-- Find all html files and move them to a directory<br>
+- Find all html files and move them to a directory
   `find . -name '*.html' | parallel mv {} web/`
-- Delete pict0000.jpg to pict9999.jpg files (16 parallel jobs)<br>
+- Delete pict0000.jpg to pict9999.jpg files (16 parallel jobs)
   `seq -w 0 9999 | parallel -j 16 rm pict{}.jpg`
-- Create thumbnails for all picture files (imagemagick software needed)<br>
+- Create thumbnails for all picture files (imagemagick software needed)
   `ls *.jpg | parallel convert -geometry 120 {} thumb_{}`
-- Download from a list of urls and report failed downloads<br>
+- Download from a list of urls and report failed downloads
   `cat urlfile | parallel "wget {} 2>errors.txt"`
 
 ## Classic tools: find, grep, awk, sed
@@ -408,7 +400,7 @@ Most commands receive input from stdin (so, pipe) and file, eg.
 
 search files based on a certain criteria
 
-![Alt text](/offensive/pics/find_criteria.png?raw=true "searchForAFile")<br>
+![Alt text](/offensive/pics/find_criteria.png?raw=true "searchForAFile")
 
 #### Features of find
 
@@ -430,7 +422,7 @@ search files based on a certain criteria
 
 #### Examples of find
 
-```
+```shell
 find . -type f -iname "*.txt" #txt files in curdir
 find . -maxdepth 1 #equivalent to ls
 find ./somedir -type f -size +512M -print #all files larger than 512M in ./somedir
@@ -457,12 +449,12 @@ The **cut** command is simple, but quite handy. It is used to extract a section 
 - Common switches:
 
   - `-f` for the field number we are cutting
-  - `-d` for the field delimiter<br>
+  - `-d` for the field delimiter
     `cut -d ":" -f 1 /etc/passwd`
 
 #### Anatomy of grep
 
-![Alt text](/offensive/pics/grep_anatomy.png?raw=true "grepAnatomy")<br>
+![Alt text](/offensive/pics/grep_anatomy.png?raw=true "grepAnatomy")
 
 #### Useful grep options
 
@@ -479,7 +471,7 @@ The **cut** command is simple, but quite handy. It is used to extract a section 
 
 A regular expression (regex) is an expression that matches a pattern. Consider below example patterns:
 
-```
+```shell
 ^Linux is fun.$
 ^So is music.$
 ^Traffic not so much.$
@@ -491,25 +483,25 @@ A regular expression (regex) is an expression that matches a pattern. Consider b
 - regex: _^so_ Results to: **one match="So is music."**
 - regex: _ic.$_ Results to: **one match="So is music."**
 
-- `.` is a Special character; will match any character (except newline) eg.<br>
+- `.` is a Special character; will match any character (except newline) eg.
   `b.t` will match bat, bbt, b%t, and so on but **not** bt, xbt etc.
 
-- Character class: one of the items in the [] will match, sequences allowed:<br>
-  `'[Cc]at'` will match Cat and cat<br>
+- Character class: one of the items in the [] will match, sequences allowed:
+  `'[Cc]at'` will match Cat and cat
   `'[f-h]ate'` will match fate, gate, hate
 
-- `^` within a character class means negation eg.<br>
+- `^` within a character class means negation eg.
   `'b[^eo]at'` will match brat but not boat or beat
 
 #### Extended regular expressions
 
 This is enabled by using **egrep** or **grep -E**.
 
-- `'*'` matches zero or more, `'+'` matches one or more, `'?'` matches zero or one occurrence of the previous character eg.<br>
+- `'*'` matches zero or more, `'+'` matches one or more, `'?'` matches zero or one occurrence of the previous character eg.
   `[hc]+at` will match **hat, cat, hhat, chat, cchhat**, etc.
-- `'|'` is a delimiter for multiple patterns, '(' and ')' let you group patterns eg.<br>
+- `'|'` is a delimiter for multiple patterns, '(' and ')' let you group patterns eg.
   `([cC]at)|([dD]og)` will match **cat, Cat, dog and Dog**
-- `{}` may be used to specify a repetition range eg.<br>
+- `{}` may be used to specify a repetition range eg.
   `ba{2,4}t` will match **baat, baaat and baaaat** but not **bat**
 
 #### grep examples
@@ -530,10 +522,10 @@ A programmable filter that reads and processes input line by line. It has rich b
 
 #### Anatomy of awk program
 
-![Alt text](/offensive/pics/awk_anatomy.png?raw=true "awkAnatomy")<br>
+![Alt text](/offensive/pics/awk_anatomy.png?raw=true "awkAnatomy")
 where **awk program** is:
 
-```
+```shell
 BEGIN {actions} #run one time before input data is read
 
 /pattern/ or condition {actions} #run actions for each line of
@@ -548,18 +540,18 @@ At least one of the **BEGIN, /pattern/ or condition, {}, END** section needed
 
 - A pattern is a regex that matches (or not) to an input line, eg.
 
-  ```
+  ```shell
   /New/ # any line that contains
   ‘New’ /^[0-9]+ / # beginning with numbers
   /(POST|PUT|DELETE)/ # has specific words
   ```
 
-- A condition is a boolean expression that selects input lines, eg.<br>
+- A condition is a boolean expression that selects input lines, eg.
   `$3>1 # lines for which third field is greater than 1`
 
 - An action is a sequence of ops, eg.
 
-  ```
+  ```shell
   {print $1, $NF} #print first and last field/col
   {print log($2)} #get log of second field/col
   {for (i=1;i<x;i++){sum += $3}} #get cumulative sum
@@ -569,7 +561,7 @@ At least one of the **BEGIN, /pattern/ or condition, {}, END** section needed
 
 #### Useful awk one-liners
 
-```
+```shell
   awk '{print $1}' states.txt
   awk '/New/{print $1}' states.txt
   awk NF > 0 prose.txt # print lines that has at least one field (skip blank lines)
@@ -587,9 +579,9 @@ At least one of the **BEGIN, /pattern/ or condition, {}, END** section needed
 - The original input file is unchanged (sed is also a filter), results are sent to standard output
 - It is most frequently used for **text substitution**.
 
-#### Anatomy of awk program
+#### Anatomy of sed program
 
-![Alt text](/offensive/pics/sed_anatomy.png?raw=true "sedAnatomy")<br>
+![Alt text](/offensive/pics/sed_anatomy.png?raw=true "sedAnatomy")
 
 #### sed Options
 
@@ -618,7 +610,7 @@ At least one of the **BEGIN, /pattern/ or condition, {}, END** section needed
 
 #### Usefull examples of sed
 
-```
+```shell
   sed -n '5,9p' states.txt #print lines 5 through 9
   sed '20,30s|New|Old|1' states.txt #affects 1st occurrence in ln20-30
   sed -n '$p' states.txt #print last line
@@ -632,7 +624,7 @@ At least one of the **BEGIN, /pattern/ or condition, {}, END** section needed
 
 ### ssh config (~/.ssh/config)
 
-```
+```shell
 Host login1
   hostname login1.ornl.gov
   User km0
@@ -655,7 +647,7 @@ Makes ssh commands easier to remember in case of multiple hosts
 - And much more, see man 5 ssh_config
 - For example: **ssh summit** is sufficient to connect to **summit.olcf.ornl.gov** with all the properties mentioned in the section:
 
-  ```
+  ```shell
   Host summit
    Port 22
    hostname summit.olcf.ornl.gov
@@ -666,7 +658,7 @@ Makes ssh commands easier to remember in case of multiple hosts
 
 ### Port forward over SSH Tunnel
 
-![Alt text](/offensive/pics/ssh_portForward.png?raw=true "sshPortForward")<br>
+![Alt text](/offensive/pics/ssh_portForward.png?raw=true "sshPortForward")
 
 #### SSH Tunneling Example
 
@@ -680,10 +672,10 @@ Run an HTTP server on remote node and browse through local web browser:
 
 Synchronise data between local and remote storage
 
-- Rich set of options (see man) `-a` and `-v` most commonly used<br>
-  `rsync -av localdir/ remotehost:~/remotedir`<br>
+- Rich set of options (see man) `-a` and `-v` most commonly used
+  `rsync -av localdir/ remotehost:~/remotedir`
   trailing `/` imp in localdir, else, the dir will be synced not contents
-- A useful rsync hack: **fast deletion of a large directory**<br>
+- A useful rsync hack: **fast deletion of a large directory**
   `mkdir empty && rsync -a --delete empty/ large_dir/`
 
 ## Secure Communication with GnuPG
@@ -704,7 +696,7 @@ A tool for secure communication. We cover:
   - Provide name and email as ID, choose hard-to-guess passphrase
   - Keypair artefacts in `$HOME/.gnupg` dir
 
-- Create a revocation certificate<br>
+- Create a revocation certificate
   `gpg --output revoke.asc --gen-revoke <ID>`
 
   - use the email as ID
@@ -712,39 +704,39 @@ A tool for secure communication. We cover:
 
 ### Key Exchange and Verification
 
-- Export a public key<br>
+- Export a public key
   `gpg --output pub.gpg --export <ID> #binary gpg --armor --export <ID> > pubtxt.gpg #ascii`
-- Import a public key<br>
+- Import a public key
   `gpg --import billpub.gpg #import Bill's pubkey`
-- Verify and sign an imported key<br>
-  `gpg --edit-key b@ms.us #out key info & prompt`<br>
-  `command> fpr #fingerprint, verify over phone`<br>
+- Verify and sign an imported key
+  `gpg --edit-key b@ms.us #out key info & prompt`
+  `command> fpr #fingerprint, verify over phone`
   `command> sign #verify at prompt and done!`
 
 ### Encrypting and Decrypting Documents
 
-- Encrypt a document for Bill using Bill's public key<br>
+- Encrypt a document for Bill using Bill's public key
   `gpg --output doc_pdf.gpg --encrypt --recipient b@ms.us doc.pdf #must have Bill's public key`
-- Bill Decrypts the document (must have his private key & passphrase)<br>
+- Bill Decrypts the document (must have his private key & passphrase)
   `gpg --output doc.pdf --decrypt doc_pdf.gpg`
-- Documents may be encrypted without key, just with passphrase<br>
+- Documents may be encrypted without key, just with passphrase
   `gpg --output doc_pdf.gpg --symmetric doc.pdf Enter passphrase:`
 
 ### Authenticate Docs with Digital Signatures
 
-- Digitally signed document ensure they are authentic & untempered<br>
-  `gpg --output doc.signed --sign doc.pdf`<br>
-  `Enter Passphrase:`<br>
+- Digitally signed document ensure they are authentic & untempered
+  `gpg --output doc.signed --sign doc.pdf`
+  `Enter Passphrase:`
   Must have the private key to sign
 
-- A signed document can be verified and decrypted like so:<br>
+- A signed document can be verified and decrypted like so:
   `gpg --ouput doc.pdf --decrypt doc.signed` Must have owner's public key
 
 ## Managing Services
 
 ### Generic Services
 
-To see a table of all available services within linux enviornment, run **systemctl** with the **list-unitfiles** option:<br>
+To see a table of all available services within linux enviornment, run **systemctl** with the **list-unitfiles** option:
 `systemctl list-unit-files`
 
 #### SSH Service
@@ -752,15 +744,15 @@ To see a table of all available services within linux enviornment, run **systemc
 The Secure SHell service is most commonly used to remotely access a computer, using a secure, encrypted protocol.
 
 - It is a TCP-based and listens by default on port 22.
-- To start the SSH service, we run **systemctl** with the **start** option followed by the service name<br>
-  `sudo systemctl start ssh`<br>
+- To start the SSH service, we run **systemctl** with the **start** option followed by the service name
+  `sudo systemctl start ssh`
 
 - Verify via: `sudo ss -antlp | grep sshd`
 
-- Enabling the service by default: `sudo systemctl enable ssh`<br>
-  **Services can be enabled or disabled by default via `systemctl`**<br>
+- Enabling the service by default: `sudo systemctl enable ssh`
+  **Services can be enabled or disabled by default via `systemctl`**
 
-  #### HTTP Service
+#### HTTP Service
 
   The Apache HTTP service is often used for hosting a site, or providing a platform for downloading files to a machine.
 
@@ -768,11 +760,11 @@ The Secure SHell service is most commonly used to remotely access a computer, us
 
 - listens by default on port 80
 
-- To start the service we run **systemctl** with the **apache2** option: `sudo systemctl start apache2`<br>
+- To start the service we run **systemctl** with the **apache2** option: `sudo systemctl start apache2`
 
 - Verify via: `sudo ss -antlp | grep apache`
 
-- Enabling the service by default: `sudo systemctl enable apache2`<br>
+- Enabling the service by default: `sudo systemctl enable apache2`
 
 ## Bash tools
 
@@ -802,7 +794,7 @@ Aliases are short and convenient names for long commands
 
 #### Examples of useful aliases
 
-```
+```shell
   alias s=ssh
   alias c=clear
   alias cx='chmod +x'
@@ -816,7 +808,7 @@ Aliases are short and convenient names for long commands
 
 #### Examples of useful Functions
 
-```
+```shell
 mcd() { mkdir -p $1; cd $1 }
 cdl() { cd $1; ls}
 backup() { cp "$1"{,.bak};} #test first
@@ -832,7 +824,7 @@ rtfm() { help $@ || man $@ || $BROWSER "http://www.google.com/search?q=$@"; }
 - Variables are implicitly typed
 - May be a literal value or command substitute `vname=value #assign value to variable vname` `$vname #read value of variable vname`
 
-  ```
+  ```shell
   #!/bin/sh
   msg="Hello World"
   echo $msg
@@ -840,7 +832,7 @@ rtfm() { help $@ || man $@ || $BROWSER "http://www.google.com/search?q=$@"; }
 
 - Command substitution:
 
-  ```
+  ```shell
   curdir=$(pwd)
   curdate=$(date +%F)
   echo "There are $(ls -1 | wc -l) items in the current dir"
@@ -854,14 +846,14 @@ if-then-else construct to branch similar to programming languages
 
   - `test` and `[ ... ]`
 
-    ```
+    ```shell
     $ if test $USER = 'km0'; then echo 'I know you';
     else echo 'Who are you'; fi
     ```
 
     vs.
 
-    ```
+    ```shell
     $ if [ -f /etc/yum.conf ]; then echo 'yum.conf
     exists'; else echo 'file do not exist'; fi
     ```
@@ -891,12 +883,12 @@ if-then-else construct to branch similar to programming languages
 
 #### loops
 
-- Basic structure (three forms):<br>
-  `for i in {0..9}; do echo $i; done`<br>
-  `for ((i=0;i<10;i++)){ echo $i;} #C-like`<br>
+- Basic structure (three forms):
+  `for i in {0..9}; do echo $i; done`
+  `for ((i=0;i<10;i++)){ echo $i;} #C-like`
   `for var in list; do command; done #'python-like'`
-- often used with command substitution:<br>
-  `for i in $(\ls -1 *.txt); do echo "$i"; done`<br>
+- often used with command substitution:
+  `for i in $(\ls -1 *.txt); do echo "$i"; done`
   `for i in $(get_files.sh); do upload.sh "$i"; done`
 
 ## Program Development Tools
@@ -927,7 +919,7 @@ if-then-else construct to branch similar to programming languages
   - assemble (-c ) - translate the assembly code to object code (.o)
   - link (-l ) - link to the standard libraries to produce executable
 
-- By default gcc combines the above stages producing the executable<br>
+- By default gcc combines the above stages producing the executable
   `gcc hello.c #creates a.out; no .o or .s files`
 
 ### The "make" build system
@@ -939,14 +931,14 @@ if-then-else construct to branch similar to programming languages
 
 ### Anatomy of Make files
 
-![Alt text](/offensive/pics/makeFile_anatomy.png?raw=true "makeFileAnatomy")<br>
+![Alt text](/offensive/pics/makeFile_anatomy.png?raw=true "makeFileAnatomy")
 
 ### How the make command works
 
-The make command will read from the Makefile and run commands in order to build the ultimate target.<br>
+The make command will read from the Makefile and run commands in order to build the ultimate target.
 For instance, in the Makefile shown in above section, `make` will run commands for rule 2-4 followed by rule 1:
 
-```
+```shell
   gcc -c dep1.c #create dep1.o
   gcc -c dep2.c #create dep2.o
   gcc -c main.c #create main.o
@@ -959,7 +951,7 @@ For instance, in the Makefile shown in above section, `make` will run commands f
 
 - **at** will execute the desired command on a specific day and time
 
-  ```
+  ```shell
   at 17:00 #press enter
   at> log_days_activities.sh #smtimes no at> prompt
   [ctrl-d]
@@ -969,7 +961,7 @@ For instance, in the Makefile shown in above section, `make` will run commands f
 
 - offers terms such as _hours, days_ to be used with the + symbol
 
-  ```
+  ```shell
   at noon
   at now + 1 year
   at 3:08pm + 1 day
@@ -980,68 +972,68 @@ For instance, in the Makefile shown in above section, `make` will run commands f
 
 - cron will execute the desired command periodically
 - A crontab file controls and specifies what to execute when
-- An entry may be created in any file and added to system with the crontab command like so:<br>
-  `echo '15 18 30 6 * find /home -mtime +30 -print' > f00 crontab f00 #add above to system crontab`<br>
-  `crontab -l #list crontab entries`<br>
+- An entry may be created in any file and added to system with the crontab command like so:
+  `echo '15 18 30 6 * find /home -mtime +30 -print' > f00 crontab f00 #add above to system crontab`
+  `crontab -l #list crontab entries`
   `crontab -r #remove crontab entries`
 - Output of the cron'd command will be in mail (alternatively it may be redirected to a file with '>')
 - What does the entries in a crontab mean though? (see next)
 
 ### Anatomy of Cron
 
-![Alt text](/offensive/pics/cron_anatomy.png?raw=true "cronAnatomy")<br>
+![Alt text](/offensive/pics/cron_anatomy.png?raw=true "cronAnatomy")
 **Run the find command on June 30 of every year at 6:15 PM no matter what day of week it is.**
 
 ### math
 
 - Generate random number using shuf (may need to install) `shuf -i 1-100 -n 1`
-- Format numbers with numfmt<br>
-  `numfmt --to=si 1000 1.0K`<br>
+- Format numbers with numfmt
+  `numfmt --to=si 1000 1.0K`
   `numfmt --from=iec 1K 1024`
-- bc is a versatile calculator<br>
-  `bc <<< 48+36 #no space on either side of +`<br>
-  `echo 'obase=16; ibase=10; 56'|bc #decimal to hex`<br>
+- bc is a versatile calculator
+  `bc <<< 48+36 #no space on either side of +`
+  `echo 'obase=16; ibase=10; 56'|bc #decimal to hex`
   `echo 'scale=8; 60/7.02' |bc #arbitrary precision`
 
 ### Python utilities
 
-- Stand up a simple web server in under a minute with Python<br>
+- Stand up a simple web server in under a minute with Python
   `python3 -m http.server 35000`
-- Pretty print a json file<br>
+- Pretty print a json file
   `python3 -m json.tool afile.json`
-- Run small python programs<br>
+- Run small python programs
   `python -c "import math; print(str(math.pi)[:7])"`
-- Do arithmetic `python -c "print(6*6+20)"`<br>
+- Do arithmetic `python -c "print(6*6+20)"`
   `python -c "fctrl=lambda x:0_*x or x_fctrl(x-1); print(fctrl(6))" #compute factorial`
 
 ## Random Stuff
 
-- Run a command for specified time using timeout:<br>
+- Run a command for specified time using timeout:
   `timeout 2 ping google.com`
-- watch a changing variable<br>
+- watch a changing variable
   `watch -n 5 free -m`
-- Say yes and save time<br>
-  `yes | pip install pkg --upgrade`<br>
+- Say yes and save time
+  `yes | pip install pkg --upgrade`
   `yes "this is a test" | head -50 > testfile.txt # create file with arbitrary no. of lines`
-- Create pdf from text using vim :<br>
+- Create pdf from text using vim :
   `vim states.txt -c "hardcopy > states.ps | q" && ps2pdf states.ps #convert ps to pdf`
-- Run a command as a different Linux group<br>
+- Run a command as a different Linux group
   `sg grpgit -c 'git push'`
 
-- Display a csv in columnar/tabular format<br>
+- Display a csv in columnar/tabular format
   `column -t -s , filename.csv`
 
-- Have difficulty sending binary executables over emails?<br>
-  `xxd f.exe f.hex #hexdump the exe, send over email`<br>
+- Have difficulty sending binary executables over emails?
+  `xxd f.exe f.hex #hexdump the exe, send over email`
   `xxd -r f.hex f.exe #receiver convert back to exe`
 
-- Generate password<br>
-  `head /dev/urandom | tr -dc A-Za-z0-9 | head -c 8`<br>
+- Generate password
+  `head /dev/urandom | tr -dc A-Za-z0-9 | head -c 8`
   `openssl rand 8 -base64 | cut -c1-8 #-base64 8 for some version`
 
 - pandoc to convert between md, tex, txt, html, docx, pdf, odt
 
-  ```
+  ```shell
   pandoc manual.md -o manual.pdf
   pandoc example.txt -o example.html
   pandoc -s example.txt -o example.docx
@@ -1049,9 +1041,9 @@ For instance, in the Makefile shown in above section, `make` will run commands f
 
 - Parse and read **xml** files with `xmllint`
 
-- Split a large file into small chunks (eg. to send as attachment in mail)<br>
-  `split -b 20M large.tgz parts_ #20MB chunks #send parts_* over mail`<br>
+- Split a large file into small chunks (eg. to send as attachment in mail)
+  `split -b 20M large.tgz parts_ #20MB chunks #send parts_* over mail`
   `cat parts_a* > large.tgz #at receiving end`
 
-_Some of Material Belongs to "Ketan M. (km0@ornl.gov)"_<br>
+_Some of Material Belongs to "Ketan M. (km0@ornl.gov)"_
 _Some of material I gathered I can't remember for where; If you it was you, let me know and I buy you a beer_
