@@ -1,6 +1,6 @@
 # Generic Setup
 
-## How to install python 2 on Kali 2020.x onwards:
+## How to install python 2 on Kali 2020.x onwards
 
 download the bloody get-pip.py from here:
 
@@ -78,12 +78,110 @@ rm ~/.zsh_history_bad
 **The following setups stuff for pipx and all the necessary things associated to "AutoRecon" tool.** This is what I have done on Kali 2020.x to get it working: Make sure to run usual `sudo apt-get update && upgrade -y` first.
 
 1 - Install the prerequisits of AutoRecon:
-  `sudo apt install seclists curl enum4linux ffuf gobuster nbtscan nikto nmap onesixtyone oscanner smbclient smbmap smtp-user-enum snmp sslscan sipvicious tnscmd10g whatweb wkhtmltopdf` 
+  `sudo apt install seclists curl enum4linux ffuf gobuster nbtscan nikto nmap onesixtyone oscanner smbclient smbmap smtp-user-enum snmp sslscan sipvicious tnscmd10g whatweb wkhtmltopdf`
 2 - Then you can move to installing pipx or you can use pip. Whatever you fancy:
 3 - Install the pipx first: `python3 -m pip install --user pipx`
-4 - Put this pipx into our bash rc path: `python3 -m pipx ensurepath` 
+4 - Put this pipx into our bash rc path: `python3 -m pipx ensurepath`
   Rest of steps is about making sure the autocomplete on pipx is up and running:
 5 - This is to add autocomplete to zsh and not bash: `autoload -U bashcompinit`
 6 - run: `bashcompinit`
 7 - And lastly run: `eval "$(register-python-argcomplete pipx)"`
 Then when all that is done. DO: `pipx install git+https://github.com/Tib3rius/AutoRecon.git`
+
+## Docker Images
+
+It is really nice to see some tools and OSes are being ported within docker space as a way of fast pulling up enviornments to do something quickly and trying small stuff then getting rid of it. Extremely powerfull things happening in docker space. So, Parrot OS has its own docker. I guess below is a quick guide on how to pull it down and run with quick short commands that should come handy:
+
+- Pulling it down from repository:
+  `docker pull parrotsec/security`
+  `docker pull parrotsec/core`
+
+- Running parrot in docker(I map my local /Users/kev to a folder called "HostFolder" in container):
+  `docker run --rm -it --network host -v $PWD:/HostFolder parrotsec/security`
+
+- or just run it with a name:
+  `docker run --name sec-1 -ti parrotsec/security`
+
+### Other commands
+
+- Stop the container:
+  `docker stop pcore-1`
+- Resume a previously-stopped container:
+  `docker start pcore-1`
+- Remove a container after use:
+  `docker rm pcore-1`
+- List all the instantiated containers:
+  `docker ps -a`  
+- Start a container and automatically remove it on exit:
+  `docker run --rm -ti parrotsec/core`
+- Open a port from the container to the host
+  `docker run --rm -p 8080:80 -ti parrotsec/core`
+- The docker system prune command removes all stopped containers, dangling images, and unused networks:
+
+  ```shell
+  docker container ls -a --filter status=exited --filter status=created #get a list of all non-running (stopped) containers that will be removed with docker container prune
+  docker container prune --filter "until=12h" # prune command allows you to remove containers based on a certain condition
+  docker system prune
+  docker system prune -a
+  docker system prune --volumes
+  ```
+
+- To remove one or more Docker containers, use the docker container rm command, followed by the IDs of the containers you want to remove:
+
+  ```shell
+  docker container ls -a
+  docker container rm cc3f2ff51cab cd20b396a061
+  docker rm $(docker ps -qa) #Remove all the containers
+  ```
+
+- To stop all running containers, enter the docker container stop command
+  `docker container stop $(docker container ls -aq)`
+- Listing all the docker images available on the system:
+
+  ```shell
+  docker image ls
+  docker image prune #can be used to remove dangled and unused images
+  docker image prune -a #can be used to remove all dangled and unused images
+  docker image prune -a --filter "until=12h" #remove images based on a particular condition with the –filter option.
+  ```
+
+### Docker on MacOS
+
+If you looking for installing docker on MacBook, I found below instruction is pretty straight forward and didn't need a lot of thinkering and was straigh forward:
+
+1 - First, You need install docker from brew with
+
+  ```zsh
+  brew update
+  brew install docker
+  ```
+
+2 - install virtualbox and docker-machine, because of the linux native environment on docker:
+
+  ```zsh
+  brew install docker-machine
+  brew install virtualbox # check your MacOS’ System Preference and verify if System software from developer “Oracle America, inc” was blocked from loading shows up. If you see it, hit the “Allow”-button and install it again
+  ```
+
+**Note: If above didn't work and still allowing the app didn't work like mine; do reset virtual box configuration in mac with sudo "/Library/Application Support/VirtualBox/LaunchDaemons/VirtualBoxStartup.sh" restart.**
+
+3 - Create an engine for docker by:
+  `docker-machine create --driver virtualbox default`
+
+4 - Run this: `docker-machine ls` and you should see something like:
+
+  ```shell
+  docker-machine ls
+  NAME      ACTIVE   DRIVER       STATE     URL                         SWARM   DOCKER      ERRORS
+  default   *        virtualbox   Running   tcp://192.168.99.100:2376           v19.03.12
+  ```
+
+This means the virtual environment in background is running for docker to work in MacOS.
+
+5 - finally, you need to run below command:
+  `docker-machine env default`
+
+6 - and the step 5 command tells you run below command:
+  `eval $(docker-machine env default)`
+
+**Check if everything works by `docker run hello-world` and should tell you all us okay**
