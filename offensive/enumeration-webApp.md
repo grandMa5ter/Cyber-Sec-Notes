@@ -22,7 +22,9 @@
 **-->** _Make sure any DNS name you find resolves to an in-scope address before you test it_.
 
 **BUST DIRECTORIES with DIRSEACH:**<br>
-`sudo python3 /opt/dirsearch/dirsearch.py -u <http://$IP/> -e php,html,jsp,aspx,js -x 400,401,403` Or you can do this: `sudo python3 /opt/dirsearch/dirsearch.py -u http://$IP:$Port -e php,html,jsp,aspx,js -x 400,401,403 -w /opt/SecLists/Discovery/Web-Content/directory-list-lowercase-2.3-medium.txt`
+`sudo python3 /opt/dirsearch/dirsearch.py -u <http://$IP/> -e php,html,jsp,aspx,js -x 400,401,403` 
+Or you can do this: 
+`sudo python3 /opt/dirsearch/dirsearch.py -u http://$IP:$Port -e php,html,jsp,aspx,js -x 400,401,403 -w /opt/SecLists/Discovery/Web-Content/directory-list-lowercase-2.3-medium.txt`
 
 **===========================================================================**
 
