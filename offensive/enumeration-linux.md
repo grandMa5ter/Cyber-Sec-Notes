@@ -1,6 +1,8 @@
+# Linux-Privilege-Escalation
 
 <!-- TOC -->
 - [Linux-Privilege-Escalation](#linux-privilege-escalation)
+  - [Fix the Shell](#fix-the-shell)
   - [Start with the basics](#start-with-the-basics)
   - [What can we EXECUTE?](#what-can-we-execute)
   - [What can we READ?](#what-can-we-read)
@@ -14,33 +16,40 @@
   - [Methodology - Linux Checklist](#methodology---linux-checklist)
   - [Following the path to Enumerating Linux](#following-the-path-to-enumerating-linux)
   - [References](#references)
-
 <!-- /TOC -->
-
-# Linux-Privilege-Escalation
 
 Tips and Tricks for Linux Priv Escalation
 
-Fix the Shell:
+## Fix the Shell
 
 ```shell
 python -c 'import pty; pty.spawn("/bin/bash")'
+
+### BELOW IS OPTIONAL; YOU CAN TRY THAT #######
+export PATH=/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin:/usr/games:/tmp
+export TERM=xterm-256color
+alias ll='ls -lsaht --color=auto'
+### Optional Stuff above #####
+
+# Then go for backgrounding the process with keyboard shortcut: 
 Ctrl-Z
 
 # In Kali Note the number of rows and cols in the current terminal window
 $ stty -a
 
 # Next we will enable raw echo so we can use TAB autocompletes
-$ stty raw -echo
-$ fg
+# stty raw -echo
+# fg
+stty raw -echo ; fg ; reset ; stty raw -echo ; fg ; reset
 
 # In reverse shell
-$ stty rows <num> columns <cols>
+#$ stty rows <num> columns <cols>
+stty columns 200 rows 200
 
 # Finally
-$ reset
-$ export SHELL=bash
-$ export TERM=xterm-256color
+#$ reset
+#$ export SHELL=bash
+#$ export TERM=xterm-256color
 ```
 
 ## Start with the basics
