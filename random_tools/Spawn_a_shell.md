@@ -2,7 +2,22 @@
 
 **Again this is thanks to @S1REN and her code. Buy a coffee or a beer for Cat Mama**
 
-`python -c 'import pty; pty.spawn("/bin/bash")'export PATH=/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin:/usr/games:/tmpexport TERM=xterm-256coloralias ll='ls -lsaht --color=auto* Grab a valid tty.* What OS are you on? Grab access to those binaries fast by exporting each environment variable. Debian/CentOS/FreeBSD* Want a color terminal to easily tell apart file permissions? Directories? Files?* Fastest way to list out the files in a directory, show size, show permissions, human readable.`
+```shell
+python -c 'import pty; pty.spawn("/bin/bash")'
+export PATH=/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin:/usr/games:/tmp
+export TERM=xterm-256color
+alias ll='ls -lsaht --color=auto'
+#Keyboard Shortcut: 
+Ctrl + Z (Background Process.)
+stty raw -echo ; fg ; reset ; stty raw -echo ; fg ; reset
+stty columns 200 rows 200
+#* Grab a valid tty.
+#* What OS are you on? 
+#Grab access to those binaries fast by exporting each environment variable. Debian/CentOS/FreeBSD* 
+#Want a color terminal to easily tell apart file permissions? 
+#Directories? Files?
+#* Fastest way to list out the files in a directory, show size, show permissions, human readable.
+```
 
 **Is this rbash** (*Restricted Bash*)**?** PT1
 $ vi
@@ -45,4 +60,16 @@ nmap --interactive
 nmap> !sh
 
 **Expect:**
-`expect -v  expect version 5.45.4  $ cat > /tmp/shell.sh <<EOF#!/usr/bin/expectspawn bashinteractEOF$ chmod u+x /tmp/shell.sh$ /tmp/shell.sh`
+
+```shell
+expect -v  
+    expect version 5.45.4  
+$ cat > /tmp/shell.sh <<EOF
+#!/usr/bin/expect
+spawn bash 
+interact
+EOF
+
+$ chmod u+x /tmp/shell.sh
+$ /tmp/shell.sh
+```
