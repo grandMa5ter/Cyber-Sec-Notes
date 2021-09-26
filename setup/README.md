@@ -35,6 +35,12 @@ Setup:
 
 - highlighting the syntax is found below: <https://github.com/zsh-users/zsh-syntax-highlighting>
 
+## Powershell/Commandline Windows up/down arrow doesn't work in Kali?
+
+- Download the rlwrap within the kali via: `sudo apt-get install rlwrap`
+- And then before going into the reverse shell execute `script reverse.log`
+- Then when spawning the reverse shell: `rlwrap nc -nvlp 9001`
+
 ## How to Create/Enable Shared Folders in Kali 2020.x
 
 1. VMware Workstation Player (VMWP) with Windows 10 Professional or whatever works as host

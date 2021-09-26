@@ -493,10 +493,17 @@ If you don't understand a command, run it here: [Explain Shell](https://explains
 
   ```shell
     smbclient -L $IP
+    smbclient -U '.' -L $IP #blind try
+    smbclient -U 'guest' -L $IP #guest try
+    smbclient -U '' -L $IP #empty user try
     smbclient //$IP/tmp
     smbclient \\\\$IP\\ipc$ -U $username
     smbclient //$IP/ipc$ -U $username
   ```
+
+- crackmapexec tool in impacket
+  
+  `crackmapexec smb $ip --shares`
 
 - rpcclient
 

