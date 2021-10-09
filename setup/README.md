@@ -162,6 +162,20 @@ It is really nice to see some tools and OSes are being ported within docker spac
   docker image prune -a --filter "until=12h" #remove images based on a particular condition with the –filter option.
   ```
 
+### Docker on Kali
+
+Remember that docker on kali is named=docker.io so for installing it:
+  `sudo apt-get install docker.io`
+
+- And then you need to start it:
+  `sudo systemctl enable docker --now`
+- You can now get started with using docker, with sudo. If you want to add yourself to the docker group to use docker without sudo, an additional step is needed:
+  `sudo usermod -aG docker $USER`
+- Other commands to understand and restart docker:
+  `sudo service docker status`
+
+  `sudo systemctl start docker`
+
 ### Docker on MacOS
 
 If you looking for installing docker on MacBook, I found below instruction is pretty straight forward and didn't need a lot of thinkering and was straigh forward:
@@ -202,3 +216,11 @@ This means the virtual environment in background is running for docker to work i
   `eval $(docker-machine env default)`
 
 **Check if everything works by `docker run hello-world` and should tell you all us okay**
+
+## Empire or any other tool with Docker
+
+If you ever needed to run Empire, you can always run it through docker. The steps are simply below or mentioned within [docker image of empire](https://hub.docker.com/r/empireproject/empire/dockerfile):
+
+1. `sudo docker create -v /opt/Empire --name data empireproject/empire`
+2. `sudo docker run -ti --volumes-from data empireproject/empire /bin/bash`
+3. Go to the empire folder and run `/setup/install.sh` to install empire properly and build all the requirements.

