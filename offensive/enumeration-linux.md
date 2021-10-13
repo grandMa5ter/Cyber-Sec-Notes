@@ -4,6 +4,7 @@
 - [Linux-Privilege-Escalation](#linux-privilege-escalation)
   - [Fix the Shell](#fix-the-shell)
   - [Start with the basics](#start-with-the-basics)
+  - [what is available as Disks?](#what-is-available-as-disks)
   - [What can we EXECUTE?](#what-can-we-execute)
   - [What can we READ?](#what-can-we-read)
   - [Where can we WRITE?](#where-can-we-write)
@@ -106,6 +107,22 @@ done
 
 We can also use pspy on linux to monitor the processes that are starting up and running: <https://github.com/DominicBreuker/pspy>
 Check the services that are listening: `bash ss -lnpt`
+
+## what is available as Disks?
+
+- The following command shows everything that is available as Disks.
+    `df -lh`
+    or
+    `mount`
+- If there are files deleted in disks, we can cat the actual device itself via:
+    `cat /dev/sdb/` for example or
+    `strings /dev/sdb/` to see the strings on device
+- Alternatively, we can grep the bytes of the device:
+    `xxd /dev/sdb | grep -v '0000'` hex editor and removing the 0000 out of grep
+- Another beautiful way to see/recover stuff off the disk:
+    `grep -a B2 A2 'of the USB/or anything we looking for' /dev/sdb`
+    or
+    `grep -a '[a-z0-9]\{32\}' /dev/sdb` only needed 32 characters because of the flag
 
 ## What can we EXECUTE?
 
