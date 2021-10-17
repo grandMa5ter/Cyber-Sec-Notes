@@ -224,3 +224,30 @@ If you ever needed to run Empire, you can always run it through docker. The step
 1. `sudo docker create -v /opt/Empire --name data empireproject/empire`
 2. `sudo docker run -ti --volumes-from data empireproject/empire /bin/bash`
 3. Go to the empire folder and run `/setup/install.sh` to install empire properly and build all the requirements.
+
+## Go Language on Kali
+
+1 - In order to use packages that utilise go lang we need to install go lang on our system:
+  `sudo apt-get install golang`
+2 - Then we need to add the go to our path variable: `export GOPATH=/root/go` but just make sure that that directory exists: `sudo mkdir /root/go`.
+3 - Also we need to create user local go directory for go as well with `mkdir /usr/local/go` and also create a path variable for it: `export GOROOT=/usr/local/go`
+4 - Then we only need to add all to kali path variable as well: `PATH=$PATH:$GOROOT/bin/:$GOPATH/bin`
+
+### Getting packages with go
+
+Now that you have go installed and setup, if you want to get a repository that is with go, all you have to do is pull down the git reporisotry:
+  `sudo git clone https://github.com/OJ/gobuster.git`
+and then run:
+  `sudo go run main.go`
+
+Somethimes go will tell you that it needs additional modules and their path as well. If that happens, you can get those modules via; this will always pull them down in your go path as well:
+  `go get github.com/satori/go.uuid`
+
+From here on, you can always do `sudo go run main.go` but sometimes, it is easier to compile it and the run it:
+  `sudo go build`
+and this would gives us a nice executable and you can run the binary: `gobuster`
+
+Interesting thing is gobuster can do **dir** as well as **dns**:
+  `gobuster dir -u 10.10.10.24 -w /usr/share/seclists/Discovery/Web-Content/directory-list-lowercase-2.3-medium.txt -x php -t 50`
+and
+  `gobuster dns -d google.com -w ~/wordlists/subdomains.txt`
