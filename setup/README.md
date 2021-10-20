@@ -71,8 +71,11 @@ Setup:
    sudo mount -t fuse.vmhgfs-fuse .host:/ /mnt/hgfs -o allow_other
    ```
 
-5. Make the file executable: `sudo chown root /etc/rc.local sudo chmod 755 /etc/rc.local` Test `ls -l /etc/rc.local` to see if it is `-rwxr-xr-x` and it should be right.
-6. Restart the VM, and check whether the test file also appears on the guest Credits of this goes to this dude (<https://unix.stackexchange.com/questions/594080/where-to-find-the-shared-folder-in-kali-linux>) here.
+5. Make the file executable:
+  `sudo chown root /etc/rc.local`
+  `sudo chmod 755 /etc/rc.local`
+6. Test `ls -l /etc/rc.local` to see if it is `-rwxr-xr-x` and it should be right.
+7. Restart the VM, and check whether the test file also appears on the guest Credits of this goes to this dude (<https://unix.stackexchange.com/questions/594080/where-to-find-the-shared-folder-in-kali-linux>) here.
 
 **MacOS Users** If you are in MacOS host and using fusion and Kali 2020.x, then should pay a visit to the kali documentation [here](https://www.kali.org/docs/virtualization/install-vmware-guest-tools/).
 
