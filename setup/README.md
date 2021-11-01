@@ -13,6 +13,8 @@ sudo pip install --upgrade setuptools
 sudo pip2 install #[py 2 package]
 ```
 
+- Also double check python3 pip install as well: `sudo apt install python3-pip`
+
 ## Setting up the terminator for Kali 2020.x onwards
 
 > sudo apt install terminator
@@ -73,11 +75,23 @@ Setup:
 
 5. Make the file executable:
   `sudo chown root /etc/rc.local`
+and
   `sudo chmod 755 /etc/rc.local`
 6. Test `ls -l /etc/rc.local` to see if it is `-rwxr-xr-x` and it should be right.
 7. Restart the VM, and check whether the test file also appears on the guest Credits of this goes to this dude (<https://unix.stackexchange.com/questions/594080/where-to-find-the-shared-folder-in-kali-linux>) here.
 
 **MacOS Users** If you are in MacOS host and using fusion and Kali 2020.x, then should pay a visit to the kali documentation [here](https://www.kali.org/docs/virtualization/install-vmware-guest-tools/).
+
+## Installing VSCoidum on Debian
+
+1 - Add the GPG key to repo so that updates with future update commands:
+  `wget -qO - https://gitlab.com/paulcarroty/vscodium-deb-rpm-repo/raw/master/pub.gpg | gpg --dearmor | sudo dd of=/usr/share/keyrings/vscodium-archive-keyring.gpg`
+
+2 - Add the repository to our repository list:
+  `echo 'deb [ signed-by=/usr/share/keyrings/vscodium-archive-keyring.gpg ] https://download.vscodium.com/debs vscodium main' | sudo tee /etc/apt/sources.list.d/vscodium.list`
+
+3 - And then do an update based on repositories and install:
+  `sudo apt update && sudo apt install codium`
 
 ## Curropt ZSH History files
 
@@ -92,6 +106,91 @@ strings -eS ~/.zsh_history_bad > ~/.zsh_history
 fc -R ~/.zsh_history
 rm ~/.zsh_history_bad
 ```
+
+## Customise ZSHRC to some coolish style
+
+1- Change the history size and set some operations:
+
+```shell
+# History configurations
+HISTFILE=~/.zsh_history
+HISTSIZE=10000
+SAVEHIST=10000
+setopt hist_expire_dups_first # delete duplicates first when HISTFILE size exceeds HISTSIZE
+setopt hist_ignore_dups       # ignore duplicated commands history list
+setopt hist_ignore_space      # ignore commands that start with space
+setopt hist_verify            # show command with history expansion to user before running it
+#setopt share_history         # share command history data
+setopt appendhistory
+```
+
+2 - Add the following to the bottom of your zshrc file:
+
+```shell
+#####################################################
+# Making Kali Command Prompts beautifull again! 
+# Stole all this from https://github.com/theGuildHall/pwnbox
+
+# Prompt
+if [[ $(/opt/vpnbash.sh) == *.10.* ]]; then PROMPT="%F{red}┌[%f%F{green}%D{$(/opt/vpnserver.sh)}%f%F{red}]─[%f%F{green}%D{$(/opt/vpnbash.sh)}%f%F{red}][%B%F{%(#.red.blue)}%n%(#.💀.㉿)%m%b%F{%(#.blue.red)}]─[%f%F{magenta}%d%f%F{red}]%f"$'\n'"%F{red}└╼%f%F{green}[%f%F{yellow}★%f]%f%F{yellow}$%f" ;else PROMPT="%F{red}┌[%B%F{%(#.red.blue)}%n%(#.💀.㉿)%m%b%F{%(#.blue.red)}]─[%f%F{magenta}%d%f%F{red}]%f"$'\n'"%F{red}└╼%f%F{green}[%f%F{yellow}★%f]%f%F{yellow}$%f" ;fi
+
+# Auto completion / suggestion
+# Mixing zsh-autocomplete and zsh-autosuggestions
+# Requires: zsh-autocomplete (custom packaging by Parrot Team)
+# Jobs: suggest files / foldername / histsory bellow the prompt
+# Requires: zsh-autosuggestions (packaging by Debian Team)
+# Jobs: Fish-like suggestion for command history
+source /usr/share/zsh-autosuggestions/zsh-autosuggestions.zsh
+#source /usr/share/zsh-autocomplete/zsh-autocomplete.plugin.zsh
+# Select all suggestion instead of top on result only
+zstyle ':autocomplete:tab:*' insert-unambiguous yes
+zstyle ':autocomplete:tab:*' widget-style menu-select
+zstyle ':autocomplete:*' min-input 2
+bindkey $key[Up] up-line-or-history
+bindkey $key[Down] down-line-or-history
+
+# Useful alias for benchmarking programs
+# require install package "time" sudo apt install time
+alias time="/usr/bin/time -f '\t%E real,\t%U user,\t%S sys,\t%K amem,\t%M mmem'"
+# Display last command interminal
+echo -en "\e]2;Kali Terminal\a"
+preexec () { print -Pn "\e]0;$1 - Kali Terminal\a" }
+```
+
+3 - Create a `vpnbash.sh` file under `/opt/vpnbash.sh` and put the following within it:
+
+```shell
+#!/bin/bash
+htbip=$(ip addr | grep tun0 | grep inet | grep 10. | tr -s " " | cut -d " " -f 3 | cut -d "/" -f 1)
+
+if [[ $htbip == *"10."* ]]
+then
+   echo "$htbip"
+else
+   echo ""
+fi
+```
+
+4 - Create a `vpnserver.sh` file under `/opt/vpnserver.sh` as well with the following content:
+
+```shell
+#!/bin/bash
+
+#cat /etc/openvpn/*.conf | grep "remote " | cut -d " " -f 2 | cut -d "." -f 1 | cut -d "-" -f 2-
+
+vpn=$(cat `systemctl status openvpn@* | grep "/usr/sbin/openvpn" | tr -s " " | cut -d " " -f 12` | grep "remote " | cut -d " " -f 2)
+
+if [[ $vpn == *"hackthebox"* ]]
+then
+    cat `systemctl status openvpn@* | grep "/usr/sbin/openvpn" | tr -s " " | cut -d " " -f 12` | grep "remote " | cut -d " " -f 2 | cut -d "." -f 1 | cut -d "-" -f 2-
+else
+    cat `systemctl status openvpn@* | grep "/usr/sbin/openvpn" | tr -s " " | cut -d " " -f 12` | grep "remote " | cut -d " " -f 2
+fi
+```
+
+5 - From now on, when you add open vpn files to your `/etc/openvpn/[your vpn file]` and connect to vpn they will be shown in your terminal:
+  `sudo cp [your VPN FILE].ovpn /etc/openvpn/`
+and `sudo mv /etc/openvpn/[your VPN file].ovpn /etc/openvpn/[your VPN file].conf` after that you can start your openvpn normally same as usual.
 
 ## AutoRecon
 
@@ -254,3 +353,17 @@ Interesting thing is gobuster can do **dir** as well as **dns**:
   `gobuster dir -u 10.10.10.24 -w /usr/share/seclists/Discovery/Web-Content/directory-list-lowercase-2.3-medium.txt -x php -t 50`
 and
   `gobuster dns -d google.com -w ~/wordlists/subdomains.txt`
+
+## Easy OpenVPN
+
+In order to connect to the lab environment when you boot up your HTB or THM pen testing boxes, do the following which is easier:
+
+1. Download your *.ovpn files and do copy them into openVPN directory `sudo mv ~/Download/<name_of_VPN_file>.ovpn /etc/openvpn/<name_of_VPN_file>.conf`
+2. Then create a*.conf file out of it as well: `sudo mv ~/Downloads/<name_of_VPN_file>.ovpn /etc/openvpn/<name_of_VPN_file>.conf`
+3. Start the vpn service with: `sudo service openvpn start`
+4. Stop the service naturally with: `sudo service openvpn stop`
+5. If by any chance, you have another VPN file that doesn't have autologin and needs a user/pass:
+   1. Put username/password in separate line in file(1st line username and 2nd line password) such as `sudo nano /etc/openvpn/auth.txt`
+   2. Then make it readonly: `sudo chmod 400 /etc/openvpn/auth.txt`
+6. Edit the config file such as `sudo nano /etc/openvpn/<name_of_VPN_file>.conf`; and go the line that has **auth-user-pass** to be **auth-user-pass /etc/openvpn/auth.txt** and save and exit.
+7. If by anychance you wanted to do some diagnostic of OpenVPN and look at log files go to: `sudo grep ovpn /var/log/syslog`
