@@ -82,6 +82,25 @@ and
 
 **MacOS Users** If you are in MacOS host and using fusion and Kali 2020.x, then should pay a visit to the kali documentation [here](https://www.kali.org/docs/virtualization/install-vmware-guest-tools/).
 
+### Clipboard and Shared folder Still Not Working
+
+You want to force a manual reinstall of open-vm-tools (as something has gone wrong):
+  `sudo apt update`
+and do a reinstall of vmware tools:
+  `sudo apt install -y --reinstall open-vm-tools-desktop fuse`
+and do a reboot of VM: `sudo reboot -f`
+
+You need to sometimes add Support for Shared Folders When Using OVT. Unfortunately, shared folders will not work out of the box, some additional scripts are needed. Those can be installed easily with `kali-tweaks`.
+
+In the Kali Tweaks menu, select _Virtualization_, then _Install additional packages and scripts for VMware_. Congratulations, you now have two additional tools in your toolbox!
+The first one is a little script to mount the VMware Shared Folders. Invoke it with:
+  `sudo mount-shared-folders`
+And with a bit of luck, checking /mnt/hgfs/ you should see your shared folders.
+The second script is a helper to restart the VM tools. Indeed, it’s not uncommon for OVT to stops functioning correctly (e.g. such as copy/paste between the host OS and guest VM stops working). In this case, running this script can help to fix the issues:
+  `sudo restart-vm-tools`
+  
+*This has worked in Kali 2020.x onwards and Parrot OS. Other Debian I haven't tried!*
+
 ## Installing VSCoidum on Debian
 
 1 - Add the GPG key to repo so that updates with future update commands:
@@ -132,7 +151,7 @@ setopt appendhistory
 # Stole all this from https://github.com/theGuildHall/pwnbox
 
 # Prompt
-if [[ $(/opt/vpnbash.sh) == *.10.* ]]; then PROMPT="%F{red}┌[%f%F{green}%D{$(/opt/vpnserver.sh)}%f%F{red}]─[%f%F{green}%D{$(/opt/vpnbash.sh)}%f%F{red}][%B%F{%(#.red.blue)}%n%(#.💀.㉿)%m%b%F{%(#.blue.red)}]─[%f%F{magenta}%d%f%F{red}]%f"$'\n'"%F{red}└╼%f%F{green}[%f%F{yellow}★%f]%f%F{yellow}$%f" ;else PROMPT="%F{red}┌[%B%F{%(#.red.blue)}%n%(#.💀.㉿)%m%b%F{%(#.blue.red)}]─[%f%F{magenta}%d%f%F{red}]%f"$'\n'"%F{red}└╼%f%F{green}[%f%F{yellow}★%f]%f%F{yellow}$%f" ;fi
+if [[ $(/opt/vpnbash.sh) == *.10.* ]]; then PROMPT="%F{red}┌[%f%F{green}%D{$(/opt/vpnserver.sh)}$(/opt/vpnbash.sh)%f%F{red}]─[%B%F{%(#.red.blue)}%n%(#.💀.㉿)%m%b%F{%(#.blue.red)}]─[%f%F{magenta}%d%f%F{red}]%f"$'\n'"%F{red}└╼%f%F{green}[%f%F{yellow}★%f]%f%F{yellow}$%f";else PROMPT="%F{red}┌[%B%F{%(#.red.blue)}%n%(#.💀.㉿)%m%b%F{%(#.blue.red)}]─[%f%F{magenta}%d%f%F{red}]%f"$'\n'"%F{red}└╼%f%F{green}[%f%F{yellow}★%f]%f%F{yellow}$%f";fi
 
 # Auto completion / suggestion
 # Mixing zsh-autocomplete and zsh-autosuggestions
@@ -159,38 +178,39 @@ preexec () { print -Pn "\e]0;$1 - Kali Terminal\a" }
 
 3 - Create a `vpnbash.sh` file under `/opt/vpnbash.sh` and put the following within it:
 
-```shell
-#!/bin/bash
-htbip=$(ip addr | grep tun0 | grep inet | grep 10. | tr -s " " | cut -d " " -f 3 | cut -d "/" -f 1)
+  ```shell
+  #!/bin/bash
+  htbip=$(ip addr | grep tun0 | grep inet | grep 10. | tr -s " " | cut -d " " -f 3 | cut -d "/" -f 1)
 
-if [[ $htbip == *"10."* ]]
-then
-   echo "$htbip"
-else
-   echo ""
-fi
-```
+  if [[ $htbip == *"10."* ]]
+  then
+    echo "-%B%F{%(#.red.blue)}$htbip%b%F{%(#.blue.green)}"
+  else
+    echo ""
+  fi
+  ```
 
 4 - Create a `vpnserver.sh` file under `/opt/vpnserver.sh` as well with the following content:
 
-```shell
-#!/bin/bash
+  ```shell
+  #!/bin/bash
 
-#cat /etc/openvpn/*.conf | grep "remote " | cut -d " " -f 2 | cut -d "." -f 1 | cut -d "-" -f 2-
+  #cat /etc/openvpn/*.conf | grep "remote " | cut -d " " -f 2 | cut -d "." -f 1 | cut -d "-" -f 2-
 
-vpn=$(cat `systemctl status openvpn@* | grep "/usr/sbin/openvpn" | tr -s " " | cut -d " " -f 12` | grep "remote " | cut -d " " -f 2)
+  vpn=$(cat `systemctl status openvpn@* | grep "/usr/sbin/openvpn" | tr -s " " | cut -d " " -f 12` | grep "remote " | cut -d " " -f 2)
 
-if [[ $vpn == *"hackthebox"* ]]
-then
-    cat `systemctl status openvpn@* | grep "/usr/sbin/openvpn" | tr -s " " | cut -d " " -f 12` | grep "remote " | cut -d " " -f 2 | cut -d "." -f 1 | cut -d "-" -f 2-
-else
-    cat `systemctl status openvpn@* | grep "/usr/sbin/openvpn" | tr -s " " | cut -d " " -f 12` | grep "remote " | cut -d " " -f 2
-fi
-```
+  if [[ $vpn == *"hackthebox"* ]]
+  then
+      cat `systemctl status openvpn@* | grep "/usr/sbin/openvpn" | tr -s " " | cut -d " " -f 12` | grep "remote " | cut -d " " -f 2 | cut -d "." -f 1 | cut -d "-" -f 2-
+  else
+      cat `systemctl status openvpn@* | grep "/usr/sbin/openvpn" | tr -s " " | cut -d " " -f 12` | grep "remote " | cut -d " " -f 2
+  fi
+  ```
 
 5 - From now on, when you add open vpn files to your `/etc/openvpn/[your vpn file]` and connect to vpn they will be shown in your terminal:
   `sudo cp [your VPN FILE].ovpn /etc/openvpn/`
-and `sudo mv /etc/openvpn/[your VPN file].ovpn /etc/openvpn/[your VPN file].conf` after that you can start your openvpn normally same as usual.
+and 
+  `sudo mv /etc/openvpn/[your VPN file].ovpn /etc/openvpn/[your VPN file].conf` after that you can start your openvpn normally same as usual.
 
 ## AutoRecon
 

