@@ -25,25 +25,19 @@ There are some [high level usual stuff](/Offensive/README.md) that I use on the 
 
 Coming Soon....
 
-## Industrial Control Material
+## Topics of Interest
+
+### Exploit Development & Reverese Engineering
+
+If you have come across something and you would like to develop an exploit for it, or fuzz it to see if something comes out of it maybe give this page a try. It might have some useful stuff in there. For reverse engineering I haven't added a lot of stuff yet. I'm just going through couple of courses and learning here and there from whatever I can.
+
+- [Generic Exploit Development](/ExploitDevelopment/README.md)
+
+### Industrial Control Material
 
 This folder is dedicated to the tools and codes and methods I usually use for ICS and things that are solely related to ICS stuff. Have a that in mind sometimes it leverages off the back of existing Offensive TTPs that mentioned within **Offensive** folder.
 
 - [Industrial Controls System](/ICS/README.md)
-
-## Topics of Interest
-
-### Exploit Development
-
-If you have come across something and you would like to develop an exploit for it, or fuzz it to see if something comes out of it maybe give this page a try. It might have some useful stuff in there.
-
-- [Generic Exploit Development](/ExploitDevelopment/README.md)
-
-### Reverse Engineering
-
-For reverse engineering I haven't added a lot of stuff yet. I'm just going through couple of courses and learning here and there from whatever I can.
-
-- [Setting up the environment](/Reverse%20Engineering/README.md)
 
 ## Tools and Cheat Sheets Use Often
 
