@@ -133,6 +133,12 @@ and
 
 **MacOS Users** If you are in MacOS host and using fusion and Kali 2020.x, then should pay a visit to the kali documentation [here](https://www.kali.org/docs/virtualization/install-vmware-guest-tools/).
 
+- In the Kali Tweaks menu, select Virtualization, then Install additional packages and scripts for VMware. Congratulations, you now have two additional tools in your toolbox!
+- Unfortunately, shared folders will not work out of the box, some additional scripts are needed. Those can be installed easily with kali-tweaks: `kali-tweaks`
+- In the Kali Tweaks menu, select Virtualization, then Install additional packages and scripts for VMware. Congratulations, you now have two additional tools in your toolbox!
+- little script to mount the VMware Shared Folders. Invoke it with: `sudo mount-shared-folders`
+- second script is a helper to restart the VM tools. Indeed, it’s not uncommon for OVT to stops functioning correctly (e.g. such as copy/paste between the host OS and guest VM stops working): sudo restart-vm-tools
+
 ### Clipboard and Shared folder Still Not Working
 
 You want to force a manual reinstall of open-vm-tools (as something has gone wrong):
