@@ -19,6 +19,17 @@ stty columns 200 rows 200
 #* Fastest way to list out the files in a directory, show size, show permissions, human readable.
 ```
 
+ - You need to do the command if python is available on the target system: `python -c 'import pty; pty.spawn("/bin/bash")'`
+   - If python is not available run the command: `/usr/bin/script -qc /bin/bash /dev/null`
+   - Then you can examine current terminal with `echo $TERM` which should give you `xterm-256color` or something like that.
+   - Then `stty -a` should give you size of TTY="rows 38;column 116". **have that in mind the command looks strange and you can't see it sometimes**
+   - Then you need to press **Ctrl+z=`^z`**
+   - If you are jail breaking from Normal Terminal In Kali, run the command:
+       `stty raw -echo; fg`
+       In reverse shell: `reset` & `export SHELL=bash` & `export TERM=<xterm256-color>` `stty rows $ROWS cols $COLS`
+   - If you are jail breaking from ZSH shell In Kali, run the command:
+       `stty raw -echo; fg` In reverse shell: `stty rows $ROWS cols $COLS` & `export TERM=xterm-256color` & `exec /bin/bash`
+
 **Is this rbash** (*Restricted Bash*)**?** PT1
 $ vi
 :set shell=/bin/sh
