@@ -41,3 +41,7 @@ hashcat -m 0 -w 3 -a 3 hashfile suffix?1?1?1 -i -1 --user ?l?d
 .\hashcat.exe -m 18200 -w 3 -a 0 ..\hash_files\cms_domain_user_hash.txt ..\hash_files\kev_created_12Char_wordlist.txt ..\hash_files\realhuman_phill.txt -O -r ..\hash_file\OneRuleToRuleThemAll.rule --user -o result.txt
 
 .\hashcat.exe -m 18200 -w 3 -a 0 ..\hash_files\cms_domain_user_hash.txt ..\hash_files\realhuman_phill.txt -O -r ..\hash_files\OneRuleToRuleThemAll.rule --user -o result.txt
+## ASRep Hash
+.\hashcat.exe -m 18200 -w 3 -a 0 ..\hash_files\domain_user_hash.txt ..\hash_files\kev_created_12Char_wordlist.txt ..\hash_files\realhuman_phill.txt -O -r ..\hash_file\OneRuleToRuleThemAll.rule --user -o result.txt
+
+.\hashcat.exe -m 18200 -w 3 -a 0 ..\hash_files\domain_user_hash.txt ..\hash_files\realhuman_phill.txt -O -r ..\hash_files\OneRuleToRuleThemAll.rule --user -o result.txt

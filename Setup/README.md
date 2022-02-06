@@ -7,7 +7,7 @@
   - [How to Create/Enable Shared Folders in Kali 2020.x](#how-to-createenable-shared-folders-in-kali-2020x)
     - [Clipboard and Shared folder Still Not Working](#clipboard-and-shared-folder-still-not-working)
   - [Installing VSCoidum on Debian](#installing-vscoidum-on-debian)
-    - [Colour coded test files:](#colour-coded-test-files)
+    - [Colour coded text files:](#colour-coded-text-files)
   - [Curropt ZSH History files](#curropt-zsh-history-files)
   - [Customise ZSHRC to some coolish style](#customise-zshrc-to-some-coolish-style)
   - [Oh-MY-ZSH IS COOL](#oh-my-zsh-is-cool)
@@ -20,6 +20,7 @@
   - [Go Language on Kali](#go-language-on-kali)
     - [Getting packages with go](#getting-packages-with-go)
   - [Easy OpenVPN](#easy-openvpn)
+  - [Installing Java on Debian](#installing-java-on-debian)
   - [Useful tools](#useful-tools)
     - [Tools installed](#tools-installed)
     - [Additional tools](#additional-tools)
@@ -68,9 +69,9 @@ sudo pip2 install #[py 2 package]
 
 ## Setting up the terminator for Kali 2020.x onwards
 
-> sudo apt install terminator
+> `sudo apt install terminator`
 Or if they don't have the repo:
-> sudo add-apt-repository ppa:gnome-terminator sudo apt-get update sudo apt-get install terminator
+> `sudo add-apt-repository ppa:gnome-terminator sudo apt-get update sudo apt-get install terminator`
 
 Setup:
 
@@ -133,6 +134,12 @@ and
 
 **MacOS Users** If you are in MacOS host and using fusion and Kali 2020.x, then should pay a visit to the kali documentation [here](https://www.kali.org/docs/virtualization/install-vmware-guest-tools/).
 
+- In the Kali Tweaks menu, select Virtualization, then Install additional packages and scripts for VMware. Congratulations, you now have two additional tools in your toolbox!
+- Unfortunately, shared folders will not work out of the box, some additional scripts are needed. Those can be installed easily with kali-tweaks: `kali-tweaks`
+- In the Kali Tweaks menu, select Virtualization, then Install additional packages and scripts for VMware. Congratulations, you now have two additional tools in your toolbox!
+- little script to mount the VMware Shared Folders. Invoke it with: `sudo mount-shared-folders`
+- second script is a helper to restart the VM tools. Indeed, it’s not uncommon for OVT to stops functioning correctly (e.g. such as copy/paste between the host OS and guest VM stops working): sudo restart-vm-tools
+
 ### Clipboard and Shared folder Still Not Working
 
 You want to force a manual reinstall of open-vm-tools (as something has gone wrong):
@@ -152,18 +159,28 @@ The second script is a helper to restart the VM tools. Indeed, it’s not uncomm
   
 *This has worked in Kali 2020.x onwards and Parrot OS. Other Debian I haven't tried!*
 
+*Sometimes after installing `sudo apt install open-vm-tools-desktop` you require to enable `sudo mount-t fuse.vmhgfs-fuse .host:/ /mnt/hgfs -o allow_other` to mount any shared files to the host.*
+
 ## Installing VSCoidum on Debian
 
 1 - Add the GPG key to repo so that updates with future update commands:
-  `wget -qO - https://gitlab.com/paulcarroty/vscodium-deb-rpm-repo/raw/master/pub.gpg | gpg --dearmor | sudo dd of=/usr/share/keyrings/vscodium-archive-keyring.gpg`
+  `wget -qO- https://packages.microsoft.com/keys/microsoft.asc | gpg --dearmor > packages.microsoft.gpg`
 
 2 - Add the repository to our repository list:
-  `echo 'deb [ signed-by=/usr/share/keyrings/vscodium-archive-keyring.gpg ] https://download.vscodium.com/debs vscodium main' | sudo tee /etc/apt/sources.list.d/vscodium.list`
+  ```
+  sudo install -o root -g root -m 644 packages.microsoft.gpg /etc/apt/trusted.gpg.d/
+  sudo sh -c 'echo "deb [arch=amd64,arm64,armhf signed-by=/etc/apt/trusted.gpg.d/packages.microsoft.gpg] https://packages.microsoft.com/repos/code stable main" > /etc/apt/sources.list.d/vscode.list'
+  rm -f packages.microsoft.gpg
+  ```
 
 3 - And then do an update based on repositories and install:
-  `sudo apt update && sudo apt install codium`
+  ``` 
+  sudo apt install apt-transport-https
+  sudo apt update
+  sudo apt install code # or code-insiders
+  ```
 
-### Colour coded test files:
+### Colour coded text files:
 
 - Press `Ctrl P` and run the command: `ext install xshrim.txt-syntax`
 - Python exploits sometimes they are not formatted correctly. Hold `Ctrl Shift and i` to correct the formatting it.
@@ -468,6 +485,13 @@ In order to connect to the lab environment when you boot up your HTB or THM pen 
    2. Then make it readonly: `sudo chmod 400 /etc/openvpn/auth.txt`
 6. Edit the config file such as `sudo nano /etc/openvpn/<name_of_VPN_file>.conf`; and go the line that has **auth-user-pass** to be **auth-user-pass /etc/openvpn/auth.txt** and save and exit.
 7. If by anychance you wanted to do some diagnostic of OpenVPN and look at log files go to: `sudo grep ovpn /var/log/syslog`
+
+## Installing Java on Debian
+
+1. Run apt install on Java Runtime Environment: `sudo apt install default-jre`
+2. Verify the installation with `java --version`
+3. Java Development Kit (JDK) in order to compile and run some specific Java-based software: `sudo apt install default-jdk`
+4. Verify installation `javac --version`
 
 ## Useful tools
 
