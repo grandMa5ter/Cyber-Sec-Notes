@@ -23,7 +23,7 @@ Tips and Tricks for Linux Priv Escalation
 ## Fix the Shell
 
 ```shell
-python -c 'import pty; pty.spawn("/bin/bash")'
+python -c 'import pty; pty.spawn("/bin/bash");'
 
 ### BELOW IS OPTIONAL; YOU CAN TRY THAT #######
 export PATH=/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin:/usr/games:/tmp

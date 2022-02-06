@@ -10,6 +10,7 @@
     - [Colour coded test files:](#colour-coded-test-files)
   - [Curropt ZSH History files](#curropt-zsh-history-files)
   - [Customise ZSHRC to some coolish style](#customise-zshrc-to-some-coolish-style)
+  - [Oh-MY-ZSH IS COOL](#oh-my-zsh-is-cool)
   - [AutoRecon](#autorecon)
   - [Docker Images](#docker-images)
     - [Other commands](#other-commands)
@@ -268,6 +269,29 @@ preexec () { print -Pn "\e]0;$1 - Kali Terminal\a" }
   `sudo cp [your VPN FILE].ovpn /etc/openvpn/`
 and 
   `sudo mv /etc/openvpn/[your VPN file].ovpn /etc/openvpn/[your VPN file].conf` after that you can start your openvpn normally same as usual.
+
+## Oh-MY-ZSH IS COOL
+
+After I worked around with zsh, I thought I want much more coolish look and feel. Therefore, I went and installed oh-my-zsh:
+1 - Install Oh-my-zsh via wget: `sh -c "$(wget https://raw.github.com/ohmyzsh/ohmyzsh/master/tools/install.sh -O -)"`
+2 - Install the Powerline font to spice up your CLI with icons: `sudo apt install fonts-powerline`
+3 - Change themes to "agnoster" by finding the `ZSH_THEME` variable(inside *.zshrc*) and changing it:`ZSH_THEME="agnoster"`.
+4 - I don’t like it that the theme shows git. To get rid of this, we change the directory to `cd ~/.oh-my-zsh/themes`.
+  4.1 - Now we can change the ‘Main prompt’. We don’t need to prompt_context in the function build_prompt(). Just comment out this line or remove it. At last, change the PROMPT variable to $(build_prompt).
+5 - To actually see the theme, you have to source your *.zshrc* file like this: `source ~/.zshrc`; usually it is already enabled within *.zshrc* file.
+6 - Add *zsh-syntax-highlighting* to the plugins list. Navigate to `~/.oh-my-zsh/custom/plugins` and clone the code from Github into this folder: `git clone https://github.com/zsh-users/zsh-syntax-highlighting`
+7 - Add *zsh-autosuggestions* to the plugins list by cloning the code into the same folder as before and `git clone https://github.com/zsh-users/zsh-autosuggestions`
+8 - After all that, edit or change the *.zshrc* file `plugins` section to contain: `plugins=(git colored-man-pages zsh-syntax-highlighting zsh-autosuggestions)`.
+
+9 - Do below if you want to be brave:
+  ```shell
+  #Installing Powerlevel10k theme on oh-my-zsh
+  cd .oh-my-zsh/custom/themes
+  git clone --depth=1 https://github.com/romkatv/powerlevel10k.git
+  #edit the .zshrc file
+  ZSH_THEME="powerlevel10k/powerlevel10k"
+  #exit the terminal and restart the terminal, go through config as you see fit.
+  ```
 
 ## AutoRecon
 
