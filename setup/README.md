@@ -9,6 +9,7 @@
   - [Installing VSCoidum on Debian](#installing-vscoidum-on-debian)
     - [Colour coded text files:](#colour-coded-text-files)
   - [Curropt ZSH History files](#curropt-zsh-history-files)
+  - [Adding automatic terminal logging to .ZSHRC](#adding-automatic-terminal-logging-to-zshrc)
   - [Customise ZSHRC to some coolish style](#customise-zshrc-to-some-coolish-style)
   - [Oh-MY-ZSH IS COOL](#oh-my-zsh-is-cool)
   - [AutoRecon](#autorecon)
@@ -200,6 +201,22 @@ mv ~/.zsh_history ~/.zsh_history_bad
 strings -eS ~/.zsh_history_bad > ~/.zsh_history
 fc -R ~/.zsh_history
 rm ~/.zsh_history_bad
+```
+
+## Adding automatic terminal logging to .ZSHRC
+
+```shell
+#auto-logging
+date=$(date +%Y-%m-%d)
+logdir="$HOME/log/terminal-logs"
+if [ -z "$TERMINAL_LOGGING_ENABLED" ]; then
+    if [ ! -d $logdir ]; then
+        mkdir -p $logdir
+    fi
+    export TERMINAL_LOGGING_ENABLED=1
+    script -f -q $logdir/$date-$$.log
+    exit
+fi
 ```
 
 ## Customise ZSHRC to some coolish style
