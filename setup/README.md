@@ -21,6 +21,7 @@
     - [Getting packages with go](#getting-packages-with-go)
   - [Easy OpenVPN](#easy-openvpn)
   - [Installing Java on Debian](#installing-java-on-debian)
+  - [Recoding Terminal In Kali](#recoding-terminal-in-kali)
   - [Useful tools](#useful-tools)
     - [Tools installed](#tools-installed)
     - [Additional tools](#additional-tools)
@@ -493,6 +494,16 @@ In order to connect to the lab environment when you boot up your HTB or THM pen 
 3. Java Development Kit (JDK) in order to compile and run some specific Java-based software: `sudo apt install default-jdk`
 4. Verify installation `javac --version`
 
+## Recoding Terminal In Kali
+
+Therer are two ways to do this. Either automatically via Alias within the `.zshrc` file, just add the following:
+  - This records it in a folder under desktop within a directory: `alias rec='script -aq ~/Desktop/terminal_logs/term.log-$(date “+%Y%m%d-%H-%M”)'`
+
+Or if you haven't setup anything and want to do that on the fly within a pen-test, just go with this:
+  - `script -a ~/pentest-results/myscripts.txt`
+
+You can stop the recoding via `exit` command within terminal.
+
 ## Useful tools
 
 There is a automated yamel project on [github](https://github.com/BrashEndeavours/hotwax) which installs and provisions extra pentesting tools on kali machine.
@@ -533,6 +544,10 @@ There is a automated yamel project on [github](https://github.com/BrashEndeavour
 - [empire](https://github.com/EmpireProject/Empire) - Empire is a post-exploitation framework that includes a pure-PowerShell2.0 Windows agent, and a pure Python 2.6/2.7 Linux/OS X agent.
 - [medusa](http://foofus.net/goons/jmk/medusa/medusa.html) - Medusa is a speedy, parallel, modular login brute-forcer.  Similar to ncrack and Hydra.
 - [PEASS](https://github.com/carlospolop/privilege-escalation-awesome-scripts-suite) - These tools search for possible local privilege escalation paths that you could exploit and print them to you with nice colors so you can recognize the misconfigurations easily.
+- [Screenshot Tool 1 Kazam (In Kali)](https://launchpad.net/kazam)
+- [Screenshot Tool 2 Shutter](https://shutter-project.org/)
+- [Screenshot Tool 3 Flameshot](https://github.com/flameshot-org/flameshot)
+
 
 ### Additional tools
 

