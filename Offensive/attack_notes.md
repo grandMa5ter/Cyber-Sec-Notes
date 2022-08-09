@@ -284,7 +284,7 @@
 - Set the ip address as a variable  
   - `export ip=192.168.1.100`
   - `nmap -A -T4 -p- $ip`
-  - `autorecon $ip -p 22,8080 --single-target --only-scan-dir --no-port-dir --dirbuster.tool dirsearch`
+  - `autorecon $ip -p 22,8080 --single-target --only-scans-dir --no-port-dir --dirbuster.tool dirsearch`
 - Netcat port Scanning  
   - `nc -nvv -w 1 -z $ip 3388-3390`
 - Discover active IPs usign ARP on the network:
@@ -1169,8 +1169,16 @@ An uploadable batch file for performing basic windows enumeration.
 
 ## HTTP Enumeration ( Always search for .txt,php,asp,aspx files )
 
-- Search for folders with gobuster:  
+- NIKTO: `nikto --host $URL -C all`
+- Search for folders/files with gobuster:  
   - `gobuster -w /usr/share/wordlists/dirb/common.txt -u $ip -t 80 -x php,txt,asp,aspx`
+  - `gobuster dir -w /usr/share/seclists/Discovery/Web-Content/directory-list-2.3-medium.txt -u $ip -k -x txt,php`
+  - BUST DIRECTORIES: `gobuster dir -u $URL -w /opt/SecLists/Discovery/Web-Content/raft-medium-directories.txt -l -k -t 30`
+  - BUST FILES: `gobuster dir -u $URL -w /opt/SecLists/Discovery/Web-Content/raft-medium-files.txt -l -k -t 30`
+  - BUST SUB-DOMAINS: `gobuster dns -d someDomain.com -w /opt/SecLists/Discovery/DNS/subdomains-top1million-110000.txt -t 30`
+- Dirsearch
+  - `sudo python3 /opt/dirsearch/dirsearch.py -u <http://$IP/> -f -e php,html,jsp,aspx,js -x 400,401,403` 
+  - `sudo python3 /opt/dirsearch/dirsearch.py -u http://$IP:$Port -f -e php,html,jsp,aspx,js -x 400,401,403 -w /opt/SecLists/Discovery/Web-Content/directory-list-lowercase-2.3-medium.txt`
 - OWasp DirBuster - Http folder enumeration - can take a dictionary file
 - Dirb - Directory brute force finding using a dictionary file  ( Very Slow )
   - `dirb http://$ip/ wordlist.dict`
@@ -1197,7 +1205,17 @@ An uploadable batch file for performing basic windows enumeration.
     ```
   - Recurse level 3
       `wfuzz -c -w /usr/share/seclists/Discovery/Web_Content/common.txt -R 3 --sc 200 $ip/FUZZ`
+  - Simple: `export URL="https://example.com/**FUZZ**"`
+  - FUZZ DIRECTORIES: `export URL="https://example.com/$FUZZ/" wfuzz -c -z file,/opt/SecLists/Discovery/Web-Content/raft-medium-directories.txt "$URL" |grep -ivE '404'`
+  - FUZZ FILES: `wfuzz -c -z file,/opt/SecLists/Discovery/Web-Content/raft-medium-files.txt "$URL" |grep -ivE '404'`
 
+  - AUTHENTICATED FUZZING: `wfuzz -c -b "<SESSIONVARIABLE>=<SESSIONVALUE>" -z file,/opt/SecLists/Discovery/Web-Content/raft-medium-files.txt "$URL" |grep -ivE '404'`
+  - FUZZ DATA AND CHECK FOR PARAMETERS: `export URL="<https://example.com/?parameter=**FUZZ**>`
+  - Try the combination of all these
+    - `export URL="https://example.com/?**FUZZ**=data`
+    - `wfuzz -c -z file,/opt/SecLists/Discovery/Web-Content/burp-parameter-names.txt "$URL"`
+  - FUZZ Post Data
+    - Example of Command Injection **POST Checks**: `wfuzz -c -z file,/usr/share/wordlists/Fuzzing/command-injection.txt -d "postParameter=$FUZZ" "$URL"`
 - We can also use a tool called dirhunt to search for interesting files
 
 - Open a service using a port knock (Secured with Knockd)  

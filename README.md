@@ -18,7 +18,7 @@ There are some [high level usual stuff](/Offensive/README.md) that I use on the 
 
 - [Initial Access or Foothold](/Offensive/initial_access.md)
 - [Linux and Windows Full Exploit Paths](/Offensive/attack_notes.md)
-- [Web Application Enumeration](/Offensive/enumeration-webApp.md)
+- [Web Application Enumeration](/Offensive/attack_notes.md/#http-enumeration--always-search-for-txtphpaspaspx-files)
 - [SQLMAP](/Offensive/SQLMap.md)
 
 ## Defensive
