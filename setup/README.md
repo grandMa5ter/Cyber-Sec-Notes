@@ -23,7 +23,7 @@
   - [Easy OpenVPN](#easy-openvpn)
   - [Installing Java on Debian](#installing-java-on-debian)
   - [Recoding Terminal In Kali](#recoding-terminal-in-kali)
-  - [Useful tools](#useful-tools)
+  - [Burp Useful tools](#burp-useful-tools)
     - [Tools installed](#tools-installed)
     - [Additional tools](#additional-tools)
 
@@ -520,9 +520,13 @@ Or if you haven't setup anything and want to do that on the fly within a pen-tes
 
 You can stop the recoding via `exit` command within terminal.
 
-## Useful tools
+## Burp Useful tools
 
-There is a automated yamel project on [github](https://github.com/BrashEndeavours/hotwax) which installs and provisions extra pentesting tools on kali machine.
+- Logger++
+- Additional Scanner Checks
+- Autorize
+- JWT extensions
+- SQLiPy
 
 ### Tools installed
 

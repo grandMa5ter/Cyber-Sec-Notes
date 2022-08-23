@@ -1203,8 +1203,8 @@ An uploadable batch file for performing basic windows enumeration.
     wfuzz -c -w /usr/share/wfuzz/wordlist/general/common.txt "$ip:60080/?page=mailer&mail=FUZZ"
     wfuzz -c -w /usr/share/seclists/Discovery/Web_Content/common.txt --hc 404 $ip/FUZZ
     ```
-  - Recurse level 3
-      `wfuzz -c -w /usr/share/seclists/Discovery/Web_Content/common.txt -R 3 --sc 200 $ip/FUZZ`
+
+  - Recurse level 3 `wfuzz -c -w /usr/share/seclists/Discovery/Web_Content/common.txt -R 3 --sc 200 $ip/FUZZ`
   - Simple: `export URL="https://example.com/**FUZZ**"`
   - FUZZ DIRECTORIES: `export URL="https://example.com/$FUZZ/" wfuzz -c -z file,/opt/SecLists/Discovery/Web-Content/raft-medium-directories.txt "$URL" |grep -ivE '404'`
   - FUZZ FILES: `wfuzz -c -z file,/opt/SecLists/Discovery/Web-Content/raft-medium-files.txt "$URL" |grep -ivE '404'`
@@ -1215,7 +1215,7 @@ An uploadable batch file for performing basic windows enumeration.
     - `export URL="https://example.com/?**FUZZ**=data`
     - `wfuzz -c -z file,/opt/SecLists/Discovery/Web-Content/burp-parameter-names.txt "$URL"`
   - FUZZ Post Data
-    - Example of Command Injection **POST Checks**: `wfuzz -c -z file,/usr/share/wordlists/Fuzzing/command-injection.txt -d "postParameter=$FUZZ" "$URL"`
+    - Example of Command Injection **POST Checks**: `comm`
 - We can also use a tool called dirhunt to search for interesting files
 
 - Open a service using a port knock (Secured with Knockd)  
